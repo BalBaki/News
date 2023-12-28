@@ -2,6 +2,13 @@ const jwt = require('jsonwebtoken');
 
 const payloadDecoder = (payload) => JSON.parse(decodeURIComponent(payload));
 
+const emailValidator = (email) =>
+    new RegExp(
+        /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+    ).test(email.toLowerCase());
+
+//[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?
+
 const refreshTokenCreater = (value) =>
     jwt.sign(value, process.env.JWT_REFRESH_TOKEN_SECRET_KEY, {
         expiresIn: '5d',
@@ -32,4 +39,5 @@ module.exports = {
     accessTokenCreater,
     refreshTokenCookieCreater,
     accessTokenCookieCreater,
+    emailValidator,
 };

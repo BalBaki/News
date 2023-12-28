@@ -10,7 +10,9 @@ const { randomBytes } = require('node:crypto');
 const { User, Api } = require('./db');
 const apis = require('./apis');
 const authMiddleware = require('./middlewares/auth');
-const { payloadDecoder, refreshTokenCookieCreater, accessTokenCookieCreater } = require('./utils');
+const { payloadDecoder, refreshTokenCookieCreater, accessTokenCookieCreater, emailValidator } = require('./utils');
+
+console.log(emailValidator('asdad@dfgdg@'));
 
 const app = express();
 const limiter = rateLimit({
@@ -48,7 +50,10 @@ app.listen(process.env.API_PORT, () => {
 app.post('/register', async (request, response) => {
     try {
         const payload = payloadDecoder(request.body.payload);
-        const payloadEmail = payload.email.toLowerCase();
+        const payloadEmail = payload.email?.toLowerCase();
+
+        if (!payloadEmail || !emailValidator(payloadEmail)) throw new Error('Not valid Email');
+
         const user = await User.findOne({ email: payloadEmail });
 
         if (!user) {
@@ -79,7 +84,10 @@ app.post('/register', async (request, response) => {
 app.post('/login', async (request, response) => {
     try {
         const payload = payloadDecoder(request.body.payload);
-        const email = payload.email.toLowerCase();
+        const email = payload.email?.toLowerCase();
+
+        if (!email || !emailValidator(email)) throw new Error('Not valid Email');
+
         const user = await User.findOne({ email });
 
         if (user) {
@@ -134,6 +142,8 @@ app.post('/savesettings', authMiddleware, async (request, response) => {
             user: { id, email },
         } = request;
         const saveSettings = await User.findOneAndUpdate({ _id: id, email }, { $set: { settings } });
+
+        if (!saveSettings) throw new Error('Not Saved');
 
         response.json({ save: true });
     } catch (error) {
