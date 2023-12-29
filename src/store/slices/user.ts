@@ -18,17 +18,17 @@ const userSlice = createSlice({
         builder.addMatcher(userApi.endpoints.register.matchFulfilled, (state, action) => {
             const { register, user } = action.payload;
 
-            if (register && user) return user;
+            if (register) return user;
         });
         builder.addMatcher(userApi.endpoints.login.matchFulfilled, (state, action) => {
             const { login, user } = action.payload;
 
-            if (login && user) return user;
+            if (login) return user;
         });
         builder.addMatcher(userApi.endpoints.verify.matchFulfilled, (state, action) => {
             const { verify, user } = action.payload;
 
-            if (verify && user) return user;
+            if (verify) return user;
         });
         builder.addMatcher(userApi.endpoints.logout.matchFulfilled, (state, action) => {
             return initialState;

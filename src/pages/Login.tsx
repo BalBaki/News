@@ -24,7 +24,7 @@ const Login: React.FC = () => {
         if (data) {
             notification({
                 type: data?.login ? 'success' : 'error',
-                message: data?.error || 'Login Success',
+                message: data?.login ? 'Login Success' : data?.error,
             });
         }
     }, [loginResult]);

@@ -31,7 +31,7 @@ const Register: React.FC = () => {
         if (data) {
             notification({
                 type: data?.register ? 'success' : 'error',
-                message: data?.error || 'Register Success',
+                message: data?.register ? 'Register Success' : data?.error,
             });
         }
     }, [registerResult]);
