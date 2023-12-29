@@ -5,6 +5,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import type { LoginForm } from '../types';
 import { useLoginMutation } from '../store';
+import { useNotification } from '../hooks/use-notification';
 
 interface PrevLoginForm {
     email: string;
@@ -15,6 +16,18 @@ const Login: React.FC = () => {
     const prevFormData = useRef<PrevLoginForm>();
     const initialValues: LoginForm = { email: prevFormData?.current?.email || '', password: '' };
     const [login, loginResult] = useLoginMutation();
+    const notification = useNotification();
+
+    useEffect(() => {
+        const { data } = loginResult;
+
+        if (data) {
+            notification({
+                type: data?.login ? 'success' : 'error',
+                message: data?.error || 'Login Success',
+            });
+        }
+    }, [loginResult]);
 
     const formSchema = Yup.object().shape({
         email: Yup.string().required('Email required').email('Enter Valid Email'),

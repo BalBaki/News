@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userApi } from './apis/userApi';
 import { userSlice } from './slices/user';
+import { notificationsSlice } from './slices/notifications';
 
 const store = configureStore({
     reducer: {
         [userApi.reducerPath]: userApi.reducer,
         user: userSlice.reducer,
+        notifications: notificationsSlice.reducer,
     },
     middleware(getDefaultMiddleware) {
         return getDefaultMiddleware().concat(userApi.middleware);
@@ -28,3 +30,4 @@ export {
     useVerifyMutation,
     useSaveSettingsMutation,
 } from './apis/userApi';
+export { addNotification, removeNotification, updateNotifications } from './slices/notifications';

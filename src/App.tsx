@@ -1,8 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
+import { useEffect } from 'react';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Notifications from './components/Notifications';
 import { useVerify } from './hooks/use-verify';
-import { useEffect } from 'react';
 
 const App: React.FC = () => {
     const verify = useVerify();
@@ -12,10 +13,13 @@ const App: React.FC = () => {
     }, []);
 
     return (
-        <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-        </Routes>
+        <>
+            <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+            </Routes>
+            <Notifications />
+        </>
     );
 };
 

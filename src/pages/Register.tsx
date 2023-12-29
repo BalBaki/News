@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import type { RegisterForm } from '../types';
 import { useRegisterMutation } from '../store';
+import { useNotification } from '../hooks/use-notification';
 
 interface PrevRegisterForm {
     name: string;
@@ -22,6 +23,18 @@ const Register: React.FC = () => {
         password: '',
     };
     const [register, registerResult] = useRegisterMutation();
+    const notification = useNotification();
+
+    useEffect(() => {
+        const { data } = registerResult;
+
+        if (data) {
+            notification({
+                type: data?.register ? 'success' : 'error',
+                message: data?.error || 'Register Success',
+            });
+        }
+    }, [registerResult]);
 
     const formSchema = Yup.object().shape({
         name: Yup.string().required('Name Requiered'),
