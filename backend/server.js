@@ -10,9 +10,13 @@ const { randomBytes } = require('node:crypto');
 const { User, Api } = require('./db');
 const apis = require('./apis');
 const authMiddleware = require('./middlewares/auth');
-const { payloadDecoder, refreshTokenCookieCreater, accessTokenCookieCreater, emailValidator } = require('./utils');
-
-console.log(emailValidator('asdad@dfgdg@'));
+const {
+    decodePayload,
+    createAccessTokenCookies,
+    createRefreshTokenCookie,
+    validateEmail,
+    clearTokenCookies,
+} = require('./utils');
 
 const app = express();
 const limiter = rateLimit({
@@ -49,10 +53,10 @@ app.listen(process.env.API_PORT, () => {
 //payload => email, password, name, surname
 app.post('/register', async (request, response) => {
     try {
-        const payload = payloadDecoder(request.body.payload);
+        const payload = decodePayload(request.body.payload);
         const payloadEmail = payload.email?.toLowerCase();
 
-        if (!payloadEmail || !emailValidator(payloadEmail)) throw new Error('Not valid Email');
+        if (!payloadEmail || !validateEmail(payloadEmail)) throw new Error('Not valid Email');
 
         const user = await User.findOne({ email: payloadEmail });
 
@@ -67,8 +71,8 @@ app.post('/register', async (request, response) => {
 
             const { id, name, surname, email, settings } = newUser;
 
-            accessTokenCookieCreater(response, { id, email });
-            refreshTokenCookieCreater(response, { id, email });
+            createAccessTokenCookies(response, { id, email });
+            createRefreshTokenCookie(response, { id, email });
 
             return response.json({ register: true, user: { id, name, surname, email, settings } });
         }
@@ -83,10 +87,10 @@ app.post('/register', async (request, response) => {
 //payload => email, password
 app.post('/login', async (request, response) => {
     try {
-        const payload = payloadDecoder(request.body.payload);
+        const payload = decodePayload(request.body.payload);
         const email = payload.email?.toLowerCase();
 
-        if (!email || !emailValidator(email)) throw new Error('Not valid Email');
+        if (!email || !validateEmail(email)) throw new Error('Not valid Email');
 
         const user = await User.findOne({ email });
 
@@ -96,8 +100,8 @@ app.post('/login', async (request, response) => {
             if (isPasswordCompare) {
                 const { id, name, surname, email, settings } = user;
 
-                accessTokenCookieCreater(response, { id, email });
-                refreshTokenCookieCreater(response, { id, email });
+                createAccessTokenCookies(response, { id, email });
+                createRefreshTokenCookie(response, { id, email });
 
                 return response.json({
                     login: true,
@@ -110,6 +114,13 @@ app.post('/login', async (request, response) => {
     } catch (error) {
         response.json({ login: false, error: error.message });
     }
+});
+
+//logout++
+app.post('/logout', (request, response) => {
+    clearTokenCookies();
+
+    response.json({ logout: true });
 });
 
 //verify+
@@ -129,6 +140,8 @@ app.post('/verify', authMiddleware, async (request, response) => {
 
         throw new Error('Not Exists User');
     } catch (error) {
+        clearTokenCookies(response);
+
         response.json({ verify: false, error: error.message });
     }
 });
@@ -137,7 +150,7 @@ app.post('/verify', authMiddleware, async (request, response) => {
 //payload => settings
 app.post('/savesettings', authMiddleware, async (request, response) => {
     try {
-        const settings = payloadDecoder(request.body.payload);
+        const settings = decodePayload(request.body.payload);
         const {
             user: { id, email },
         } = request;
@@ -166,7 +179,7 @@ app.get('/apis', async (request, response) => {
 //query => apiNames(array)
 app.get('/filters', async (request, response) => {
     try {
-        const apiNames = payloadDecoder(request.query.apiNames);
+        const apiNames = decodePayload(request.query.apiNames);
         const filters = {};
 
         await Promise.all(
@@ -201,7 +214,7 @@ app.get('/filters', async (request, response) => {
 //payload => apiNames, fromDate, searchTerm, section, sources, toDate
 app.post('/search', async (request, response) => {
     try {
-        const payload = payloadDecoder(request.body.payload);
+        const payload = decodePayload(request.body.payload);
         const { apiNames } = payload;
         const responses = await Promise.all(apiNames.map((apiName) => apis[apiName].search(payload)));
 

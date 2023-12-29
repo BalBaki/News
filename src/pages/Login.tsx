@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { Link, Navigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import type { LoginForm } from '../types';
+import { useLoginMutation } from '../store';
 
 interface PrevLoginForm {
     email: string;
@@ -13,6 +14,7 @@ const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const prevFormData = useRef<PrevLoginForm>();
     const initialValues: LoginForm = { email: prevFormData?.current?.email || '', password: '' };
+    const [login, loginResult] = useLoginMutation();
 
     const formSchema = Yup.object().shape({
         email: Yup.string().required('Email required').email('Enter Valid Email'),
@@ -38,12 +40,12 @@ shadow-[0px_0px_25px_18px_rgba(0,0,0,0.75)]"
                     <Formik
                         initialValues={initialValues}
                         validationSchema={formSchema}
-                        onSubmit={(values) => {
+                        onSubmit={(values): void => {
                             const { password, ...others } = values;
 
                             prevFormData.current = others;
 
-                            console.log(prevFormData);
+                            login(values);
                         }}
                     >
                         {({ values, isValid, dirty, errors, touched }) => (

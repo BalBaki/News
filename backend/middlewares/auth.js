@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
-const { accessTokenCookieCreater } = require('../utils');
+const { createAccessTokenCookies, clearTokenCookies } = require('../utils');
 
 const authMiddleware = (request, response, next) => {
     const { accessToken, refreshToken } = request.cookies;
 
     if (!accessToken) {
+        clearTokenCookies(response);
+
         return response.json({ auth: false, error: 'No Access Token. Access Denied' });
     }
 
@@ -16,6 +18,8 @@ const authMiddleware = (request, response, next) => {
         next();
     } catch (error) {
         if (!refreshToken) {
+            clearTokenCookies(response);
+
             return response.json({ auth: false, error: 'No Refresh Token. Access Denied' });
         }
 
@@ -24,10 +28,12 @@ const authMiddleware = (request, response, next) => {
 
             request.user = { id: decodedRefreshToken.id, email: decodedRefreshToken.email };
 
-            accessTokenCookieCreater(response, { id: decodedRefreshToken.id, email: decodedRefreshToken.email });
+            createAccessTokenCookies(response, { id: decodedRefreshToken.id, email: decodedRefreshToken.email });
 
             next();
         } catch (error) {
+            clearTokenCookies(response);
+
             return response.send({ auth: 'false', error: 'Not Valid Refresh Token' });
         }
     }

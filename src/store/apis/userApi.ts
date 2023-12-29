@@ -18,8 +18,12 @@ interface VerifyResponse extends Response {
     verify: boolean;
 }
 
+interface LogoutResponse {
+    logout: boolean;
+}
+
 const userApi = createApi({
-    reducerPath: 'user',
+    reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.REACT_APP_USER_API_URL,
         credentials: 'include',
@@ -48,11 +52,30 @@ const userApi = createApi({
                     };
                 },
             }),
-            verify: builder.mutation<VerifyResponse, any>({
+            logut: builder.mutation<LogoutResponse, void>({
+                query: () => {
+                    return {
+                        method: 'POST',
+                        url: '/logout',
+                    };
+                },
+            }),
+            verify: builder.mutation<VerifyResponse, void>({
                 query: () => {
                     return {
                         method: 'POST',
                         url: '/verify',
+                    };
+                },
+            }),
+            saveSettings: builder.mutation({
+                query: (payload) => {
+                    return {
+                        method: 'POST',
+                        url: '/savesettings',
+                        body: {
+                            payload: encodeURIComponent(JSON.stringify(payload)),
+                        },
                     };
                 },
             }),
@@ -61,4 +84,5 @@ const userApi = createApi({
 });
 
 export { userApi };
-export const { useRegisterMutation, useLoginMutation, useVerifyMutation } = userApi;
+export const { useRegisterMutation, useLoginMutation, useLogutMutation, useVerifyMutation, useSaveSettingsMutation } =
+    userApi;

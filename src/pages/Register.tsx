@@ -4,6 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import type { RegisterForm } from '../types';
+import { useRegisterMutation } from '../store';
 
 interface PrevRegisterForm {
     name: string;
@@ -20,6 +21,7 @@ const Register: React.FC = () => {
         email: prevFormData?.current?.email || '',
         password: '',
     };
+    const [register, registerResult] = useRegisterMutation();
 
     const formSchema = Yup.object().shape({
         name: Yup.string().required('Name Requiered'),
@@ -53,11 +55,11 @@ shadow-[0px_0px_25px_18px_rgba(0,0,0,0.75)]"
                     <Formik
                         initialValues={initialValues}
                         validationSchema={formSchema}
-                        onSubmit={(values) => {
+                        onSubmit={(values): void => {
                             const { password, ...others } = values;
 
                             prevFormData.current = others;
-                            console.log(prevFormData);
+                            register(values);
                         }}
                     >
                         {({ values, isValid, dirty, errors, touched }) => (

@@ -1,10 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userApi } from './apis/userApi';
+import { userSlice } from './slices/user';
 
 const store = configureStore({
     reducer: {
         [userApi.reducerPath]: userApi.reducer,
+        user: userSlice.reducer,
+    },
+    middleware(getDefaultMiddleware) {
+        return getDefaultMiddleware().concat(userApi.middleware);
     },
 });
 
@@ -16,4 +21,10 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export default store;
-export { useRegisterMutation, useLoginMutation, useVerifyMutation } from './apis/userApi';
+export {
+    useRegisterMutation,
+    useLoginMutation,
+    useLogutMutation,
+    useVerifyMutation,
+    useSaveSettingsMutation,
+} from './apis/userApi';
