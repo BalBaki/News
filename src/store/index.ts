@@ -24,7 +24,7 @@ export default store;
 export {
     useRegisterMutation,
     useLoginMutation,
-    useLogutMutation,
+    useLogoutMutation,
     useVerifyMutation,
     useSaveSettingsMutation,
 } from './apis/userApi';

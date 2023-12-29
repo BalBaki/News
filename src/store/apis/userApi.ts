@@ -52,7 +52,7 @@ const userApi = createApi({
                     };
                 },
             }),
-            logut: builder.mutation<LogoutResponse, void>({
+            logout: builder.mutation<LogoutResponse, void>({
                 query: () => {
                     return {
                         method: 'POST',
@@ -84,5 +84,5 @@ const userApi = createApi({
 });
 
 export { userApi };
-export const { useRegisterMutation, useLoginMutation, useLogutMutation, useVerifyMutation, useSaveSettingsMutation } =
+export const { useRegisterMutation, useLoginMutation, useLogoutMutation, useVerifyMutation, useSaveSettingsMutation } =
     userApi;

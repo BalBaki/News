@@ -19,7 +19,7 @@ module.exports = new mongoose.Schema(
             type: String,
             required: true,
         },
-        settings: Object,
+        filterSettings: Object,
     },
     {
         versionKey: false,

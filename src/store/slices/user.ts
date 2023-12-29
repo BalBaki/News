@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import type { User } from '../../types';
 import { userApi } from '../apis/userApi';
 
@@ -7,7 +7,7 @@ const initialState: User = {
     name: '',
     surname: '',
     email: '',
-    settings: [],
+    filterSettings: [],
 };
 
 const userSlice = createSlice({
@@ -29,6 +29,9 @@ const userSlice = createSlice({
             const { verify, user } = action.payload;
 
             if (verify) return user;
+        });
+        builder.addMatcher(userApi.endpoints.logout.matchFulfilled, (state, action) => {
+            return initialState;
         });
     },
 });

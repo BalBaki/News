@@ -66,15 +66,15 @@ app.post('/register', async (request, response) => {
                 salt: randomBytes(64),
             });
             const newUser = await User.create(
-                Object.assign(payload, { email: payloadEmail, password: hashedPassword, settings: {} })
+                Object.assign(payload, { email: payloadEmail, password: hashedPassword, filterSettings: {} })
             );
 
-            const { id, name, surname, email, settings } = newUser;
+            const { id, name, surname, email, filterSettings } = newUser;
 
             createAccessTokenCookies(response, { id, email });
             createRefreshTokenCookie(response, { id, email });
 
-            return response.json({ register: true, user: { id, name, surname, email, settings } });
+            return response.json({ register: true, user: { id, name, surname, email, filterSettings } });
         }
 
         throw new Error('Exists Email');
@@ -98,14 +98,14 @@ app.post('/login', async (request, response) => {
             const isPasswordCompare = await argon2.verify(user.password, payload.password);
 
             if (isPasswordCompare) {
-                const { id, name, surname, email, settings } = user;
+                const { id, name, surname, email, filterSettings } = user;
 
                 createAccessTokenCookies(response, { id, email });
                 createRefreshTokenCookie(response, { id, email });
 
                 return response.json({
                     login: true,
-                    user: { id, name, surname, email, settings },
+                    user: { id, name, surname, email, filterSettings },
                 });
             }
         }
@@ -118,7 +118,7 @@ app.post('/login', async (request, response) => {
 
 //logout++
 app.post('/logout', (request, response) => {
-    clearTokenCookies();
+    clearTokenCookies(response);
 
     response.json({ logout: true });
 });
@@ -133,9 +133,9 @@ app.post('/verify', authMiddleware, async (request, response) => {
         const user = await User.findOne({ email, _id: id }).select({ password: 0 });
 
         if (user) {
-            const { id, name, surname, email, settings } = user;
+            const { id, name, surname, email, filterSettings } = user;
 
-            return response.json({ verify: true, user: { id, name, surname, email, settings } });
+            return response.json({ verify: true, user: { id, name, surname, email, filterSettings } });
         }
 
         throw new Error('Not Exists User');
@@ -147,14 +147,14 @@ app.post('/verify', authMiddleware, async (request, response) => {
 });
 
 //Save Settings+
-//payload => settings
+//payload => filterSettings
 app.post('/savesettings', authMiddleware, async (request, response) => {
     try {
-        const settings = decodePayload(request.body.payload);
+        const filterSettings = decodePayload(request.body.payload);
         const {
             user: { id, email },
         } = request;
-        const saveSettings = await User.findOneAndUpdate({ _id: id, email }, { $set: { settings } });
+        const saveSettings = await User.findOneAndUpdate({ _id: id, email }, { $set: { filterSettings } });
 
         if (!saveSettings) throw new Error('Not Saved');
 
