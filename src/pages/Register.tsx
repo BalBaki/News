@@ -3,9 +3,12 @@ import { Link, Navigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../store';
 import type { RegisterForm } from '../types';
 import { useRegisterMutation } from '../store';
 import { useNotification } from '../hooks/use-notification';
+import Button from '../components/Button';
 
 interface PrevRegisterForm {
     name: string;
@@ -22,11 +25,13 @@ const Register: React.FC = () => {
         email: prevFormData?.current?.email || '',
         password: '',
     };
+    const user = useSelector((state: RootState) => state.user);
     const [register, registerResult] = useRegisterMutation();
+    const { data, isLoading, error } = registerResult;
     const notification = useNotification();
 
     useEffect(() => {
-        const { data } = registerResult;
+        const { data, isLoading, error } = registerResult;
 
         if (data) {
             notification({
@@ -48,6 +53,9 @@ const Register: React.FC = () => {
     const handleShowIconClick = (): void => {
         setShowPassword((current) => !current);
     };
+
+    if (error) return <div>Error At Register</div>;
+    if (user.id || data?.register) return <Navigate to="/" replace />;
 
     return (
         <div className="w-full h-screen  flex justify-center items-center p-2">
@@ -135,7 +143,10 @@ shadow-[0px_0px_25px_18px_rgba(0,0,0,0.75)]"
                                                 : ''
                                         }`}
                                     />
-                                    <div className="absolute top-12 right-2" onClick={handleShowIconClick}>
+                                    <div
+                                        className="absolute top-12 right-2 cursor-pointer"
+                                        onClick={handleShowIconClick}
+                                    >
                                         {showPassword ? <FaEyeSlash /> : <FaEye />}
                                     </div>
                                     <ErrorMessage
@@ -145,15 +156,16 @@ shadow-[0px_0px_25px_18px_rgba(0,0,0,0.75)]"
                                     />
                                 </div>
                                 <div className="mt-2 mb-3 flex items-center justify-center">
-                                    <button
+                                    <Button
                                         type="submit"
                                         disabled={!(isValid && dirty)}
                                         className={`w-28 h-12 text-white py-1 rounded-3xl font-semibold disabled:cursor-not-allowed ${
                                             isValid && dirty ? 'bg-green-400' : 'bg-red-500'
                                         }`}
+                                        loading={isLoading}
                                     >
                                         Register
-                                    </button>
+                                    </Button>
                                 </div>
                             </Form>
                         )}

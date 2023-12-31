@@ -10,6 +10,7 @@ module.exports = {
             },
             animation: {
                 disappear: 'disappear 0.5s normal',
+                'spin-slow': 'spin 2s linear infinite',
             },
         },
     },

@@ -1,11 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import { Link, Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import type { LoginForm } from '../types';
-import { useLoginMutation } from '../store';
+import { useLoginMutation, type RootState } from '../store';
 import { useNotification } from '../hooks/use-notification';
+import Button from '../components/Button';
 
 interface PrevLoginForm {
     email: string;
@@ -15,12 +17,12 @@ const Login: React.FC = () => {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const prevFormData = useRef<PrevLoginForm>();
     const initialValues: LoginForm = { email: prevFormData?.current?.email || '', password: '' };
+    const user = useSelector((state: RootState) => state.user);
     const [login, loginResult] = useLoginMutation();
     const notification = useNotification();
+    const { data, isLoading, error } = loginResult;
 
     useEffect(() => {
-        const { data } = loginResult;
-
         if (data) {
             notification({
                 type: data?.login ? 'success' : 'error',
@@ -39,6 +41,9 @@ const Login: React.FC = () => {
     const handleShowIconClick = (): void => {
         setShowPassword((current) => !current);
     };
+
+    if (error) return <div>Error At Login</div>;
+    if (user.id || data?.login) return <Navigate to="/" replace />;
 
     return (
         <div className="w-full h-screen flex justify-center items-center p-2">
@@ -104,15 +109,16 @@ shadow-[0px_0px_25px_18px_rgba(0,0,0,0.75)]"
                                     />
                                 </div>
                                 <div className="mt-2 mb-3 flex items-center justify-center">
-                                    <button
+                                    <Button
                                         type="submit"
-                                        disabled={!(isValid && dirty)}
+                                        disabled={!(isValid && dirty) || isLoading}
                                         className={`w-28 h-12 py-1 text-white rounded-3xl font-semibold disabled:cursor-not-allowed ${
                                             isValid && dirty ? 'bg-green-400' : 'bg-red-500'
                                         }`}
+                                        loading={isLoading}
                                     >
                                         Login
-                                    </button>
+                                    </Button>
                                 </div>
                             </Form>
                         )}

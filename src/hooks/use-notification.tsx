@@ -4,7 +4,7 @@ import { nanoid } from '@reduxjs/toolkit';
 import { addNotification } from '../store';
 import type { NotificationType } from '../types/notification.interface';
 
-interface Payload {
+interface NotificationPayload {
     type: NotificationType;
     message: string;
     duration?: number;
@@ -13,7 +13,7 @@ interface Payload {
 const useNotification = () => {
     const dispatch = useDispatch();
 
-    return useCallback((data: Payload) => {
+    return useCallback((data: NotificationPayload) => {
         dispatch(addNotification({ ...data, id: nanoid(), time: Date.now(), duration: data.duration ?? 5 }));
     }, []);
 };

@@ -1,25 +1,30 @@
 import { Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Home from './pages/Home';
 import Notifications from './components/Notifications';
 import { useVerify } from './hooks/use-verify';
+import Loading from './components/Loading';
 
 const App: React.FC = () => {
-    const verify = useVerify();
+    const { isLoading } = useVerify();
 
-    useEffect(() => {
-        verify();
-    }, []);
+    if (isLoading)
+        return (
+            <div className="h-screen">
+                <Loading />
+            </div>
+        );
 
     return (
-        <>
+        <div className="h-screen">
             <Routes>
+                <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
             </Routes>
             <Notifications />
-        </>
+        </div>
     );
 };
 

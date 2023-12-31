@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { GoAlert, GoCheck } from 'react-icons/go';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, removeNotification, updateNotifications } from '../store';
+import { type RootState, removeNotification, updateNotifications } from '../store';
 import type { Notification } from '../types';
 
 const Notifications: React.FC = () => {
