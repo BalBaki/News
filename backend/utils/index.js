@@ -11,17 +11,17 @@ const validateEmail = (email) =>
 
 const createRefreshToken = (value) =>
     jwt.sign(value, process.env.JWT_REFRESH_TOKEN_SECRET_KEY, {
-        expiresIn: '5d',
+        expiresIn: '3d',
     });
 
 const createAccessToken = (value) =>
     jwt.sign(value, process.env.JWT_ACCESS_TOKEN_SECRET_KEY, {
-        expiresIn: '1h',
+        expiresIn: '8h',
     });
 
 const createRefreshTokenCookie = (response, { id, email }) =>
     response.cookie('refreshToken', createRefreshToken({ id, email }), {
-        maxAge: 5 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
         secure: true,
     });
@@ -29,12 +29,12 @@ const createRefreshTokenCookie = (response, { id, email }) =>
 const createAccessTokenCookies = (response, { id, email }) =>
     response
         .cookie('accessToken', createAccessToken({ id, email }), {
-            maxAge: 60 * 60 * 1000,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
             httpOnly: true,
             secure: true,
         })
         .cookie('accessTokenExpiresAt', new Date().getTime() + 60 * 60 * 1000, {
-            maxAge: 60 * 60 * 1000,
+            maxAge: 14 * 24 * 60 * 60 * 1000,
         });
 
 const clearTokenCookies = (response) =>

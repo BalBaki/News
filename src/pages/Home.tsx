@@ -1,11 +1,7 @@
-import Loading from '../components/Loading';
+import Header from '../components/home/Header';
 
 const Home: React.FC = () => {
-    return (
-        <div className="w-80 h-80">
-            <Loading />
-        </div>
-    );
+    return <Header />;
 };
 
 export default Home;

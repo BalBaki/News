@@ -37,9 +37,15 @@ type VerifyResponse =
           user?: never;
       };
 
-interface LogoutResponse {
-    logout: boolean;
-}
+type LogoutResponse =
+    | {
+          logout: true;
+          error?: never;
+      }
+    | {
+          logout: false;
+          error: string;
+      };
 
 const userApi = createApi({
     reducerPath: 'userApi',
