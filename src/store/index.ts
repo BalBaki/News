@@ -1,17 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userApi } from './apis/userApi';
+import { searchApi } from './apis/searchApi';
 import { userSlice } from './slices/user';
 import { notificationsSlice } from './slices/notifications';
 
 const store = configureStore({
     reducer: {
         [userApi.reducerPath]: userApi.reducer,
+        [searchApi.reducerPath]: searchApi.reducer,
         user: userSlice.reducer,
         notifications: notificationsSlice.reducer,
     },
     middleware(getDefaultMiddleware) {
-        return getDefaultMiddleware().concat(userApi.middleware);
+        return getDefaultMiddleware().concat(userApi.middleware).concat(searchApi.middleware);
     },
 });
 
@@ -31,3 +33,4 @@ export {
     useSaveSettingsMutation,
 } from './apis/userApi';
 export { addNotification, removeNotification, updateNotifications } from './slices/notifications';
+export { useSearchMutation, useFetchApisQuery } from './apis/searchApi';

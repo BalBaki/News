@@ -211,12 +211,14 @@ app.get('/filters', async (request, response) => {
 });
 
 //search news
-//payload => apiNames, fromDate, searchTerm, section, sources, toDate
+//payload => apiNames, fromDate, term, toDate, extraFilters = {guardian: {section: [...]}, newsapi: {sources: '...'}}
 app.post('/search', async (request, response) => {
     try {
         const payload = decodePayload(request.body.payload);
-        const { apiNames } = payload;
-        const responses = await Promise.all(apiNames.map((apiName) => apis[apiName].search(payload)));
+        const { apiNames, term, fromDate, toDate, extraFilters } = payload;
+        const responses = await Promise.all(
+            apiNames.map((apiName) => apis[apiName].search({ term, fromDate, toDate, ...extraFilters[apiName] }))
+        );
 
         if (responses.every((response) => !response.ok)) throw new Error('Error at Fetching Articles');
 

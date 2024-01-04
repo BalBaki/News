@@ -1,7 +1,11 @@
 export interface FilterSettings {
     term: string;
-    fromDate?: Date;
-    toDate: Date;
-    sections?: string | string[];
-    sources?: string | string[];
+    apiNames: string[];
+    fromDate: string | Date;
+    toDate: string | Date;
+    extraFilters: {
+        [key: string]: {
+            [key: string]: any;
+        };
+    };
 }

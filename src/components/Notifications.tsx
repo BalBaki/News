@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { GoAlert, GoCheck } from 'react-icons/go';
 import { useSelector, useDispatch } from 'react-redux';
 import { type RootState, removeNotification, updateNotifications } from '../store';
-import type { Notification } from '../types';
+import { type Notification } from '../types';
 
 const Notifications: React.FC = () => {
     const dispatch = useDispatch();

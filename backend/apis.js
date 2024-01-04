@@ -8,18 +8,22 @@ const apis = {
                 {
                     name: 'sources',
                     filterFn: () =>
-                        fetch(this.baseUrl + 'sources?' + new URLSearchParams({ apiKey: process.env.NEWS_API_KEY })),
+                        fetch(
+                            this.baseUrl +
+                                'top-headlines/sources?' +
+                                new URLSearchParams({ apiKey: process.env.NEWS_API_KEY })
+                        ),
                 },
             ];
         },
         search(payload) {
-            const { searchTerm, fromDate, toDate, sources } = payload;
+            const { term, fromDate, toDate, sources } = payload;
 
             return fetch(
                 this.baseUrl +
                     this.searchUrlPart +
                     new URLSearchParams({
-                        q: searchTerm,
+                        q: term,
                         from: fromDate,
                         to: toDate,
                         ...(sources?.length > 0 && { sources: sources.join(',') }),
@@ -47,14 +51,14 @@ const apis = {
             ];
         },
         search(payload) {
-            const { searchTerm, fromDate, toDate, section } = payload;
+            const { term, fromDate, toDate, section } = payload;
 
             return fetch(
                 this.baseUrl +
                     this.searchUrlPart +
                     new URLSearchParams({
                         'api-key': process.env.GUARDIANS_API_KEY,
-                        q: searchTerm,
+                        q: term,
                         ...(fromDate && { 'from-date': fromDate }),
                         'to-date': toDate,
                         ...(section && { section }),

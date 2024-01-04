@@ -17,8 +17,13 @@ const Api = mongoose.model('Api', ApiSchema);
 
 // If you dont have apis in db, run this code:
 // Api.insertMany([
-//     { name: 'newsapi', baseUrl: 'https://newsapi.org/v2/', searchUrlPart: 'everything?' },
-//     { name: 'theguardians', baseUrl: 'https://content.guardianapis.com/', searchUrlPart: 'search?' },
+//     { name: 'newsapi', baseUrl: 'https://newsapi.org/v2/', searchUrlPart: 'everything?', filters: ['sources'] },
+//     {
+//         name: 'theguardians',
+//         baseUrl: 'https://content.guardianapis.com/',
+//         searchUrlPart: 'search?',
+//         filters: ['sections'],
+//     },
 // ])
 //     .then(() => console.log('Apis added to db.'))
 //     .catch((error) => console.log('Error at inserting apis'));

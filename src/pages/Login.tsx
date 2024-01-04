@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { Link, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import type { LoginForm } from '../types';
+import { type LoginForm } from '../types';
 import { useLoginMutation, type RootState } from '../store';
 import { useNotification } from '../hooks/use-notification';
 import Button from '../components/Button';

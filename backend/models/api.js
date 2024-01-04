@@ -15,6 +15,10 @@ module.exports = new mongoose.Schema(
             type: String,
             required: true,
         },
+        filters: {
+            type: Array,
+            required: true,
+        },
     },
     {
         versionKey: false,

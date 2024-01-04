@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { LoginForm, RegisterForm, User } from '../../types';
+import { type LoginForm, RegisterForm, User } from '../../types';
 
 type LoginResponse =
     | {
@@ -50,7 +50,7 @@ type LogoutResponse =
 const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: process.env.REACT_APP_USER_API_URL,
+        baseUrl: process.env.REACT_APP_API_URL,
         credentials: 'include',
     }),
     endpoints(builder) {

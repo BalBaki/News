@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { nanoid } from '@reduxjs/toolkit';
 import { addNotification } from '../store';
-import type { NotificationType } from '../types/notification.interface';
+import { type NotificationType } from '../types/notification.interface';
 
 interface NotificationPayload {
     type: NotificationType;

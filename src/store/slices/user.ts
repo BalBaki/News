@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { User } from '../../types';
+import { type User } from '../../types';
 import { userApi } from '../apis/userApi';
 
 const initialState: User = {
@@ -7,7 +7,13 @@ const initialState: User = {
     name: '',
     surname: '',
     email: '',
-    filterSettings: [],
+    filterSettings: {
+        term: '',
+        apiNames: [],
+        fromDate: '',
+        toDate: '',
+        extraFilters: {},
+    },
 };
 
 const userSlice = createSlice({
