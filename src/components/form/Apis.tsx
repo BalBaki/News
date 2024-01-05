@@ -10,7 +10,7 @@ const Apis: React.FC = () => {
 
     if (isLoading) {
         content = <Loading />;
-    } else if (error || !data?.success) {
+    } else if (error || data?.error) {
         content = <div>Error at Fetching Apis</div>;
     } else {
         content = data?.apis?.map((api) => {

@@ -1,9 +1,11 @@
 import { useSearchMutation } from '../../store';
 import NewsItem from './NewsItem';
 
+export const SEARCH_MUTATION_CACHE_KEY = 'shared-search';
+
 const NewsList: React.FC = () => {
     const [search, { data, error }] = useSearchMutation({
-        fixedCacheKey: 'shared-search',
+        fixedCacheKey: SEARCH_MUTATION_CACHE_KEY,
     });
 
     if (error || data?.error) return <div>Error At Fetching News</div>;

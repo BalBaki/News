@@ -5,11 +5,12 @@ import { useSearchMutation, type RootState } from '../../store';
 import { type FilterSettings } from '../../types';
 import Apis from '../form/Apis';
 import Button from '../Button';
-import ExtraFilters from '../form/ExtraFilters';
+import Filters from '../form/Filters';
+import { SEARCH_MUTATION_CACHE_KEY } from './NewsList';
 
 const Search: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
-    const [search, searchResult] = useSearchMutation({ fixedCacheKey: 'shared-search' });
+    const [search, searchResult] = useSearchMutation({ fixedCacheKey: SEARCH_MUTATION_CACHE_KEY });
     const initialValues: FilterSettings = {
         term: '',
         fromDate: user.filterSettings.fromDate || '',
@@ -88,7 +89,7 @@ const Search: React.FC = () => {
                                             </div>
                                         </div>
                                         <Apis />
-                                        <ExtraFilters />
+                                        <Filters />
                                     </div>
                                     {/* <div className="flex flex-wrap items-center justify-center gap-2 px-2 max-sm:block">
                                         {values.apis.indexOf('newsapi') > -1 && (

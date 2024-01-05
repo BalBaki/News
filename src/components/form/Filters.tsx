@@ -2,8 +2,9 @@ import { useFormikContext } from 'formik';
 import { type FilterSettings } from '../../types';
 import { useFetchApisQuery } from '../../store';
 import { useEffect } from 'react';
+import ExtraFilters from './extraFilters';
 
-const ExtraFilters: React.FC = () => {
+const Filters: React.FC = () => {
     const { values, setValues } = useFormikContext<FilterSettings>();
     const { data } = useFetchApisQuery();
 
@@ -27,7 +28,7 @@ const ExtraFilters: React.FC = () => {
         setValues(values);
     }, [values.apiNames]);
 
-    return <div></div>;
+    return <ExtraFilters />;
 };
 
-export default ExtraFilters;
+export default Filters;

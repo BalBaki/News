@@ -178,7 +178,7 @@ app.get('/apis', async (request, response) => {
 
 //Get filter data
 //query => apiNames(array)
-app.get('/filters', async (request, response) => {
+app.get('/filtersV2', async (request, response) => {
     try {
         const apiNames = decodePayload(request.query.apiNames);
         const filters = {};
@@ -211,12 +211,42 @@ app.get('/filters', async (request, response) => {
     }
 });
 
+//Get filter data
+//query => apiName(string)
+app.get('/filters', async (request, response) => {
+    try {
+        const apiName = decodeURIComponent(request.query.apiName);
+        const filters = {};
+
+        if (!apis[apiName]) throw new Error('Not Valid Api');
+
+        const filterPromises = apis[apiName].filters.map(async (option) => {
+            const response = await option.filterFn();
+
+            if (!response.ok) {
+                throw new Error('Error at Fetching Filter Option');
+            }
+
+            const filterOptions = await response.json();
+
+            filters[option.name] = filterOptions;
+        });
+
+        await Promise.all(filterPromises);
+
+        return response.json({ success: true, filters });
+    } catch (error) {
+        response.json({ success: false, error: error.message });
+    }
+});
+
 //search news
 //payload => apiNames, fromDate, term, toDate, extraFilters = {guardian: {section: [...]}, newsapi: {sources: '...'}}
 app.post('/search', async (request, response) => {
     try {
         const payload = decodePayload(request.body.payload);
         const { apiNames, term, fromDate, toDate, extraFilters } = payload;
+
         const responses = await Promise.all(
             apiNames.map((apiName) => apis[apiName].search({ term, fromDate, toDate, ...extraFilters[apiName] }))
         );

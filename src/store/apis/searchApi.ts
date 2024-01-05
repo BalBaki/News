@@ -30,7 +30,19 @@ type FetchApisResponse =
     | {
           success: false;
           apis?: never;
-          error?: string;
+          error: string;
+      };
+
+type FetchFiltersResponse =
+    | {
+          success: true;
+          filters: { [key: string]: any };
+          error?: never;
+      }
+    | {
+          success: false;
+          filters?: never;
+          error: string;
       };
 
 const searchApi = createApi({
@@ -57,9 +69,18 @@ const searchApi = createApi({
                     };
                 },
             }),
+            fetchFilters: builder.query<FetchFiltersResponse, { apiName: string }>({
+                query: (payload) => {
+                    return {
+                        method: 'GET',
+                        url: '/filters',
+                        params: { apiName: encodeURIComponent(payload.apiName) },
+                    };
+                },
+            }),
         };
     },
 });
 
 export { searchApi };
-export const { useSearchMutation, useFetchApisQuery } = searchApi;
+export const { useSearchMutation, useFetchApisQuery, useFetchFiltersQuery } = searchApi;
