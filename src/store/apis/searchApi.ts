@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { type FilterSettings } from '../../types';
+import type { News, FilterSettings } from '../../types';
 
 interface Api {
     _id: string;
@@ -12,7 +12,7 @@ interface Api {
 type SearchResponse =
     | {
           search: true;
-          articles: any[]; // News interface eklenecek.
+          articles: News[];
           error?: never;
       }
     | {

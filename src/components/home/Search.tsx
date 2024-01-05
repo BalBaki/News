@@ -9,7 +9,7 @@ import ExtraFilters from '../form/ExtraFilters';
 
 const Search: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
-    const [search, searchResult] = useSearchMutation();
+    const [search, searchResult] = useSearchMutation({ fixedCacheKey: 'shared-search' });
     const initialValues: FilterSettings = {
         term: '',
         fromDate: user.filterSettings.fromDate || '',
@@ -36,11 +36,11 @@ const Search: React.FC = () => {
                     initialValues={initialValues}
                     validationSchema={formSchema}
                     onSubmit={(values) => {
-                        // search({
-                        //     ...values,
-                        //     term: values.term.toLocaleLowerCase(),
-                        //     // section: values.section === 'all' ? '' : values.section,
-                        // });
+                        search({
+                            ...values,
+                            term: values.term.toLocaleLowerCase(),
+                            // section: values.section === 'all' ? '' : values.section,
+                        });
                     }}
                 >
                     {({ values, isValid, dirty }) => (
@@ -117,7 +117,6 @@ const Search: React.FC = () => {
                     )}
                 </Formik>
             </div>
-            {/* <NewsList searchResult={searchResult} /> */}
         </div>
     );
 };

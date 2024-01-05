@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { randomUUID } = require('crypto');
 
 const decodePayload = (payload) => JSON.parse(decodeURIComponent(payload));
 
@@ -53,6 +54,34 @@ const clearTokenCookies = (response) =>
             maxAge: 1,
         });
 
+const transformArticles = (articles) => {
+    return articles.map((article) => {
+        return {
+            id: randomUUID(),
+            title: article.title || article.webTitle || '',
+            description: article.description || article.fields?.bodyText || '',
+            url: article.url || article.webUrl || '',
+            imageUrl: article.urlToImage || article.fields?.thumbnail || '',
+            authors:
+                article.author ||
+                (article.tags &&
+                    article.tags
+                        .filter((tag) => tag.firstName || tag.lastName)
+                        .map((tag) => {
+                            let authors = '';
+
+                            if (tag.firstName) authors += tag.firstName;
+                            if (tag.lastName) authors += (tag.firstName ? ' ' : '') + tag.lastName;
+
+                            return authors;
+                        })
+                        .join(',')) ||
+                '',
+            publishDate: article.publishedAt || article.webPublicationDate || '',
+        };
+    });
+};
+
 module.exports = {
     decodePayload,
     createRefreshToken,
@@ -61,4 +90,5 @@ module.exports = {
     createAccessTokenCookies,
     validateEmail,
     clearTokenCookies,
+    transformArticles,
 };

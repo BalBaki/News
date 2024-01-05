@@ -17,7 +17,7 @@ const App: React.FC = () => {
         );
 
     return (
-        <div className="h-screen">
+        <div>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />

@@ -16,6 +16,7 @@ const {
     createRefreshTokenCookie,
     validateEmail,
     clearTokenCookies,
+    transformArticles,
 } = require('./utils');
 
 const app = express();
@@ -245,7 +246,7 @@ app.post('/search', async (request, response) => {
 
         if (errors.length > 0) throw new Error('Error at Fetching Articles');
 
-        return response.json({ search: true, articles });
+        response.json({ search: true, articles: transformArticles(articles) });
     } catch (error) {
         response.json({ search: false, error: error.message });
     }
