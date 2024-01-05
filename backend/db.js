@@ -22,7 +22,7 @@ const Api = mongoose.model('Api', ApiSchema);
 //         name: 'theguardians',
 //         baseUrl: 'https://content.guardianapis.com/',
 //         searchUrlPart: 'search?',
-//         filters: ['sections'],
+//         filters: ['section'],
 //     },
 // ])
 //     .then(() => console.log('Apis added to db.'))

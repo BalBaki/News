@@ -37,10 +37,12 @@ const Search: React.FC = () => {
                     initialValues={initialValues}
                     validationSchema={formSchema}
                     onSubmit={(values) => {
+                        if (values.extraFilters.theguardians.section === 'all')
+                            values.extraFilters.theguardians.section = '';
+
                         search({
                             ...values,
                             term: values.term.toLocaleLowerCase(),
-                            // section: values.section === 'all' ? '' : values.section,
                         });
                     }}
                 >
@@ -91,14 +93,6 @@ const Search: React.FC = () => {
                                         <Apis />
                                         <Filters />
                                     </div>
-                                    {/* <div className="flex flex-wrap items-center justify-center gap-2 px-2 max-sm:block">
-                                        {values.apis.indexOf('newsapi') > -1 && (
-                                            <Sources checkedSources={values.sources} />
-                                        )}
-                                        {values.apis.indexOf('theguardians') > -1 && (
-                                            <Sections selectedSection={values.section} />
-                                        )}
-                                    </div> */}
                                 </div>
                                 <div className="flex flex-wrap items-center justify-center max-[300px]:block max-[300px]:text-center mt-2">
                                     <Button

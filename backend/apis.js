@@ -27,7 +27,7 @@ const apis = {
                         from: fromDate,
                         to: toDate,
                         ...(sources?.length > 0 && { sources: sources.join(',') }),
-                        pageSize: 10,
+                        pageSize: 100,
                         apiKey: process.env.NEWS_API_KEY,
                     })
             );
@@ -62,7 +62,7 @@ const apis = {
                         ...(fromDate && { 'from-date': fromDate }),
                         'to-date': toDate,
                         ...(section && { section }),
-                        'page-size': 10,
+                        'page-size': 100,
                         'show-fields': 'thumbnail,bodyText',
                         'show-tags': 'all',
                         'order-by': 'newest',

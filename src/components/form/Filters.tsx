@@ -16,7 +16,9 @@ const Filters: React.FC = () => {
                 const apiData = data?.apis?.find((resApi) => resApi.name === api);
 
                 if (apiData) {
-                    apiData.filters.forEach((filterName) => (values.extraFilters[api][filterName] = ''));
+                    apiData.filters.forEach((filterName) => {
+                        values.extraFilters[api][filterName] = api === 'newsapi' && filterName === 'sources' ? [] : '';
+                    });
                 }
             }
         });
