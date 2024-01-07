@@ -8,7 +8,6 @@ import Button from '../Button';
 import Filters from '../form/Filters';
 import NewsList from './NewsList';
 import { SEARCH_MUTATION_CACHE_KEY } from './NewsList';
-import Loading from '../Loading';
 
 const Search: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
@@ -17,7 +16,7 @@ const Search: React.FC = () => {
         term: '',
         fromDate: user.filterSettings.fromDate || '',
         toDate: user.filterSettings.toDate || new Date().toISOString().split('T')[0],
-        apiNames: user.filterSettings.apiNames.length > 0 ? user.filterSettings.apiNames : [],
+        apiNames: user.filterSettings.apiNames?.length > 0 ? user.filterSettings.apiNames : [],
         extraFilters: {},
         page: 1,
     };
@@ -39,7 +38,7 @@ const Search: React.FC = () => {
                 initialValues={initialValues}
                 validationSchema={formSchema}
                 onSubmit={(values) => {
-                    if (values.extraFilters.theguardians?.section === 'all')
+                    if (values.extraFilters?.theguardians?.section === 'all')
                         values.extraFilters.theguardians.section = '';
 
                     search({

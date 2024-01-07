@@ -4,26 +4,33 @@ import { useFormikContext } from 'formik';
 import { useSearchMutation } from '../../store';
 import NewsItem from './NewsItem';
 import type { FilterSettings } from '../../types';
+import Loading from '../Loading';
 
 export const SEARCH_MUTATION_CACHE_KEY = 'shared-search';
 
 const NewsList: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const [search, { data, error }] = useSearchMutation({
+    const [search, { data, error, isLoading, isUninitialized }] = useSearchMutation({
         fixedCacheKey: SEARCH_MUTATION_CACHE_KEY,
     });
     const { values } = useFormikContext<FilterSettings>();
-    const onPageChange = (page: number): void => {
-        console.log(page);
-        setCurrentPage(page);
-    };
+
+    const onPageChange = (page: number): void => setCurrentPage(page);
 
     useEffect(() => {
-        if (values.extraFilters.theguardians?.section === 'all') values.extraFilters.theguardians.section = '';
+        if (!isUninitialized) {
+            if (values.extraFilters.theguardians?.section === 'all') values.extraFilters.theguardians.section = '';
 
-        search({ ...values, term: values.term.toLocaleLowerCase(), page: currentPage });
+            search({ ...values, term: values.term.toLocaleLowerCase(), page: currentPage });
+        }
     }, [currentPage]);
 
+    if (isLoading)
+        return (
+            <div className="h-80">
+                <Loading />
+            </div>
+        );
     if (error || data?.error) return <div>Error At Fetching News</div>;
 
     const renderedNews = data?.articles?.map((article) => {
