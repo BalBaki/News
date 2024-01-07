@@ -13,14 +13,15 @@ const NewsList: React.FC = () => {
         fixedCacheKey: SEARCH_MUTATION_CACHE_KEY,
     });
     const { values } = useFormikContext<FilterSettings>();
-    const onPageChange = (page: number): void => setCurrentPage(page);
+    const onPageChange = (page: number): void => {
+        console.log(page);
+        setCurrentPage(page);
+    };
 
     useEffect(() => {
-        if (currentPage > 1) {
-            if (values.extraFilters.theguardians?.section === 'all') values.extraFilters.theguardians.section = '';
+        if (values.extraFilters.theguardians?.section === 'all') values.extraFilters.theguardians.section = '';
 
-            search({ ...values, term: values.term.toLocaleLowerCase(), page: currentPage });
-        }
+        search({ ...values, term: values.term.toLocaleLowerCase(), page: currentPage });
     }, [currentPage]);
 
     if (error || data?.error) return <div>Error At Fetching News</div>;
