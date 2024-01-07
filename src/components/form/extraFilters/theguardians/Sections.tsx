@@ -51,7 +51,7 @@ const Sections: React.FC = () => {
     }
 
     return (
-        <div className="w-72 max-sm:mx-auto max-[340px]:w-full max-sm:mt-1">
+        <div className="w-full max-sm:mx-auto max-[340px]:w-full max-sm:mt-1">
             <Dropdown placeholder={selectedSection || 'Sections For Guardians'}>{content}</Dropdown>
         </div>
     );

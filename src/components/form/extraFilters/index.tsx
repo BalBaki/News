@@ -1,7 +1,8 @@
 import { useFormikContext } from 'formik';
 import type { FilterSettings } from '../../../types';
 import NewsApiFilters from './newsapi';
-import TheGuardiansFilter from './theguardians';
+import TheGuardiansFilters from './theguardians';
+import { Fragment } from 'react';
 
 interface FiltersWithElements {
     [key: string]: JSX.Element;
@@ -9,17 +10,17 @@ interface FiltersWithElements {
 
 const filters: FiltersWithElements = {
     newsapi: <NewsApiFilters />,
-    theguardians: <TheGuardiansFilter />,
+    theguardians: <TheGuardiansFilters />,
 };
 
 const ExtraFilters: React.FC = () => {
     const { values } = useFormikContext<FilterSettings>();
 
     const renderedFilters = values.apiNames.map((apiName) => {
-        return <div key={apiName}>{filters[apiName]}</div>;
+        return <Fragment key={apiName}>{filters[apiName]}</Fragment>;
     });
 
-    return <div>{renderedFilters}</div>;
+    return <>{renderedFilters}</>;
 };
 
 export default ExtraFilters;

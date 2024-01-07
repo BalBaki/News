@@ -1,7 +1,7 @@
 import { useFetchFiltersQuery } from '../../../../store';
 import Sections from './Sections';
 
-const TheGuardiansFilter: React.FC = () => {
+const TheGuardiansFilters: React.FC = () => {
     const { data, isLoading, error } = useFetchFiltersQuery({ apiName: 'theguardians' });
 
     return (
@@ -11,4 +11,4 @@ const TheGuardiansFilter: React.FC = () => {
     );
 };
 
-export default TheGuardiansFilter;
+export default TheGuardiansFilters;

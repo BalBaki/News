@@ -50,7 +50,7 @@ const Sources: React.FC = () => {
     }
 
     return (
-        <div className="w-72 max-sm:mx-auto max-[340px]:w-full ">
+        <div className="w-full max-sm:mx-auto max-[340px]:w-full ">
             <Dropdown placeholder="Sources For NewsApi">{content}</Dropdown>
         </div>
     );
