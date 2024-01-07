@@ -12,6 +12,7 @@ const initialState: User = {
         apiNames: [],
         fromDate: '',
         toDate: '',
+        page: 1,
         extraFilters: {},
     },
 };

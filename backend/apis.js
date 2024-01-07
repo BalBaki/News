@@ -17,7 +17,7 @@ const apis = {
             ];
         },
         search(payload) {
-            const { term, fromDate, toDate, sources } = payload;
+            const { term, fromDate, toDate, sources, page } = payload;
 
             return fetch(
                 this.baseUrl +
@@ -27,8 +27,9 @@ const apis = {
                         from: fromDate,
                         to: toDate,
                         ...(sources?.length > 0 && { sources: sources.join(',') }),
-                        pageSize: 100,
+                        pageSize: 24,
                         apiKey: process.env.NEWS_API_KEY,
+                        page,
                     })
             );
         },
@@ -51,7 +52,7 @@ const apis = {
             ];
         },
         search(payload) {
-            const { term, fromDate, toDate, section } = payload;
+            const { term, fromDate, toDate, section, page } = payload;
 
             return fetch(
                 this.baseUrl +
@@ -62,10 +63,11 @@ const apis = {
                         ...(fromDate && { 'from-date': fromDate }),
                         'to-date': toDate,
                         ...(section && { section }),
-                        'page-size': 100,
+                        'page-size': 24,
                         'show-fields': 'thumbnail,bodyText',
                         'show-tags': 'all',
                         'order-by': 'newest',
+                        page,
                     })
             );
         },

@@ -3,6 +3,7 @@ export interface FilterSettings {
     apiNames: string[];
     fromDate: string | Date;
     toDate: string | Date;
+    page: number;
     extraFilters: {
         [key: string]: any;
     };

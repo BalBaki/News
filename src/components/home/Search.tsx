@@ -6,17 +6,20 @@ import { type FilterSettings } from '../../types';
 import Apis from '../form/Apis';
 import Button from '../Button';
 import Filters from '../form/Filters';
+import NewsList from './NewsList';
 import { SEARCH_MUTATION_CACHE_KEY } from './NewsList';
+import Loading from '../Loading';
 
 const Search: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
-    const [search, searchResult] = useSearchMutation({ fixedCacheKey: SEARCH_MUTATION_CACHE_KEY });
+    const [search, { isLoading }] = useSearchMutation({ fixedCacheKey: SEARCH_MUTATION_CACHE_KEY });
     const initialValues: FilterSettings = {
         term: '',
         fromDate: user.filterSettings.fromDate || '',
         toDate: user.filterSettings.toDate || new Date().toISOString().split('T')[0],
         apiNames: user.filterSettings.apiNames.length > 0 ? user.filterSettings.apiNames : [],
         extraFilters: {},
+        page: 1,
     };
 
     const formSchema = Yup.object().shape({
@@ -36,7 +39,7 @@ const Search: React.FC = () => {
                 initialValues={initialValues}
                 validationSchema={formSchema}
                 onSubmit={(values) => {
-                    if (values.extraFilters.theguardians.section === 'all')
+                    if (values.extraFilters.theguardians?.section === 'all')
                         values.extraFilters.theguardians.section = '';
 
                     search({
@@ -45,7 +48,7 @@ const Search: React.FC = () => {
                     });
                 }}
             >
-                {({ values, isValid, dirty }) => (
+                {({ isValid, dirty }) => (
                     <>
                         <Form>
                             <div className="min-[400px]:w-5/6 min-[400px]:mx-auto mx-3">
@@ -56,7 +59,7 @@ const Search: React.FC = () => {
                                             name="term"
                                             id="term"
                                             placeholder="Search Term"
-                                            className="w-full border-2 px-1"
+                                            className="w-full border-2 py-0 px-1"
                                             onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                                                 e.key === 'Enter' && e.preventDefault();
                                             }}
@@ -76,7 +79,7 @@ const Search: React.FC = () => {
                                                 type="date"
                                                 name="fromDate"
                                                 id="fromDate"
-                                                className="border-2 px-1"
+                                                className="border-2 py-0 px-1"
                                                 max={new Date().toISOString().split('T')[0]}
                                             />
                                         </div>
@@ -88,31 +91,30 @@ const Search: React.FC = () => {
                                                 type="date"
                                                 name="toDate"
                                                 id="toDate"
-                                                className="border-2 px-1"
+                                                className="border-2 py-0 px-1"
                                                 max={new Date().toISOString().split('T')[0]}
                                             />
                                         </div>
                                     </div>
                                     <Apis />
                                     <Filters />
-                                    <Filters />
-                                    <Filters />
                                 </div>
                                 <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"></div>
                             </div>
-                            <div className="flex flex-wrap items-center justify-center max-[300px]:block max-[300px]:text-center mt-2">
+                            <div className="flex flex-wrap items-center justify-center max-[300px]:block max-[300px]:text-center mt-4">
                                 <Button
                                     type="submit"
                                     className={`w-36 h-7 rounded-md text-white disabled:cursor-not-allowed ${
                                         isValid && dirty ? 'bg-green-400' : 'bg-red-500'
                                     }`}
-                                    disabled={searchResult.isLoading || !(isValid && dirty)}
-                                    loading={searchResult.isLoading}
+                                    disabled={isLoading || !(isValid && dirty)}
+                                    loading={isLoading}
                                 >
                                     Search
                                 </Button>
                                 {/* {user?.id && <SaveSettings settings={values} />} */}
                             </div>
+                            <NewsList />
                         </Form>
                     </>
                 )}

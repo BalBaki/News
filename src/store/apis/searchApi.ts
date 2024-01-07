@@ -13,12 +13,14 @@ type SearchResponse =
     | {
           search: true;
           articles: News[];
+          page: number;
           error?: never;
       }
     | {
           search: false;
           error: string;
           articles?: never;
+          page?: never;
       };
 
 type FetchApisResponse =
