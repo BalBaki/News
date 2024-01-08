@@ -47,6 +47,25 @@ type LogoutResponse =
           error: string;
       };
 
+type SaveSettingsResponse =
+    | {
+          save: true;
+          error?: never;
+      }
+    | {
+          save: false;
+          error: string;
+      };
+
+interface SearchSettings {
+    apiNames: string[];
+    fromDate: string | Date;
+    toDate: string | Date;
+    extraFilters: {
+        [key: string]: any;
+    };
+}
+
 const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
@@ -93,7 +112,7 @@ const userApi = createApi({
                     };
                 },
             }),
-            saveSettings: builder.mutation({
+            saveSettings: builder.mutation<SaveSettingsResponse, SearchSettings>({
                 query: (payload) => {
                     return {
                         method: 'POST',

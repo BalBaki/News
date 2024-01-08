@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Pagination } from 'flowbite-react';
 import { useFormikContext } from 'formik';
+import './NewsList.css';
 import { useSearchMutation } from '../../store';
 import NewsItem from './NewsItem';
 import type { FilterSettings } from '../../types';
@@ -45,11 +46,13 @@ const NewsList: React.FC = () => {
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 max-[450px]:grid-cols-1 gap-3 mx-3">
                             {renderedNews}
                         </div>
-                        <div className="flex justify-center items-center mb-4">
+                        <div className="flex justify-center items-center mb-4 pagination">
                             <Pagination
                                 currentPage={data?.page || currentPage}
-                                totalPages={100}
+                                totalPages={Math.ceil(data?.totalArticleCount / 30)}
                                 onPageChange={onPageChange}
+                                previousLabel=""
+                                nextLabel=""
                                 showIcons
                             />
                         </div>

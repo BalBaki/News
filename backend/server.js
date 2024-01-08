@@ -259,6 +259,7 @@ app.post('/search', async (request, response) => {
 
         let articles = [];
         const errors = [];
+        let totalArticleCount = 0;
 
         values.forEach((result) => {
             if (result?.articles?.length > 0) {
@@ -272,11 +273,15 @@ app.post('/search', async (request, response) => {
             if (result?.status === 'error' || result?.response?.status === 'error' || result?.message) {
                 errors.push(result?.message || result?.response?.message);
             }
+
+            if (result?.response?.total || result?.totalResults) {
+                totalArticleCount += result?.response?.total || result?.totalResults || 0;
+            }
         });
 
         if (errors.length > 0) throw new Error('Error at Fetching Articles');
 
-        response.json({ search: true, page, articles: transformArticles(articles) });
+        response.json({ search: true, page, totalArticleCount, articles: transformArticles(articles) });
     } catch (error) {
         response.json({ search: false, error: error.message });
     }

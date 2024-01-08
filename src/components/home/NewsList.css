@@ -1,0 +1,5 @@
+@media screen and (max-width: 355px) {
+    .pagination li > button {
+        width: 2.5rem;
+    }
+}

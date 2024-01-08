@@ -14,6 +14,7 @@ type SearchResponse =
           search: true;
           articles: News[];
           page: number;
+          totalArticleCount: number;
           error?: never;
       }
     | {

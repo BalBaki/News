@@ -7,6 +7,7 @@ import Apis from '../form/Apis';
 import Button from '../Button';
 import Filters from '../form/Filters';
 import NewsList from './NewsList';
+import SaveSettings from './SaveSettings';
 import { SEARCH_MUTATION_CACHE_KEY } from './NewsList';
 
 const Search: React.FC = () => {
@@ -17,7 +18,7 @@ const Search: React.FC = () => {
         fromDate: user.filterSettings.fromDate || '',
         toDate: user.filterSettings.toDate || new Date().toISOString().split('T')[0],
         apiNames: user.filterSettings.apiNames?.length > 0 ? user.filterSettings.apiNames : [],
-        extraFilters: {},
+        extraFilters: { ...user.filterSettings.extraFilters } || {},
         page: 1,
     };
 
@@ -100,10 +101,10 @@ const Search: React.FC = () => {
                                 </div>
                                 <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"></div>
                             </div>
-                            <div className="flex flex-wrap items-center justify-center max-[300px]:block max-[300px]:text-center mt-4">
+                            <div className="flex flex-wrap items-center justify-center gap-2 max-[300px]:text-center mt-4">
                                 <Button
                                     type="submit"
-                                    className={`w-36 h-7 rounded-md text-white disabled:cursor-not-allowed ${
+                                    className={`w-32 h-7 rounded-md text-white disabled:cursor-not-allowed ${
                                         isValid && dirty ? 'bg-green-400' : 'bg-red-500'
                                     }`}
                                     disabled={isLoading || !(isValid && dirty)}
@@ -111,7 +112,7 @@ const Search: React.FC = () => {
                                 >
                                     Search
                                 </Button>
-                                {/* {user?.id && <SaveSettings settings={values} />} */}
+                                {user?.id && <SaveSettings />}
                             </div>
                             <NewsList />
                         </Form>
