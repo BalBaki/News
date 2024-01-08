@@ -31,8 +31,6 @@ const Register: React.FC = () => {
     const notification = useNotification();
 
     useEffect(() => {
-        const { data, isLoading, error } = registerResult;
-
         if (data) {
             notification({
                 type: data?.register ? 'success' : 'error',

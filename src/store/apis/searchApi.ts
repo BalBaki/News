@@ -1,12 +1,17 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { News, FilterSettings } from '../../types';
 
+interface ExtraFilter {
+    name: string;
+    defaultValue: Array<any> | Object | string;
+}
+
 interface Api {
     _id: string;
     name: string;
     url: string;
     searchUrlPart: string;
-    filters: string[];
+    filters: ExtraFilter[];
 }
 
 type SearchResponse =
