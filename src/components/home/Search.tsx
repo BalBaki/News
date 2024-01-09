@@ -39,9 +39,6 @@ const Search: React.FC = () => {
                 initialValues={initialValues}
                 validationSchema={formSchema}
                 onSubmit={(values) => {
-                    if (values.extraFilters?.theguardians?.section === 'all')
-                        values.extraFilters.theguardians.section = '';
-
                     search({
                         ...values,
                         term: values.term.toLocaleLowerCase(),

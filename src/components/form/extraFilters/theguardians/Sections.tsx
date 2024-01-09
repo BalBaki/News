@@ -32,7 +32,7 @@ const Sections: React.FC = () => {
     else {
         const sections: Section[] = data?.filters?.sections?.response?.results;
 
-        content = [{ id: 'all', webTitle: 'all' }, ...sections].map((section) => {
+        content = [{ id: '', webTitle: 'all' }, ...sections].map((section) => {
             return (
                 <div key={section.id} className="flex items-center m-1">
                     <Field
