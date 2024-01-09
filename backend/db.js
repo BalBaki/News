@@ -15,32 +15,41 @@ mongoose
 const User = mongoose.model('User', UserSchema);
 const Api = mongoose.model('Api', ApiSchema);
 
-// If you dont have apis in db, run this code:
-// Api.insertMany([
-//     {
-//         name: 'newsapi',
-//         baseUrl: 'https://newsapi.org/v2/',
-//         searchUrlPart: 'everything?',
-//         filters: [
-//             {
-//                 name: 'sources',
-//                 defaultValue: [],
-//             },
-//         ],
-//     },
-//     {
-//         name: 'theguardians',
-//         baseUrl: 'https://content.guardianapis.com/',
-//         searchUrlPart: 'search?',
-//         filters: [
-//             {
-//                 name: 'section',
-//                 defaultValue: '',
-//             },
-//         ],
-//     },
-// ])
-//     .then(() => console.log('Apis added to db.'))
-//     .catch((error) => console.log('Error at inserting apis'));
+const apis = [
+    {
+        name: 'newsapi',
+        baseUrl: 'https://newsapi.org/v2/',
+        searchUrlPart: 'everything?',
+        filters: [
+            {
+                name: 'sources',
+                defaultValue: [],
+            },
+        ],
+    },
+    {
+        name: 'theguardians',
+        baseUrl: 'https://content.guardianapis.com/',
+        searchUrlPart: 'search?',
+        filters: [
+            {
+                name: 'section',
+                defaultValue: '',
+            },
+        ],
+    },
+];
+
+Api.bulkWrite(
+    apis.map((api) => ({
+        updateOne: {
+            filter: { name: api.name },
+            update: { $set: api },
+            upsert: true,
+        },
+    }))
+)
+    .then(() => console.log('Apis added to db.'))
+    .catch((error) => console.log('Error at inserting apis'));
 
 module.exports = { User, Api };
