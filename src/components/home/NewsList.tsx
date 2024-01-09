@@ -19,8 +19,9 @@ const NewsList: React.FC = () => {
     const onPageChange = (page: number): void => setCurrentPage(page);
 
     useEffect(() => {
-        if (!isUninitialized && values.term)
+        if (!isUninitialized && values.term) {
             search({ ...values, term: values.term.toLocaleLowerCase(), page: currentPage });
+        }
     }, [currentPage]);
 
     if (isLoading)
