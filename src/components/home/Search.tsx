@@ -45,7 +45,7 @@ const Search: React.FC = () => {
                     });
                 }}
             >
-                {({ isValid, dirty }) => (
+                {({ values, isValid, dirty }) => (
                     <>
                         <Form>
                             <div className="min-[400px]:w-5/6 min-[400px]:mx-auto mx-3">
@@ -77,7 +77,7 @@ const Search: React.FC = () => {
                                                 name="fromDate"
                                                 id="fromDate"
                                                 className="border-2 py-0 px-1"
-                                                max={new Date().toISOString().split('T')[0]}
+                                                max={values.toDate}
                                             />
                                         </div>
                                         <div className="flex items-start min-[351px]:ml-2 max-[350px]:mt-2">

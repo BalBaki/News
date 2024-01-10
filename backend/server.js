@@ -22,7 +22,7 @@ const {
 const app = express();
 const limiter = rateLimit({
     windowMs: 60 * 1000,
-    limit: 5,
+    limit: 50,
     standardHeaders: 'draft-7',
     legacyHeaders: false,
     message: { access: false, error: 'Too many request. Please try again after a few minutes' },
