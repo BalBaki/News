@@ -4,6 +4,7 @@ import { userApi } from './apis/userApi';
 import { searchApi } from './apis/searchApi';
 import { userSlice } from './slices/user';
 import { notificationsSlice } from './slices/notifications';
+import { apiLimitMiddleware } from './middlewares/apiLimitMiddleware';
 
 const store = configureStore({
     reducer: {
@@ -13,7 +14,10 @@ const store = configureStore({
         notifications: notificationsSlice.reducer,
     },
     middleware(getDefaultMiddleware) {
-        return getDefaultMiddleware().concat(userApi.middleware).concat(searchApi.middleware);
+        return getDefaultMiddleware()
+            .concat(userApi.middleware)
+            .concat(searchApi.middleware)
+            .concat(apiLimitMiddleware);
     },
 });
 
@@ -24,7 +28,7 @@ export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
 
-export default store;
+export { store };
 export {
     useRegisterMutation,
     useLoginMutation,

@@ -22,10 +22,10 @@ const {
 const app = express();
 const limiter = rateLimit({
     windowMs: 60 * 1000,
-    limit: 50,
+    limit: 5,
     standardHeaders: 'draft-7',
     legacyHeaders: false,
-    message: 'Too many request from this ip. Please try again after a few minutes',
+    message: { access: false, error: 'Too many request. Please try again after a few minutes' },
 });
 
 app.use(helmet());
