@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { GoAlert, GoCheck } from 'react-icons/go';
 import { useSelector, useDispatch } from 'react-redux';
+import './Notifications.css';
 import { type RootState, removeNotification, updateNotifications } from '../store';
 import { type Notification } from '../types';
 
@@ -55,7 +56,7 @@ const Notifications: React.FC = () => {
         });
 
         const classes = classNames(
-            'relative flex items-center justify-center text-lg text-white rounded-2xl px-2 min-h-[5rem] w-60 mt-2 animate-disappear',
+            'relative flex items-center justify-center text-lg text-white rounded-2xl px-2 min-h-[5rem] w-60 mt-2',
             {
                 'bg-red-500': notification.type === 'error',
                 'bg-green-500': notification.type === 'success',
@@ -67,7 +68,11 @@ const Notifications: React.FC = () => {
                 key={notification.id}
                 id={notification.id}
                 className={classes}
-                style={{ animationDelay: `${notification.duration}s` }}
+                style={{
+                    animation: `notificationStart .5s linear, notificationEnd .5s linear ${
+                        notification.duration - 0.2
+                    }s`,
+                }}
             >
                 <div
                     className="absolute right-3 top-0 cursor-pointer text-base"

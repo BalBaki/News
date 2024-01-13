@@ -36,7 +36,10 @@ const Dropdown: React.FC<PropsWithChildren<DropdownProps>> = ({ children, placeh
                 {!isOpened ? <AiOutlineRight /> : <AiOutlineDown />}
             </div>
             {isOpened && (
-                <div className="absolute w-full h-48 bg-white z-50 border-2 max-h-48 overflow-y-auto overflow-x-hidden left-[-2px] box-content">
+                <div
+                    className="absolute w-full h-48 bg-white z-50 border-2 max-h-48 overflow-y-auto overflow-x-hidden left-[-2px]
+                        box-content origin-top animate-dropdown"
+                >
                     {children}
                 </div>
             )}

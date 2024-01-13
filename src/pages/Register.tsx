@@ -58,7 +58,7 @@ const Register: React.FC = () => {
     return (
         <div className="w-full h-screen  flex justify-center items-center p-2">
             <div
-                className="w-full max-w-lg bg-white px-3 py-4 rounded-md h-full max-h-[36rem] overflow-auto 
+                className="w-full max-w-lg bg-white px-3 py-4 rounded-md h-full max-h-[36.5rem] overflow-auto 
 shadow-[0px_0px_25px_18px_rgba(0,0,0,0.75)]"
             >
                 <div>

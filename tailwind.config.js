@@ -4,13 +4,13 @@ module.exports = {
     theme: {
         extend: {
             keyframes: {
-                disappear: {
-                    '100%': { transform: 'translateX(100%)' },
+                dropdownEffect: {
+                    '0%': { transform: 'scaleY(0)' },
                 },
             },
             animation: {
-                disappear: 'disappear 0.5s normal',
                 'spin-slow': 'spin 2s linear infinite',
+                dropdown: 'dropdownEffect .3s linear',
             },
         },
     },

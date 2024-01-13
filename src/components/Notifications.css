@@ -1,0 +1,11 @@
+@keyframes notificationEnd {
+    100% {
+        transform: translateX(200%);
+    }
+}
+
+@keyframes notificationStart {
+    0% {
+        transform: translateX(200%);
+    }
+}
