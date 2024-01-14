@@ -77,12 +77,12 @@ const searchApi = createApi({
                     };
                 },
             }),
-            fetchFilters: builder.query<FetchFiltersResponse, { apiName: string }>({
+            fetchFilters: builder.query<FetchFiltersResponse, { apiNames: string[] }>({
                 query: (payload) => {
                     return {
                         method: 'GET',
-                        url: '/filters',
-                        params: { apiName: encodeURIComponent(payload.apiName) },
+                        url: '/filtersV2',
+                        params: { apiNames: encodeURIComponent(JSON.stringify(payload.apiNames)) },
                     };
                 },
             }),

@@ -3,6 +3,7 @@ import { useFetchFiltersQuery } from '../../../../store';
 import Loading from '../../../Loading';
 import type { FilterSettings } from '../../../../types';
 import Dropdown from '../../../Dropdown';
+import { NEWS_API_NAME } from '.';
 
 interface Source {
     id: string;
@@ -17,7 +18,7 @@ interface Source {
 const checkedSourceLimit = 20;
 
 const Sources: React.FC = () => {
-    const { data, isLoading, error } = useFetchFiltersQuery({ apiName: 'newsapi' });
+    const { data, isLoading, error } = useFetchFiltersQuery({ apiNames: [NEWS_API_NAME] });
     const {
         values: { extraFilters },
     } = useFormikContext<FilterSettings>();
@@ -27,15 +28,15 @@ const Sources: React.FC = () => {
     if (isLoading) content = <Loading />;
     else if (error || data?.error) content = <div>Error At Fetching sources</div>;
     else {
-        const selectedSources: string[] = extraFilters?.newsapi?.sources || [];
-        const sources: Source[] = data?.filters?.sources?.sources;
+        const selectedSources: string[] = extraFilters?.[NEWS_API_NAME]?.sources || [];
+        const sources: Source[] = data?.filters?.[NEWS_API_NAME]?.sources?.sources;
 
         content = sources.map((source) => {
             return (
                 <div key={source.id} className="flex items-center m-1">
                     <Field
                         type="checkbox"
-                        name="extraFilters.newsapi.sources"
+                        name={`extraFilters.${NEWS_API_NAME}.sources`}
                         id={source.id}
                         value={source.id}
                         className="ml-1"

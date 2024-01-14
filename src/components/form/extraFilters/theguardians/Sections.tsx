@@ -3,6 +3,7 @@ import { useFetchFiltersQuery } from '../../../../store';
 import Loading from '../../../Loading';
 import type { FilterSettings } from '../../../../types';
 import Dropdown from '../../../Dropdown';
+import { THE_GUARDIANS_API_NAME } from '.';
 
 interface Section {
     id: string;
@@ -19,25 +20,25 @@ interface Section {
 }
 
 const Sections: React.FC = () => {
-    const { data, isLoading, error } = useFetchFiltersQuery({ apiName: 'theguardians' });
+    const { data, isLoading, error } = useFetchFiltersQuery({ apiNames: [THE_GUARDIANS_API_NAME] });
     const {
         values: { extraFilters },
     } = useFormikContext<FilterSettings>();
 
     let content;
-    let selectedSection = extraFilters?.theguardians?.section;
+    let selectedSection = extraFilters?.[THE_GUARDIANS_API_NAME]?.section;
 
     if (isLoading) content = <Loading />;
     else if (error || data?.error) content = <div>Error At Fetching sources</div>;
     else {
-        const sections: Section[] = data?.filters?.sections?.response?.results;
+        const sections: Section[] = data?.filters?.[THE_GUARDIANS_API_NAME]?.sections?.response?.results;
 
         content = [{ id: '', webTitle: 'all' }, ...sections].map((section) => {
             return (
                 <div key={section.id} className="flex items-center m-1">
                     <Field
                         type="radio"
-                        name="extraFilters.theguardians.section"
+                        name={`extraFilters.${THE_GUARDIANS_API_NAME}.section`}
                         id={section.id}
                         value={section.id}
                         className="ml-1"
