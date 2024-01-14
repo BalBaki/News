@@ -9,6 +9,7 @@ import Filters from '../form/Filters';
 import NewsList from './NewsList';
 import SaveSettings from './SaveSettings';
 import { SEARCH_MUTATION_CACHE_KEY } from './NewsList';
+import ResetForm from './ResetForm';
 
 const Search: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
@@ -112,6 +113,7 @@ const Search: React.FC = () => {
                                 {user?.id && <SaveSettings />}
                             </div>
                             <NewsList />
+                            <ResetForm />
                         </Form>
                     </>
                 )}
