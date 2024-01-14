@@ -9,7 +9,7 @@ export const LOGOUT_MUTATION_CACHE_KEY = 'shared-logout';
 
 const Header: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
-    const [logout, { data, isLoading, error }] = useLogoutMutation({
+    const [logout, { data, isLoading, reset, ...rest }] = useLogoutMutation({
         fixedCacheKey: LOGOUT_MUTATION_CACHE_KEY,
     });
     const notification = useNotification();
@@ -21,6 +21,10 @@ const Header: React.FC = () => {
                 message: data?.logout ? 'Logout Success' : data?.error,
             });
         }
+
+        return () => {
+            reset();
+        };
     }, [data]);
 
     const handleLogoutClick = (): void => {
