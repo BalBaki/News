@@ -3,7 +3,7 @@ import { useFetchFiltersQuery } from '../../../../store';
 import Loading from '../../../Loading';
 import type { FilterSettings } from '../../../../types';
 import Dropdown from '../../../Dropdown';
-import { NEWS_API_NAME } from '.';
+import { NEWS_API_NAME } from '../../../../utils/constants';
 
 interface Source {
     id: string;

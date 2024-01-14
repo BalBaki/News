@@ -1,10 +1,9 @@
 import { useFetchFiltersQuery } from '../../../../store';
 import Sources from './Sources';
-
-export const NEWS_API_NAME = 'newsapi';
+import { NEWS_API_NAME } from '../../../../utils/constants';
 
 const NewsApiFilters: React.FC = () => {
-    const { data, isLoading, error } = useFetchFiltersQuery({ apiNames: ['newsapi'] });
+    const { data, isLoading, error } = useFetchFiltersQuery({ apiNames: [NEWS_API_NAME] });
 
     return (
         <>

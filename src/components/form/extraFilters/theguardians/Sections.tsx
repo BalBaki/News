@@ -3,7 +3,7 @@ import { useFetchFiltersQuery } from '../../../../store';
 import Loading from '../../../Loading';
 import type { FilterSettings } from '../../../../types';
 import Dropdown from '../../../Dropdown';
-import { THE_GUARDIANS_API_NAME } from '.';
+import { THE_GUARDIANS_API_NAME } from '../../../../utils/constants';
 
 interface Section {
     id: string;

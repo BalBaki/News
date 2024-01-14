@@ -6,8 +6,7 @@ import { useSearchMutation } from '../../store';
 import NewsItem from './NewsItem';
 import type { FilterSettings } from '../../types';
 import Loading from '../Loading';
-
-export const SEARCH_MUTATION_CACHE_KEY = 'shared-search';
+import { SEARCH_MUTATION_CACHE_KEY, ARTICLE_PER_PAGE } from '../../utils/constants';
 
 const NewsList: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -44,16 +43,18 @@ const NewsList: React.FC = () => {
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 max-[450px]:grid-cols-1 gap-3 mx-3">
                             {renderedNews}
                         </div>
-                        <div className="flex justify-center items-center mb-4 pagination">
-                            <Pagination
-                                currentPage={data?.page || currentPage}
-                                totalPages={Math.ceil(data?.totalArticleCount / 30)}
-                                onPageChange={onPageChange}
-                                previousLabel=""
-                                nextLabel=""
-                                showIcons
-                            />
-                        </div>
+                        {data.totalArticleCount > ARTICLE_PER_PAGE && (
+                            <div className="flex justify-center items-center mb-4 pagination">
+                                <Pagination
+                                    currentPage={data?.page || currentPage}
+                                    totalPages={Math.ceil(data?.totalArticleCount / ARTICLE_PER_PAGE)}
+                                    onPageChange={onPageChange}
+                                    previousLabel=""
+                                    nextLabel=""
+                                    showIcons
+                                />
+                            </div>
+                        )}
                     </div>
                 ) : (
                     'No News Found'

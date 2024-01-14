@@ -8,8 +8,8 @@ import Button from '../Button';
 import Filters from '../form/Filters';
 import NewsList from './NewsList';
 import SaveSettings from './SaveSettings';
-import { SEARCH_MUTATION_CACHE_KEY } from './NewsList';
 import ResetForm from './ResetForm';
+import { SEARCH_MUTATION_CACHE_KEY } from '../../utils/constants';
 
 const Search: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);

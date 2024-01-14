@@ -1,7 +1,6 @@
 import { useFetchFiltersQuery } from '../../../../store';
 import Sections from './Sections';
-
-export const THE_GUARDIANS_API_NAME = 'theguardians';
+import { THE_GUARDIANS_API_NAME } from '../../../../utils/constants';
 
 const TheGuardiansFilters: React.FC = () => {
     const { data, isLoading, error } = useFetchFiltersQuery({ apiNames: [THE_GUARDIANS_API_NAME] });

@@ -4,12 +4,11 @@ import { RootState, useLogoutMutation } from '../../store';
 import { useEffect } from 'react';
 import { useNotification } from '../../hooks/use-notification';
 import Button from '../Button';
-
-export const LOGOUT_MUTATION_CACHE_KEY = 'shared-logout';
+import { LOGOUT_MUTATION_CACHE_KEY } from '../../utils/constants';
 
 const Header: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
-    const [logout, { data, isLoading, reset, ...rest }] = useLogoutMutation({
+    const [logout, { data, isLoading, reset }] = useLogoutMutation({
         fixedCacheKey: LOGOUT_MUTATION_CACHE_KEY,
     });
     const notification = useNotification();
