@@ -8,7 +8,7 @@ const NewsItem: React.FC<NewsProps> = ({ news }) => {
     const { url, imageUrl, title, description } = news;
 
     return (
-        <div className="border-2 mb-2 text-justify">
+        <article className="border-2 mb-2 text-justify">
             <a href={url} target="_blank" rel="noreferrer">
                 <div className="flex items-center h-48">
                     <img src={imageUrl} alt={title} className="w-full h-full" loading="lazy" />
@@ -22,7 +22,7 @@ const NewsItem: React.FC<NewsProps> = ({ news }) => {
                     </div>
                 </div>
             </a>
-        </div>
+        </article>
     );
 };
 

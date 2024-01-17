@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { GoAlert, GoCheck } from 'react-icons/go';
 import { useSelector, useDispatch } from 'react-redux';
@@ -88,11 +87,11 @@ const Notifications: React.FC = () => {
 
     return (
         <>
-            {notifications.length > 0 &&
-                createPortal(
-                    <div className="fixed z-50 bottom-5 right-5">{renderednotifications}</div>,
-                    document.querySelector('.notification-container') as HTMLElement
-                )}
+            {notifications.length > 0 && (
+                <aside className="fixed z-50 bottom-5 right-5" aria-label="notification container">
+                    {renderednotifications}
+                </aside>
+            )}
         </>
     );
 };

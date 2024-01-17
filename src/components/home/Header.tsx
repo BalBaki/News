@@ -58,7 +58,11 @@ const Header: React.FC = () => {
         );
     }
 
-    return <header className="flex flex-row-reverse items-center mt-2 mr-1">{content}</header>;
+    return (
+        <header>
+            <nav className="flex flex-row-reverse items-center mt-2 mr-1">{content}</nav>
+        </header>
+    );
 };
 
 export default Header;

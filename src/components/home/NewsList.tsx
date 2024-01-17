@@ -32,10 +32,10 @@ const NewsList: React.FC = () => {
     });
 
     return (
-        <main className="mt-6">
+        <section className="mt-6" aria-label="news">
             {data?.search ? (
                 data.articles.length > 0 ? (
-                    <div>
+                    <>
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 max-[450px]:grid-cols-1 gap-3 mx-3">
                             {renderedNews}
                         </div>
@@ -51,14 +51,14 @@ const NewsList: React.FC = () => {
                                 />
                             </div>
                         )}
-                    </div>
+                    </>
                 ) : (
                     'No News Found'
                 )
             ) : (
                 ''
             )}
-        </main>
+        </section>
     );
 };
 
