@@ -23,6 +23,10 @@ const NewsList: React.FC = () => {
         }
     }, [currentPage]);
 
+    useEffect(() => {
+        if (data?.search) setCurrentPage(data.page);
+    }, [data]);
+
     if (isLoading)
         return (
             <div className="h-80">
