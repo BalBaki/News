@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Pagination } from 'flowbite-react';
 import { useFormikContext } from 'formik';
 import './NewsList.css';
@@ -9,23 +8,16 @@ import Loading from '../Loading';
 import { SEARCH_MUTATION_CACHE_KEY, ARTICLE_PER_PAGE } from '../../utils/constants';
 
 const NewsList: React.FC = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [search, { data, error, isLoading, isUninitialized }] = useSearchMutation({
+    const [search, { data, error, isLoading }] = useSearchMutation({
         fixedCacheKey: SEARCH_MUTATION_CACHE_KEY,
     });
-    const { values } = useFormikContext<FilterSettings>();
+    const { values, isValid } = useFormikContext<FilterSettings>();
 
-    const onPageChange = (page: number): void => setCurrentPage(page);
+    const onPageChange = (page: number): void => {
+        if (!isValid || page === data?.page) return;
 
-    useEffect(() => {
-        if (!isUninitialized && values.term) {
-            search({ ...values, term: values.term.toLocaleLowerCase(), page: currentPage });
-        }
-    }, [currentPage]);
-
-    useEffect(() => {
-        if (data?.search) setCurrentPage(data.page);
-    }, [data]);
+        search({ ...values, term: values.term.toLocaleLowerCase(), page });
+    };
 
     if (isLoading)
         return (
@@ -50,8 +42,8 @@ const NewsList: React.FC = () => {
                         {data.totalArticleCount > ARTICLE_PER_PAGE && (
                             <div className="flex justify-center items-center mb-4 pagination">
                                 <Pagination
-                                    currentPage={data?.page || currentPage}
-                                    totalPages={Math.ceil(data?.totalArticleCount / ARTICLE_PER_PAGE)}
+                                    currentPage={data.page}
+                                    totalPages={Math.ceil(data.totalArticleCount / ARTICLE_PER_PAGE)}
                                     onPageChange={onPageChange}
                                     previousLabel=""
                                     nextLabel=""

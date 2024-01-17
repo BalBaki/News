@@ -30,15 +30,15 @@ const Dropdown: React.FC<PropsWithChildren<DropdownProps>> = ({ children, placeh
     };
 
     return (
-        <div ref={divEl} className="relative border-2 capitalize break-all ">
+        <div ref={divEl} className="relative border-2 border-[#6B7280] capitalize break-word ">
             <div className="pl-1 flex justify-between items-center" onClick={handleShowClick}>
                 <div>{placeholder}</div>
                 {!isOpened ? <AiOutlineRight /> : <AiOutlineDown />}
             </div>
             {isOpened && (
                 <div
-                    className="absolute w-full h-48 bg-white z-50 border-2 max-h-48 overflow-y-auto overflow-x-hidden left-[-2px]
-                        box-content origin-top animate-dropdown"
+                    className="absolute w-full h-48 bg-white z-50 border-2 border-[#6B7280] max-h-48 overflow-y-auto 
+                        overflow-x-hidden left-[-2px] box-content origin-top animate-dropdown"
                 >
                     {children}
                 </div>
