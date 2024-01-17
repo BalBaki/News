@@ -88,7 +88,7 @@ const Notifications: React.FC = () => {
     return (
         <>
             {notifications.length > 0 && (
-                <aside className="fixed z-50 bottom-5 right-5" aria-label="notification container">
+                <aside className="fixed z-50 bottom-5 right-5" aria-label="notification container" role="alert">
                     {renderednotifications}
                 </aside>
             )}

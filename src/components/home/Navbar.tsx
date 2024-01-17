@@ -6,7 +6,7 @@ import { useNotification } from '../../hooks/use-notification';
 import Button from '../Button';
 import { LOGOUT_MUTATION_CACHE_KEY } from '../../utils/constants';
 
-const Header: React.FC = () => {
+const Navbar: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
     const [logout, { data, isLoading, reset }] = useLogoutMutation({
         fixedCacheKey: LOGOUT_MUTATION_CACHE_KEY,
@@ -58,11 +58,7 @@ const Header: React.FC = () => {
         );
     }
 
-    return (
-        <header>
-            <nav className="flex flex-row-reverse items-center mt-2 mr-1">{content}</nav>
-        </header>
-    );
+    return <nav className="flex flex-row-reverse items-center">{content}</nav>;
 };
 
-export default Header;
+export default Navbar;

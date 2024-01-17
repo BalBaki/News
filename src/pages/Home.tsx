@@ -1,10 +1,12 @@
-import Header from '../components/home/Header';
+import Navbar from '../components/home/Navbar';
 import Search from '../components/home/Search';
 
 const Home: React.FC = () => {
     return (
         <>
-            <Header />
+            <div className="mt-2 mr-1">
+                <Navbar />
+            </div>
             <Search />
         </>
     );
