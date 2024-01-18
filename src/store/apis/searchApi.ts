@@ -8,6 +8,7 @@ interface ExtraFilter {
 
 interface Api {
     _id: string;
+    value: string;
     name: string;
     url: string;
     searchUrlPart: string;

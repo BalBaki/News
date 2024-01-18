@@ -262,20 +262,28 @@ app.post('/search', async (request, response) => {
         let totalArticleCount = 0;
 
         values.forEach((result) => {
+            //newsapi
             if (result?.articles?.length > 0) {
                 articles = articles.concat(result.articles);
             }
 
+            //theguardians
             if (result?.response?.results?.length > 0) {
                 articles = articles.concat(result.response.results);
+            }
+
+            //new york times
+            if (result?.response?.docs?.length > 0) {
+                articles = articles.concat(result.response.docs);
             }
 
             if (result?.status === 'error' || result?.response?.status === 'error' || result?.message) {
                 errors.push(result?.message || result?.response?.message);
             }
 
-            if (result?.response?.total || result?.totalResults) {
-                totalArticleCount += result?.response?.total || result?.totalResults || 0;
+            if (result?.response?.total || result?.totalResults || result?.response?.meta?.hits) {
+                totalArticleCount +=
+                    result?.response?.total || result?.totalResults || result?.response?.meta?.hits || 0;
             }
         });
 

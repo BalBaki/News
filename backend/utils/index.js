@@ -58,10 +58,14 @@ const transformArticles = (articles) => {
     return articles.map((article) => {
         return {
             id: randomUUID(),
-            title: article.title || article.webTitle || '',
-            description: article.description || article.fields?.bodyText || '',
-            url: article.url || article.webUrl || '',
-            imageUrl: article.urlToImage || article.fields?.thumbnail || '',
+            title: article.title || article.webTitle || article.snippet || '',
+            description: article.description || article.fields?.bodyText || article.lead_paragraph || '',
+            url: article.url || article.webUrl || article.web_url || '',
+            imageUrl:
+                article.urlToImage ||
+                article.fields?.thumbnail ||
+                (article.multimedia?.[0]?.url && `https://www.nytimes.com/${article.multimedia[0].url}`) ||
+                '',
             authors:
                 article.author ||
                 (article.tags &&
@@ -76,8 +80,9 @@ const transformArticles = (articles) => {
                             return authors;
                         })
                         .join(',')) ||
+                (article.byline?.person?.length > 0 && article.byline?.original) ||
                 '',
-            publishDate: article.publishedAt || article.webPublicationDate || '',
+            publishDate: article.publishedAt || article.webPublicationDate || article.pub_date || '',
         };
     });
 };

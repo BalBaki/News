@@ -16,7 +16,7 @@ const Apis: React.FC = () => {
         content = data?.apis?.map((api) => {
             return (
                 <div key={api.name}>
-                    <Field type="checkbox" name="apiNames" id={api._id} value={api.name} className="ml-1" />
+                    <Field type="checkbox" name="apiNames" id={api._id} value={api.value} className="ml-1" />
                     <label className="capitilize pl-2" htmlFor={api._id}>
                         {api.name}
                     </label>

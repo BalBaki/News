@@ -27,7 +27,7 @@ const apis = {
                         from: fromDate,
                         to: toDate,
                         ...(sources?.length > 0 && { sources: sources.join(',') }),
-                        pageSize: 15,
+                        pageSize: 10,
                         apiKey: process.env.NEWS_API_KEY,
                         page,
                     })
@@ -63,11 +63,35 @@ const apis = {
                         ...(fromDate && { 'from-date': fromDate }),
                         'to-date': toDate,
                         ...(section && { section }),
-                        'page-size': 15,
+                        'page-size': 10,
                         'show-fields': 'thumbnail,bodyText',
                         'show-tags': 'all',
                         'order-by': 'newest',
                         page,
+                    })
+            );
+        },
+    },
+    newyorktimes: {
+        name: 'newyorktimes',
+        baseUrl: 'https://api.nytimes.com/',
+        searchUrlPart: 'svc/search/v2/articlesearch.json?',
+        get filters() {
+            return [];
+        },
+        search(payload) {
+            const { term, fromDate, toDate, page } = payload;
+
+            return fetch(
+                this.baseUrl +
+                    this.searchUrlPart +
+                    new URLSearchParams({
+                        'api-key': process.env.NY_TIMES_API_KEY,
+                        q: term,
+                        ...(fromDate && { begin_date: fromDate }),
+                        end_date: toDate,
+                        page,
+                        sort: 'newest',
                     })
             );
         },

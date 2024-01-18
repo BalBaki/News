@@ -5,7 +5,7 @@ import { useSearchMutation } from '../../store';
 import NewsItem from './NewsItem';
 import { type FilterSettings } from '../../types';
 import Loading from '../Loading';
-import { SEARCH_MUTATION_CACHE_KEY, ARTICLE_PER_PAGE } from '../../utils/constants';
+import { SEARCH_MUTATION_CACHE_KEY, ITEMS_PER_API } from '../../utils/constants';
 
 const NewsList: React.FC = () => {
     const [search, { data, error, isLoading }] = useSearchMutation({
@@ -30,6 +30,7 @@ const NewsList: React.FC = () => {
     const renderedNews = data?.articles?.map((article) => {
         return <NewsItem key={article.id} news={article} />;
     });
+    const articlesCountPerPage = ITEMS_PER_API * values.apiNames.length;
 
     return (
         <section className="mt-6" aria-label="news">
@@ -39,11 +40,16 @@ const NewsList: React.FC = () => {
                         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 max-[450px]:grid-cols-1 gap-3 mx-3">
                             {renderedNews}
                         </div>
-                        {data.totalArticleCount > ARTICLE_PER_PAGE && (
+                        {(data.totalArticleCount > articlesCountPerPage ||
+                            data.totalArticleCount > data.articles.length) && (
                             <div className="flex justify-center items-center mb-4 pagination">
                                 <Pagination
                                     currentPage={data.page}
-                                    totalPages={Math.ceil(data.totalArticleCount / ARTICLE_PER_PAGE)}
+                                    totalPages={Math.ceil(
+                                        data.totalArticleCount < articlesCountPerPage
+                                            ? data.totalArticleCount / ((values.apiNames.length - 1) * ITEMS_PER_API)
+                                            : data.totalArticleCount / articlesCountPerPage
+                                    )}
                                     onPageChange={onPageChange}
                                     previousLabel=""
                                     nextLabel=""

@@ -17,7 +17,8 @@ const Api = mongoose.model('Api', ApiSchema);
 
 const apis = [
     {
-        name: 'newsapi',
+        value: 'newsapi',
+        name: 'News Api',
         baseUrl: 'https://newsapi.org/v2/',
         searchUrlPart: 'everything?',
         filters: [
@@ -28,7 +29,8 @@ const apis = [
         ],
     },
     {
-        name: 'theguardians',
+        value: 'theguardians',
+        name: 'The Guardians',
         baseUrl: 'https://content.guardianapis.com/',
         searchUrlPart: 'search?',
         filters: [
@@ -37,6 +39,13 @@ const apis = [
                 defaultValue: '',
             },
         ],
+    },
+    {
+        value: 'newyorktimes',
+        name: 'New York Times',
+        baseUrl: 'https://api.nytimes.com/',
+        searchUrlPart: 'svc/search/v2/articlesearch.json?',
+        filters: [],
     },
 ];
 
@@ -50,6 +59,6 @@ Api.bulkWrite(
     }))
 )
     .then(() => console.log('Apis added to db.'))
-    .catch((error) => console.log('Error at inserting apis'));
+    .catch((error) => console.log(error));
 
 module.exports = { User, Api };
