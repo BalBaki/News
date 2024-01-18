@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { FilterSettings } from '../../types';
+import { type FilterSettings } from '../../types';
 import { useLogoutMutation } from '../../store';
 import { LOGOUT_MUTATION_CACHE_KEY } from '../../utils/constants';
 

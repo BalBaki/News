@@ -1,5 +1,5 @@
 import { useFormikContext } from 'formik';
-import type { FilterSettings } from '../../../types';
+import { type FilterSettings } from '../../../types';
 import NewsApiFilters from './newsapi';
 import TheGuardiansFilters from './theguardians';
 import { Fragment } from 'react';

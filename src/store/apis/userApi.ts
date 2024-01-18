@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { type LoginForm, RegisterForm, User } from '../../types';
+import { type LoginForm, type RegisterForm, type User } from '../../types';
 
 type LoginResponse =
     | {

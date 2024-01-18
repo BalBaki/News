@@ -1,7 +1,7 @@
 import { Field, useFormikContext } from 'formik';
 import { useFetchFiltersQuery } from '../../../../store';
 import Loading from '../../../Loading';
-import type { FilterSettings } from '../../../../types';
+import { type FilterSettings } from '../../../../types';
 import Dropdown from '../../../Dropdown';
 import { NEWS_API_NAME } from '../../../../utils/constants';
 

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { News, FilterSettings } from '../../types';
+import { type News, type FilterSettings } from '../../types';
 
 interface ExtraFilter {
     name: string;

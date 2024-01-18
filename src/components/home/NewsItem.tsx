@@ -1,4 +1,4 @@
-import type { News } from '../../types';
+import { type News } from '../../types';
 
 type NewsProps = {
     news: News;

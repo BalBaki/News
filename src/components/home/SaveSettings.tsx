@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import type { FilterSettings } from '../../types';
+import { type FilterSettings } from '../../types';
 import { useSaveSettingsMutation } from '../../store';
 import Button from '../Button';
 import { useNotification } from '../../hooks/use-notification';

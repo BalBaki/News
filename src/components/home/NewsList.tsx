@@ -3,7 +3,7 @@ import { useFormikContext } from 'formik';
 import './NewsList.css';
 import { useSearchMutation } from '../../store';
 import NewsItem from './NewsItem';
-import type { FilterSettings } from '../../types';
+import { type FilterSettings } from '../../types';
 import Loading from '../Loading';
 import { SEARCH_MUTATION_CACHE_KEY, ARTICLE_PER_PAGE } from '../../utils/constants';
 

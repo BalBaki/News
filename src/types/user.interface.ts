@@ -1,4 +1,4 @@
-import { FilterSettings } from './filterSettings.interface';
+import { type FilterSettings } from './filterSettings.interface';
 
 export interface User {
     id: string;
