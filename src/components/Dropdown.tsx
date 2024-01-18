@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, PropsWithChildren } from 'react';
+import { useState, useEffect, useRef, type PropsWithChildren } from 'react';
 import { AiOutlineRight, AiOutlineDown } from 'react-icons/ai';
 
 type DropdownProps = {
