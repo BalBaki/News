@@ -56,8 +56,8 @@ const Register: React.FC = () => {
     if (user.id || data?.register) return <Navigate to="/" replace />;
 
     return (
-        <main className="flex justify-center items-center w-full h-screen p-3" aria-label="register form">
-            <div className="relative w-full h-full max-w-lg max-h-[36.5rem] overflow-hidden rounded-md p-1">
+        <main className="flex justify-center items-center w-full h-screen p-3 bg-news-bg" aria-label="register form">
+            <div className="relative w-full h-full max-w-lg max-h-[36.5rem] overflow-hidden rounded-md p-[.35rem] z-50">
                 <div className="w-full h-full bg-white rounded-md overflow-auto border-2 z-50 p-3">
                     <div>
                         <h1 className="text-2xl font-semibold max-[300px]:text-xl">Sign up for NewsFeed</h1>
@@ -180,7 +180,7 @@ const Register: React.FC = () => {
                         </Formik>
                     </div>
                 </div>
-                <div className="absolute -top-1/2 left-[38%] w-1/4 max-w-xs h-[200%] bg-red-500 z-[-1] animate-spin-very-slow"></div>
+                <div className="absolute -top-1/2 left-[38%] w-1/4 max-w-xs h-[200%] bg-rose-950 z-[-1] animate-spin-very-slow"></div>
             </div>
         </main>
     );

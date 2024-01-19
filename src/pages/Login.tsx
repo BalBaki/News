@@ -46,8 +46,8 @@ const Login: React.FC = () => {
     if (user.id || data?.login) return <Navigate to="/" replace />;
 
     return (
-        <main className="w-full h-screen flex justify-center items-center p-3" aria-label="login form">
-            <div className="relative w-full h-full max-w-lg max-h-[24.5rem] overflow-hidden rounded-md p-1">
+        <main className="w-full h-screen flex justify-center items-center p-3 bg-news-bg" aria-label="login form">
+            <div className="relative w-full h-full max-w-lg max-h-[24.5rem] overflow-hidden rounded-md p-[.35rem] z-50">
                 <div className="w-full h-full bg-white rounded-md overflow-auto border-2 z-50 p-3">
                     <div>
                         <h1 className="text-2xl font-semibold">Login</h1>
@@ -133,7 +133,7 @@ const Login: React.FC = () => {
                         </Link>
                     </div>
                 </div>
-                <div className="absolute -top-1/2 left-[38%] w-1/4 max-w-xs h-[200%] bg-red-500 z-[-1] animate-spin-very-slow"></div>
+                <div className="absolute -top-1/2 left-[38%] w-1/4 max-w-xs h-[200%] bg-rose-950 z-[-1] animate-spin-very-slow"></div>
             </div>
         </main>
     );

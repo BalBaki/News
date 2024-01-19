@@ -13,6 +13,9 @@ module.exports = {
                 'spin-very-slow': 'spin 3s linear infinite',
                 dropdown: 'dropdownEffect .3s linear',
             },
+            backgroundImage: {
+                'news-bg': "url('/public/images/news-bg.jpg')",
+            },
         },
     },
     plugins: [require('flowbite/plugin')],
