@@ -21,6 +21,7 @@ type SearchResponse =
           articles: News[];
           page: number;
           totalArticleCount: number;
+          maxNewsCount: number;
           error?: never;
       }
     | {

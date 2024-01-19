@@ -30,26 +30,23 @@ const NewsList: React.FC = () => {
     const renderedNews = data?.articles?.map((article) => {
         return <NewsItem key={article.id} news={article} />;
     });
-    const articlesCountPerPage = ITEMS_PER_API * values.apiNames.length;
 
     return (
         <section className="mt-6" aria-label="news">
             {data?.search ? (
                 data.articles.length > 0 ? (
                     <>
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 max-[450px]:grid-cols-1 gap-3 mx-3">
+                        <div
+                            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 
+                            max-[450px]:grid-cols-1 gap-3 mx-3"
+                        >
                             {renderedNews}
                         </div>
-                        {(data.totalArticleCount > articlesCountPerPage ||
-                            data.totalArticleCount > data.articles.length) && (
+                        {data.maxNewsCount > ITEMS_PER_API && (
                             <div className="flex justify-center items-center mb-4 pagination">
                                 <Pagination
                                     currentPage={data.page}
-                                    totalPages={Math.ceil(
-                                        data.totalArticleCount < articlesCountPerPage
-                                            ? data.totalArticleCount / ((values.apiNames.length - 1) * ITEMS_PER_API)
-                                            : data.totalArticleCount / articlesCountPerPage
-                                    )}
+                                    totalPages={Math.ceil(data.maxNewsCount / ITEMS_PER_API)}
                                     onPageChange={onPageChange}
                                     previousLabel=""
                                     nextLabel=""

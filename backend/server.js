@@ -257,6 +257,7 @@ app.post('/search', async (request, response) => {
             responses.filter((response) => response.ok).map((response) => response.json())
         );
 
+        const articleCounts = [];
         let articles = [];
         const errors = [];
         let totalArticleCount = 0;
@@ -284,12 +285,20 @@ app.post('/search', async (request, response) => {
             if (result?.response?.total || result?.totalResults || result?.response?.meta?.hits) {
                 totalArticleCount +=
                     result?.response?.total || result?.totalResults || result?.response?.meta?.hits || 0;
+
+                articleCounts.push(result?.response?.total || result?.totalResults || result?.response?.meta?.hits);
             }
         });
 
         if (errors.length > 0) throw new Error('Error at Fetching Articles');
 
-        response.json({ search: true, page, totalArticleCount, articles: transformArticles(articles) });
+        response.json({
+            search: true,
+            page,
+            totalArticleCount,
+            maxNewsCount: articleCounts.sort((a, b) => b - a)[0],
+            articles: transformArticles(articles),
+        });
     } catch (error) {
         response.json({ search: false, error: error.message });
     }
