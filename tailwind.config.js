@@ -14,7 +14,7 @@ module.exports = {
                 dropdown: 'dropdownEffect .3s linear',
             },
             backgroundImage: {
-                'news-bg': "url('/public/images/news-bg.jpg')",
+                'news-bg': "url('/src/assets/images/news-bg.jpg')",
             },
         },
     },
