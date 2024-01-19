@@ -10,6 +10,7 @@ module.exports = {
             },
             animation: {
                 'spin-slow': 'spin 2s linear infinite',
+                'spin-very-slow': 'spin 3s linear infinite',
                 dropdown: 'dropdownEffect .3s linear',
             },
         },
