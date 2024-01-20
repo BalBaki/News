@@ -13,6 +13,7 @@ const initialState: User = {
         fromDate: '',
         toDate: '',
         page: 1,
+        sortOrder: '',
         extraFilters: {},
     },
 };

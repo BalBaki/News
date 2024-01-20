@@ -4,6 +4,7 @@ export interface FilterSettings {
     fromDate: string | Date;
     toDate: string | Date;
     page: number;
+    sortOrder: string;
     extraFilters: {
         [key: string]: any;
     };

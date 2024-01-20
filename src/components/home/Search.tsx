@@ -4,8 +4,9 @@ import { useSelector } from 'react-redux';
 import { useSearchMutation, type RootState } from '../../store';
 import { type FilterSettings } from '../../types';
 import Apis from '../form/Apis';
+import SortOrder from '../form/SortOrder';
 import Button from '../Button';
-import Filters from '../form/Filters';
+import ExtraFilters from '../form/extraFilters';
 import NewsList from './NewsList';
 import SaveSettings from './SaveSettings';
 import ResetForm from './ResetForm';
@@ -21,6 +22,7 @@ const Search: React.FC = () => {
         apiNames: user.filterSettings.apiNames?.length > 0 ? user.filterSettings.apiNames : [],
         extraFilters: { ...user.filterSettings.extraFilters } || {},
         page: 1,
+        sortOrder: user.filterSettings.sortOrder || 'relevance',
     };
 
     const formSchema = Yup.object().shape({
@@ -96,9 +98,9 @@ const Search: React.FC = () => {
                                             </div>
                                         </div>
                                         <Apis />
-                                        <Filters />
+                                        <SortOrder />
+                                        <ExtraFilters />
                                     </div>
-                                    <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"></div>
                                 </div>
                                 <div className="flex flex-wrap items-center justify-center gap-2 max-[300px]:text-center mt-4">
                                     <Button

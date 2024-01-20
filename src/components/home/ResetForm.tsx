@@ -10,6 +10,7 @@ const defaultFormValues: FilterSettings = {
     toDate: new Date().toISOString().split('T')[0],
     apiNames: [],
     extraFilters: {},
+    sortOrder: 'relevance',
     page: 1,
 };
 

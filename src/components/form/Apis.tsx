@@ -28,7 +28,7 @@ const Apis: React.FC = () => {
     return (
         <div className="w-full max-[340px]:mx-auto">
             <Dropdown placeholder="Select Api">{content}</Dropdown>
-            <ErrorMessage name="apiNames" component="div" className="text-sm  text-red-500" />
+            <ErrorMessage name="apiNames" component="div" className="text-sm text-red-500" />
         </div>
     );
 };

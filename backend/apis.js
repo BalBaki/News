@@ -17,7 +17,15 @@ const apis = {
             ];
         },
         search(payload) {
-            const { term, fromDate, toDate, sources, page } = payload;
+            let { term, fromDate, toDate, sources, page, sortOrder } = payload;
+
+            switch (sortOrder) {
+                case 'newest':
+                    sortOrder = 'publishedAt';
+                    break;
+                default:
+                    sortOrder = 'relevancy';
+            }
 
             return fetch(
                 this.baseUrl +
@@ -30,6 +38,7 @@ const apis = {
                         pageSize: 10,
                         apiKey: process.env.NEWS_API_KEY,
                         page,
+                        sortBy: sortOrder,
                     })
             );
         },
@@ -52,7 +61,7 @@ const apis = {
             ];
         },
         search(payload) {
-            const { term, fromDate, toDate, section, page } = payload;
+            const { term, fromDate, toDate, section, page, sortOrder } = payload;
 
             return fetch(
                 this.baseUrl +
@@ -66,7 +75,7 @@ const apis = {
                         'page-size': 10,
                         'show-fields': 'thumbnail,bodyText',
                         'show-tags': 'all',
-                        'order-by': 'newest',
+                        'order-by': sortOrder,
                         page,
                     })
             );
@@ -80,7 +89,7 @@ const apis = {
             return [];
         },
         search(payload) {
-            const { term, fromDate, toDate, page } = payload;
+            const { term, fromDate, toDate, page, sortOrder } = payload;
 
             return fetch(
                 this.baseUrl +
@@ -91,7 +100,7 @@ const apis = {
                         ...(fromDate && { begin_date: fromDate }),
                         end_date: toDate,
                         page,
-                        sort: 'newest',
+                        sort: sortOrder,
                     })
             );
         },

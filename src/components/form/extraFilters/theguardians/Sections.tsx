@@ -39,11 +39,11 @@ const Sections: React.FC = () => {
                     <Field
                         type="radio"
                         name={`extraFilters.${THE_GUARDIANS_API_NAME}.section`}
-                        id={section.id}
+                        id={section.id || section.webTitle}
                         value={section.id}
                         className="ml-1"
                     />
-                    <label className="pl-2" htmlFor={section.id}>
+                    <label className="pl-2" htmlFor={section.id || section.webTitle}>
                         {section.webTitle}
                     </label>
                 </div>
