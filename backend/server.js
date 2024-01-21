@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const { rateLimit } = require('express-rate-limit');
@@ -89,11 +89,11 @@ app.post('/register', async (request, response) => {
 app.post('/login', async (request, response) => {
     try {
         const payload = decodePayload(request.body.payload);
-        const email = payload.email?.toLowerCase();
+        const payloadEmail = payload.email?.toLowerCase();
 
-        if (!email || !validateEmail(email)) throw new Error('Not valid Email');
+        if (!payloadEmail || !validateEmail(payloadEmail)) throw new Error('Not valid Email');
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: payloadEmail });
 
         if (user) {
             const isPasswordCompare = await argon2.verify(user.password, payload.password);
@@ -127,11 +127,9 @@ app.post('/logout', (request, response) => {
 //verify+
 app.post('/verify', authMiddleware, async (request, response) => {
     try {
-        const {
-            user: { id, email },
-        } = request;
+        const { user: payloadUser } = request;
 
-        const user = await User.findOne({ email, _id: id }).select({ password: 0 });
+        const user = await User.findOne({ email: payloadUser.email, _id: payloadUser.id }).select({ password: 0 });
 
         if (user) {
             const { id, name, surname, email, filterSettings } = user;
@@ -168,9 +166,9 @@ app.post('/savesettings', authMiddleware, async (request, response) => {
 //Get Valid Apis
 app.get('/apis', async (request, response) => {
     try {
-        const apis = await Api.find();
+        const listOfApis = await Api.find();
 
-        return response.json({ success: true, apis });
+        return response.json({ success: true, apis: listOfApis });
     } catch (error) {
         response.json({ success: false, error: error.message });
     }
@@ -190,13 +188,13 @@ app.get('/filtersV2', async (request, response) => {
                 if (!apis[apiName]) throw new Error('Not Valid Api');
 
                 const filterPromises = apis[apiName].filters.map(async (option) => {
-                    const response = await option.filterFn();
+                    const filterResponse = await option.filterFn();
 
-                    if (!response.ok) {
+                    if (!filterResponse.ok) {
                         throw new Error('Error at Fetching Filter Option');
                     }
 
-                    const filterOptions = await response.json();
+                    const filterOptions = await filterResponse.json();
 
                     filters[apiName][option.name] = filterOptions;
                 });
@@ -221,13 +219,13 @@ app.get('/filters', async (request, response) => {
         if (!apis[apiName]) throw new Error('Not Valid Api');
 
         const filterPromises = apis[apiName].filters.map(async (option) => {
-            const response = await option.filterFn();
+            const filterRespone = await option.filterFn();
 
-            if (!response.ok) {
+            if (!filterRespone.ok) {
                 throw new Error('Error at Fetching Filter Option');
             }
 
-            const filterOptions = await response.json();
+            const filterOptions = await filterRespone.json();
 
             filters[option.name] = filterOptions;
         });
@@ -241,7 +239,8 @@ app.get('/filters', async (request, response) => {
 });
 
 //search news
-//payload => apiNames, fromDate, term, toDate,page,sortOrder, extraFilters = {guardian: {section: [...]}, newsapi: {sources: '...'}}
+//payload => apiNames, fromDate, term, toDate,page,sortOrder, extraFilters = {guardian: {section: [...]},
+//newsapi: {sources: '...'}}
 app.post('/search', async (request, response) => {
     try {
         const payload = decodePayload(request.body.payload);
@@ -253,10 +252,10 @@ app.post('/search', async (request, response) => {
             )
         );
 
-        if (responses.every((response) => !response.ok)) throw new Error('Error at Fetching Articles');
+        if (responses.every((searchResponse) => !searchResponse.ok)) throw new Error('Error at Fetching Articles');
 
         const values = await Promise.all(
-            responses.filter((response) => response.ok).map((response) => response.json())
+            responses.filter((searchResponse) => searchResponse.ok).map((searchResponse) => searchResponse.json())
         );
 
         const articleCounts = [];
