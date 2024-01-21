@@ -10,6 +10,7 @@
   npm install
   cd backend
   node server.js
+  cd frontend
   npm run start
 ```
 
