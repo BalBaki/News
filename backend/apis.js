@@ -91,6 +91,8 @@ const apis = {
         search(payload) {
             const { term, fromDate, toDate, page, sortOrder } = payload;
 
+            if (page > 100) return;
+
             return fetch(
                 this.baseUrl +
                     this.searchUrlPart +

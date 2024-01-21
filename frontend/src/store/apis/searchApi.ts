@@ -18,7 +18,9 @@ interface Api {
 type SearchResponse =
     | {
           search: true;
-          articles: News[];
+          articles: {
+              [key: string]: News[];
+          };
           page: number;
           totalArticleCount: number;
           maxNewsCount: number;

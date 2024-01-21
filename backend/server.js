@@ -245,39 +245,30 @@ app.post('/search', async (request, response) => {
     try {
         const payload = decodePayload(request.body.payload);
         const { apiNames, term, fromDate, toDate, page, sortOrder, extraFilters } = payload;
-
         const responses = await Promise.all(
             apiNames.map((apiName) =>
                 apis[apiName].search({ term, fromDate, toDate, page, sortOrder, ...extraFilters[apiName] })
             )
         );
+        const filteredResponses = responses.filter((searchResponse) => searchResponse && searchResponse.ok);
 
-        if (responses.every((searchResponse) => !searchResponse.ok)) throw new Error('Error at Fetching Articles');
+        if (filteredResponses.length < 1) throw new Error('Error at Fetching Articles');
 
-        const values = await Promise.all(
-            responses.filter((searchResponse) => searchResponse.ok).map((searchResponse) => searchResponse.json())
-        );
-
+        const values = await Promise.all(filteredResponses.map((searchResponse) => searchResponse.json()));
         const articleCounts = [];
-        let articles = [];
+        const articles = {};
         const errors = [];
         let totalArticleCount = 0;
 
         values.forEach((result) => {
             //newsapi
-            if (result?.articles?.length > 0) {
-                articles = articles.concat(result.articles);
-            }
+            if (result?.articles?.length > 0) articles['newsapi'] = result.articles;
 
             //theguardians
-            if (result?.response?.results?.length > 0) {
-                articles = articles.concat(result.response.results);
-            }
+            if (result?.response?.results?.length > 0) articles['theguardians'] = result.response.results;
 
             //new york times
-            if (result?.response?.docs?.length > 0) {
-                articles = articles.concat(result.response.docs);
-            }
+            if (result?.response?.docs?.length > 0) articles['newyorktimes'] = result.response.docs;
 
             if (result?.status === 'error' || result?.response?.status === 'error' || result?.message) {
                 errors.push(result?.message || result?.response?.message);

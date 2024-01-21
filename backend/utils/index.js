@@ -55,36 +55,41 @@ const clearTokenCookies = (response) =>
         });
 
 const transformArticles = (articles) => {
-    return articles.map((article) => {
-        return {
-            id: randomUUID(),
-            title: article.title || article.webTitle || article.snippet || '',
-            description: article.description || article.fields?.bodyText || article.lead_paragraph || '',
-            url: article.url || article.webUrl || article.web_url || '',
-            imageUrl:
-                article.urlToImage ||
-                article.fields?.thumbnail ||
-                (article.multimedia?.[0]?.url && `https://www.nytimes.com/${article.multimedia[0].url}`) ||
-                '',
-            authors:
-                article.author ||
-                (article.tags &&
-                    article.tags
-                        .filter((tag) => tag.firstName || tag.lastName)
-                        .map((tag) => {
-                            let authors = '';
+    Object.keys(articles).forEach((key) => {
+        articles[key] = articles[key].map((article) => {
+            return {
+                id: randomUUID(),
+                title: article.title || article.webTitle || article.snippet || '',
+                description: article.description || article.fields?.bodyText || article.lead_paragraph || '',
+                url: article.url || article.webUrl || article.web_url || '',
+                imageUrl:
+                    article.urlToImage ||
+                    article.fields?.thumbnail ||
+                    (article.multimedia?.[0]?.url && `https://www.nytimes.com/${article.multimedia[0].url}`) ||
+                    '',
+                authors:
+                    article.author ||
+                    (article.tags &&
+                        article.tags
+                            .filter((tag) => tag.firstName || tag.lastName)
+                            .map((tag) => {
+                                let authors = '';
 
-                            if (tag.firstName) authors += tag.firstName;
-                            if (tag.lastName) authors += (tag.firstName ? ' ' : '') + tag.lastName;
+                                if (tag.firstName) authors += tag.firstName;
 
-                            return authors;
-                        })
-                        .join(',')) ||
-                (article.byline?.person?.length > 0 && article.byline?.original) ||
-                '',
-            publishDate: article.publishedAt || article.webPublicationDate || article.pub_date || '',
-        };
+                                if (tag.lastName) authors += (tag.firstName ? ' ' : '') + tag.lastName;
+
+                                return authors;
+                            })
+                            .join(',')) ||
+                    (article.byline?.person?.length > 0 && article.byline?.original) ||
+                    '',
+                publishDate: article.publishedAt || article.webPublicationDate || article.pub_date || '',
+            };
+        });
     });
+
+    return articles;
 };
 
 module.exports = {
