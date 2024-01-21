@@ -1,6 +1,6 @@
 const apis = {
     newsapi: {
-        name: 'newsapi',
+        value: 'newsapi',
         baseUrl: 'https://newsapi.org/v2/',
         searchUrlPart: 'everything?',
         get filters() {
@@ -44,7 +44,7 @@ const apis = {
         },
     },
     theguardians: {
-        name: 'theguardians',
+        value: 'theguardians',
         baseUrl: 'https://content.guardianapis.com/',
         searchUrlPart: 'search?',
         get filters() {
@@ -82,7 +82,7 @@ const apis = {
         },
     },
     newyorktimes: {
-        name: 'newyorktimes',
+        value: 'newyorktimes',
         baseUrl: 'https://api.nytimes.com/',
         searchUrlPart: 'svc/search/v2/articlesearch.json?',
         get filters() {

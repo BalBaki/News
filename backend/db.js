@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 const mongoose = require('mongoose');
 const UserSchema = require('./models/user');
 const ApiSchema = require('./models/api');
@@ -52,7 +52,7 @@ const apis = [
 Api.bulkWrite(
     apis.map((api) => ({
         updateOne: {
-            filter: { name: api.name },
+            filter: { value: api.value },
             update: { $set: api },
             upsert: true,
         },
