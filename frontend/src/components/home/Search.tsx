@@ -50,9 +50,9 @@ const Search: React.FC = () => {
             >
                 {({ values, isValid, dirty }) => (
                     <>
-                        <Form>
-                            <section aria-label="filters">
-                                <div className="min-[400px]:w-5/6 min-[400px]:mx-auto mx-3">
+                        <section aria-label="filters">
+                            <Form>
+                                <div className="sm:w-5/6 sm:mx-auto mx-3">
                                     <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3 justify-items-center mt-2">
                                         <div className="w-full">
                                             <Field
@@ -102,7 +102,7 @@ const Search: React.FC = () => {
                                         <ExtraFilters />
                                     </div>
                                 </div>
-                                <div className="flex flex-wrap items-center justify-center gap-2 max-[300px]:text-center mt-4">
+                                <div className="flex items-center justify-center mt-4">
                                     <Button
                                         type="submit"
                                         className={`w-32 h-7 rounded-md text-white  ${
@@ -115,10 +115,10 @@ const Search: React.FC = () => {
                                     </Button>
                                     {user?.id && <SaveSettings />}
                                 </div>
-                            </section>
-                            <NewsList />
-                            <ResetForm />
-                        </Form>
+                            </Form>
+                        </section>
+                        <NewsList />
+                        <ResetForm />
                     </>
                 )}
             </Formik>

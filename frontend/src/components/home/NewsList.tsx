@@ -37,13 +37,13 @@ const NewsList: React.FC = () => {
             });
 
             return (
-                <div key={apiName} className="mx-3">
-                    <div className="capitalize text-2xl border-b-4 border-black italic pb-1">
+                <div key={apiName}>
+                    <div className="capitalize text-2xl border-b-4 border-black italic pb-1 mt-3">
                         {apiData?.apis?.find((api) => api.value === apiName)?.name || apiName}
                     </div>
                     <div
-                        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 
-                            max-[450px]:grid-cols-1 gap-3 mt-1"
+                        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 
+                            gap-3 mt-1"
                     >
                         {renderedArticles}
                     </div>
@@ -53,13 +53,13 @@ const NewsList: React.FC = () => {
     }
 
     return (
-        <section className="mt-6" aria-label="news">
+        <section className="mt-6 mx-3" aria-label="news">
             {data?.search ? (
                 Object.keys(data.articles).length > 0 ? (
                     <>
                         {renderedNews}
                         {data.maxNewsCount > ITEMS_PER_API && (
-                            <div className="flex justify-center items-center mb-4 pagination">
+                            <div className="flex justify-center items-center mb-4 mt-2 pagination">
                                 <Pagination
                                     currentPage={data.page}
                                     totalPages={Math.ceil(data.maxNewsCount / ITEMS_PER_API)}
