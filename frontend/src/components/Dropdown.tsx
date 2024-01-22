@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, type PropsWithChildren } from 'react';
-import { AiOutlineRight, AiOutlineDown } from 'react-icons/ai';
+import { AiOutlineRight } from 'react-icons/ai';
 
 type DropdownProps = {
     placeholder: string;
@@ -31,9 +31,9 @@ const Dropdown: React.FC<PropsWithChildren<DropdownProps>> = ({ children, placeh
 
     return (
         <div ref={divEl} className="relative border-2 border-[#6B7280] capitalize break-word rounded-md">
-            <div className="pl-1 flex justify-between items-center" onClick={handleShowClick}>
+            <div className="px-1 flex justify-between items-center" onClick={handleShowClick}>
                 <div>{placeholder}</div>
-                {!isOpened ? <AiOutlineRight /> : <AiOutlineDown />}
+                <AiOutlineRight className={`transition-all ${isOpened ? 'rotate-90' : 'rotate-0'}`} />
             </div>
             {isOpened && (
                 <div
