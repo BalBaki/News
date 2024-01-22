@@ -60,7 +60,7 @@ const Search: React.FC = () => {
                                                 name="term"
                                                 id="term"
                                                 placeholder="Search Term"
-                                                className="w-full border-2 py-0 px-1"
+                                                className="w-full border-2 rounded-md py-0 px-1"
                                                 onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                                                     e.key === 'Enter' && e.preventDefault();
                                                 }}
@@ -80,7 +80,7 @@ const Search: React.FC = () => {
                                                     type="date"
                                                     name="fromDate"
                                                     id="fromDate"
-                                                    className="border-2 py-0 px-1"
+                                                    className="border-2 rounded-md py-0 px-1"
                                                     max={values.toDate}
                                                 />
                                             </div>
@@ -92,7 +92,7 @@ const Search: React.FC = () => {
                                                     type="date"
                                                     name="toDate"
                                                     id="toDate"
-                                                    className="border-2 py-0 px-1"
+                                                    className="border-2 rounded-md py-0 px-1"
                                                     max={new Date().toISOString().split('T')[0]}
                                                 />
                                             </div>
