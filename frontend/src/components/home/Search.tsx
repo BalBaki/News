@@ -102,7 +102,7 @@ const Search: React.FC = () => {
                                         <ExtraFilters />
                                     </div>
                                 </div>
-                                <div className="flex items-center justify-center mt-4">
+                                <div className="flex flex-wrap items-center justify-center gap-2 max-[300px]:text-center mt-4 mx-3">
                                     <Button
                                         type="submit"
                                         className={`w-32 h-7 rounded-md text-white  ${
