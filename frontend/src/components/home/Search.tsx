@@ -105,7 +105,7 @@ const Search: React.FC = () => {
                                 <div className="flex flex-wrap items-center justify-center gap-2 max-[300px]:text-center mt-4">
                                     <Button
                                         type="submit"
-                                        className={`w-32 h-7 rounded-md text-white disabled:cursor-not-allowed ${
+                                        className={`w-32 h-7 rounded-md text-white  ${
                                             isValid && dirty ? 'bg-green-400' : 'bg-red-500'
                                         }`}
                                         disabled={isLoading || !(isValid && dirty)}

@@ -17,9 +17,8 @@ const Login: React.FC = () => {
     const prevFormData = useRef<PrevLoginForm>();
     const initialValues: LoginForm = { email: prevFormData?.current?.email || '', password: '' };
     const user = useSelector((state: RootState) => state.user);
-    const [login, loginResult] = useLoginMutation();
+    const [login, { data, isLoading, error }] = useLoginMutation();
     const notification = useNotification();
-    const { data, isLoading, error } = loginResult;
 
     useEffect(() => {
         if (data) {
@@ -28,7 +27,7 @@ const Login: React.FC = () => {
                 message: data?.login ? 'Login Success' : data?.error,
             });
         }
-    }, [loginResult]);
+    }, [data]);
 
     const formSchema = Yup.object().shape({
         email: Yup.string().required('Email required').email('Enter Valid Email'),
@@ -92,7 +91,7 @@ const Login: React.FC = () => {
                                         <Button
                                             type="submit"
                                             disabled={!(isValid && dirty) || isLoading}
-                                            className={`w-28 h-12 py-1 text-white rounded-3xl font-semibold disabled:cursor-not-allowed ${
+                                            className={`w-28 h-12 py-1 text-white rounded-3xl font-semibold ${
                                                 isValid && dirty ? 'bg-green-400' : 'bg-red-500'
                                             }`}
                                             loading={isLoading}

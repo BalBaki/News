@@ -25,8 +25,7 @@ const Register: React.FC = () => {
         password: '',
     };
     const user = useSelector((state: RootState) => state.user);
-    const [register, registerResult] = useRegisterMutation();
-    const { data, isLoading, error } = registerResult;
+    const [register, { data, isLoading, error }] = useRegisterMutation();
     const notification = useNotification();
 
     useEffect(() => {
@@ -36,7 +35,7 @@ const Register: React.FC = () => {
                 message: data?.register ? 'Register Success' : data?.error,
             });
         }
-    }, [registerResult]);
+    }, [data]);
 
     const formSchema = Yup.object().shape({
         name: Yup.string().required('Name Requiered'),
@@ -144,8 +143,8 @@ const Register: React.FC = () => {
                                     <div className="mt-2 mb-3 flex items-center justify-center">
                                         <Button
                                             type="submit"
-                                            disabled={!(isValid && dirty)}
-                                            className={`w-28 h-12 text-white py-1 rounded-3xl font-semibold disabled:cursor-not-allowed ${
+                                            disabled={isLoading || !(isValid && dirty)}
+                                            className={`w-28 h-12 text-white py-1 rounded-3xl font-semibold ${
                                                 isValid && dirty ? 'bg-green-400' : 'bg-red-500'
                                             }`}
                                             loading={isLoading}

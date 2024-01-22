@@ -30,7 +30,10 @@ const Dropdown: React.FC<PropsWithChildren<DropdownProps>> = ({ children, placeh
     };
 
     return (
-        <div ref={divEl} className="relative border-2 border-[#6B7280] capitalize break-word rounded-md">
+        <div
+            ref={divEl}
+            className="relative border-2 border-[#6B7280] capitalize break-word rounded-md cursor-default"
+        >
             <div className="px-1 flex justify-between items-center" onClick={handleShowClick}>
                 <div>{placeholder}</div>
                 <AiOutlineRight className={`transition-all ${isOpened ? 'rotate-90' : 'rotate-0'}`} />
