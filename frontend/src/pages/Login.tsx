@@ -1,20 +1,19 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { type LoginForm } from '../types';
 import { useLoginMutation, type RootState } from '../store';
 import { useNotification } from '../hooks/use-notification';
 import Button from '../components/Button';
+import FormikPassword from '../components/FormikPassword';
+import { type LoginForm } from '../types';
 
 interface PrevLoginForm {
     email: string;
 }
 
 const Login: React.FC = () => {
-    const [showPassword, setShowPassword] = useState<boolean>(false);
     const prevFormData = useRef<PrevLoginForm>();
     const initialValues: LoginForm = { email: prevFormData?.current?.email || '', password: '' };
     const user = useSelector((state: RootState) => state.user);
@@ -37,10 +36,6 @@ const Login: React.FC = () => {
             .required('Password Required')
             .min(8, ({ min }) => `Minimum ${min} character`),
     });
-
-    const handleShowIconClick = (): void => {
-        setShowPassword((current) => !current);
-    };
 
     if (error) return <div>Error At Login</div>;
     if (user.id || data?.login) return <Navigate to="/" replace />;
@@ -82,32 +77,15 @@ const Login: React.FC = () => {
                                         <ErrorMessage
                                             name="email"
                                             component="div"
-                                            className="text-sm  text-red-500 h-6"
+                                            className="text-sm text-red-500 h-6"
                                         />
                                     </div>
                                     <div className="mt-2 relative h-24">
                                         <div className="font-medium">Password</div>
-                                        <Field
-                                            type={showPassword ? 'text' : 'password'}
+                                        <FormikPassword
                                             name="password"
-                                            className={`w-full border-2 mt-2 h-12 pl-2 py-2 pr-6 rounded-md outline-none ${
-                                                touched.password
-                                                    ? errors.password
-                                                        ? 'border-red-500'
-                                                        : 'border-green-500'
-                                                    : ''
-                                            }`}
-                                        />
-                                        <div
-                                            className="absolute top-12 right-2 cursor-pointer"
-                                            onClick={handleShowIconClick}
-                                        >
-                                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                                        </div>
-                                        <ErrorMessage
-                                            name="password"
-                                            component="div"
-                                            className="text-sm text-red-500 h-6"
+                                            touched={touched.password}
+                                            error={errors.password}
                                         />
                                     </div>
                                     <div className="mt-2 mb-3 flex items-center justify-center">
