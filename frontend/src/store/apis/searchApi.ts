@@ -1,61 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { type News, type FilterSettings } from '../../types';
-
-interface ExtraFilter {
-    name: string;
-    defaultValue: Array<any> | Object | string;
-}
-
-interface Api {
-    _id: string;
-    value: string;
-    name: string;
-    url: string;
-    searchUrlPart: string;
-    filters: ExtraFilter[];
-}
-
-type SearchResponse =
-    | {
-          search: true;
-          articles: {
-              [key: string]: News[];
-          };
-          page: number;
-          totalArticleCount: number;
-          maxNewsCount: number;
-          error?: never;
-      }
-    | {
-          search: false;
-          error: string;
-          articles?: never;
-          page?: never;
-      };
-
-type FetchApisResponse =
-    | {
-          success: true;
-          apis: Api[];
-          error?: never;
-      }
-    | {
-          success: false;
-          apis?: never;
-          error: string;
-      };
-
-type FetchFiltersResponse =
-    | {
-          success: true;
-          filters: { [key: string]: any };
-          error?: never;
-      }
-    | {
-          success: false;
-          filters?: never;
-          error: string;
-      };
+import {
+    type FilterSettings,
+    type SearchResponse,
+    type FetchApisResponse,
+    type FetchFiltersResponse,
+} from '../../types';
 
 const searchApi = createApi({
     reducerPath: 'search',

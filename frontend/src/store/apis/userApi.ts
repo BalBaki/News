@@ -1,61 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { type LoginForm, type RegisterForm, type User } from '../../types';
-
-type LoginResponse =
-    | {
-          login: true;
-          user: User;
-          error?: never;
-      }
-    | {
-          login: false;
-          error: string;
-          user?: never;
-      };
-
-type RegisterResponse =
-    | {
-          register: true;
-          user: User;
-          error?: never;
-      }
-    | {
-          register: false;
-          error: string;
-          user?: never;
-      };
-
-type VerifyResponse =
-    | {
-          verify: true;
-          user: User;
-          error?: never;
-      }
-    | {
-          verify: false;
-          error: string;
-          user?: never;
-      };
-
-type LogoutResponse =
-    | {
-          logout: true;
-          error?: never;
-      }
-    | {
-          logout: false;
-          error: string;
-      };
-
-type SaveSettingsResponse =
-    | {
-          save: true;
-          error?: never;
-      }
-    | {
-          save: false;
-          error: string;
-      };
+import {
+    type LoginForm,
+    type RegisterForm,
+    type RegisterResponse,
+    type LoginResponse,
+    type LogoutResponse,
+    type SaveSettingsResponse,
+    type VerifyResponse,
+} from '../../types';
 
 interface SearchSettings {
     apiNames: string[];
