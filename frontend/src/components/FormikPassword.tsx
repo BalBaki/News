@@ -24,7 +24,7 @@ const FormikPassword: React.FC<FormikPasswordProps> = ({ name, touched, error })
                     touched ? (error ? 'border-red-500' : 'border-green-500') : ''
                 }`}
             />
-            <div className="absolute top-12 right-2 cursor-pointer" onClick={handleShowIconClick}>
+            <div className="absolute top-12 right-2 cursor-pointer " onClick={handleShowIconClick}>
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
             </div>
             <ErrorMessage name="password" component="div" className="text-sm text-red-500 h-6" />

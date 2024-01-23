@@ -14,12 +14,24 @@ module.exports = {
                     },
                     '50%': { transform: 'none', 'animation-timing-function': 'cubic-bezier(0,0,0.2,1)' },
                 },
+                fadeIn: {
+                    '0%': {
+                        opacity: '0',
+                    },
+                },
+                fadeOut: {
+                    '100%': {
+                        opacity: '0',
+                    },
+                },
             },
             animation: {
                 'spin-slow': 'spin 2s linear infinite',
                 'spin-very-slow': 'spin 3s linear infinite',
                 dropdown: 'dropdownEffect .150s linear',
                 'little-bounce': 'littleBounce 1s infinite',
+                'fade-in': 'fadeIn .5s linear',
+                'fade-out': 'fadeOut .5s linear',
             },
             backgroundImage: {
                 'news-bg': "url('/src/assets/images/news-bg.jpg')",

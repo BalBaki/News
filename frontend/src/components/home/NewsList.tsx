@@ -1,24 +1,31 @@
 import { Pagination } from 'flowbite-react';
 import { useFormikContext } from 'formik';
+import { useLocation } from 'react-router-dom';
 import './NewsList.css';
 import { useSearchMutation, useFetchApisQuery } from '../../store';
 import NewsItem from './NewsItem';
 import { type FilterSettings } from '../../types';
 import Loading from '../Loading';
 import { SEARCH_MUTATION_CACHE_KEY, ITEMS_PER_API } from '../../utils/constants';
+import { useEffect } from 'react';
 
 const NewsList: React.FC = () => {
-    const [search, { data, error, isLoading }] = useSearchMutation({
+    const [search, { data, error, isLoading, reset }] = useSearchMutation({
         fixedCacheKey: SEARCH_MUTATION_CACHE_KEY,
     });
     const { data: apiData } = useFetchApisQuery();
     const { values, isValid } = useFormikContext<FilterSettings>();
+    const location = useLocation();
 
     const onPageChange = (page: number): void => {
         if (!isValid || page === data?.page) return;
 
         search({ ...values, term: values.term.toLocaleLowerCase(), page });
     };
+
+    useEffect(() => {
+        reset();
+    }, [location]);
 
     if (isLoading)
         return (

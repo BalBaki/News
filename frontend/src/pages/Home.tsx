@@ -1,3 +1,4 @@
+import PageUpIcon from '../components/PageUpIcon';
 import Navbar from '../components/home/Navbar';
 import Search from '../components/home/Search';
 
@@ -8,6 +9,7 @@ const Home: React.FC = () => {
                 <Navbar />
             </div>
             <Search />
+            <PageUpIcon />
         </>
     );
 };
