@@ -30,8 +30,8 @@ export type SearchResponse =
           search: false;
           error: string;
           articles?: never;
-          maxNewsCount: never;
-          totalArticleCount: never;
+          maxNewsCount?: never;
+          totalArticleCount?: never;
           page?: never;
       };
 
