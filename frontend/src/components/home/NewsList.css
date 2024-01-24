@@ -1,5 +1,18 @@
 @media screen and (max-width: 355px) {
     .pagination li > button {
-        width: 2.5rem;
+        width: 2.2rem;
     }
+}
+
+/* Chrome, Safari, Edge, Opera */
+.page-num::-webkit-outer-spin-button,
+.page-num::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.page-num[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
 }

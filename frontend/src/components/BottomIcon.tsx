@@ -30,8 +30,7 @@ const BottomIcon: React.FC<BottomIconProps> = ({ position, trigger, icon, animat
 
     const classes = classNames(
         className,
-        `fixed w-16 h-16 p-3 bg-black text-white rounded-full animate-fade-in z-50 cursor-pointer
-            shadow-[0_0_15px_10px_rgb(255,0,0)] bottom-3 z-50`,
+        `fixed w-16 h-16 p-3 bg-black text-white rounded-full animate-fade-in z-[9999] cursor-pointer shadow-[0_0_15px_10px_rgb(255,0,0)] bottom-3 z-50`,
         {
             'left-3': position === 'left',
             'right-3': position === 'right',

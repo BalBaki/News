@@ -2,15 +2,17 @@ import { useState, useEffect, useRef } from 'react';
 import BottomIcon from './BottomIcon';
 import { FaArrowUp } from 'react-icons/fa';
 
+const SCROLL_LIMIT = 500;
+
 const PageUpIcon: React.FC = () => {
     const [showIcon, setShowIcon] = useState(false);
     const iconWrapper = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.scrollY >= 500 && !showIcon) setShowIcon(true);
+            if (window.scrollY >= SCROLL_LIMIT && !showIcon) setShowIcon(true);
 
-            if (window.scrollY < 500 && showIcon) {
+            if (window.scrollY < SCROLL_LIMIT && showIcon) {
                 if (iconWrapper.current) iconWrapper.current.classList.add('animate-fade-out');
 
                 setTimeout(() => {

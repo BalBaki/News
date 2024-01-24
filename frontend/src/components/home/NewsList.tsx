@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Pagination } from 'flowbite-react';
 import { useFormikContext } from 'formik';
 import { useLocation } from 'react-router-dom';
@@ -6,22 +7,38 @@ import { useSearchMutation, useFetchApisQuery } from '../../store';
 import NewsItem from './NewsItem';
 import { type FilterSettings } from '../../types';
 import Loading from '../Loading';
+import Button from '../Button';
 import { SEARCH_MUTATION_CACHE_KEY, ITEMS_PER_API } from '../../utils/constants';
-import { useEffect } from 'react';
 
 const NewsList: React.FC = () => {
+    const [pageNum, setPageNum] = useState<number>(1);
     const [search, { data, error, isLoading, reset }] = useSearchMutation({
         fixedCacheKey: SEARCH_MUTATION_CACHE_KEY,
     });
     const { data: apiData } = useFetchApisQuery();
     const { values, isValid } = useFormikContext<FilterSettings>();
     const location = useLocation();
+    const maxPage = Math.ceil((data?.maxNewsCount || 0) / ITEMS_PER_API);
 
     const onPageChange = (page: number): void => {
         if (!isValid || page === data?.page) return;
 
         search({ ...values, term: values.term.toLocaleLowerCase(), page });
     };
+    const handlePageGoClick = (): void => {
+        if (!isValid || pageNum === data?.page) return;
+
+        search({ ...values, term: values.term.toLocaleLowerCase(), page: pageNum });
+    };
+    const handlePageNumChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const value = parseInt(event.target.value);
+
+        setPageNum(value > 1 ? (value > maxPage ? maxPage : value) : 1);
+    };
+
+    useEffect(() => {
+        data?.search && setPageNum(data.page);
+    }, [data]);
 
     useEffect(() => {
         reset();
@@ -29,7 +46,7 @@ const NewsList: React.FC = () => {
 
     if (isLoading)
         return (
-            <div className="h-80">
+            <div className="h-64">
                 <Loading />
             </div>
         );
@@ -66,15 +83,33 @@ const NewsList: React.FC = () => {
                     <>
                         {renderedNews}
                         {data.maxNewsCount > ITEMS_PER_API && (
-                            <div className="flex justify-center items-center mb-4 mt-2 pagination">
-                                <Pagination
-                                    currentPage={data.page}
-                                    totalPages={Math.ceil(data.maxNewsCount / ITEMS_PER_API)}
-                                    onPageChange={onPageChange}
-                                    previousLabel=""
-                                    nextLabel=""
-                                    showIcons
-                                />
+                            <div className="text-center mb-[5rem] sm:mb-4 mt-2">
+                                <div className="pagination">
+                                    <Pagination
+                                        currentPage={data.page}
+                                        totalPages={maxPage}
+                                        onPageChange={onPageChange}
+                                        previousLabel=""
+                                        nextLabel=""
+                                        showIcons
+                                    />
+                                </div>
+                                <div>
+                                    <input
+                                        type="number"
+                                        className="page-num border border-gray-300 w-16 p-0 mt-2 text-center rounded-md"
+                                        min="1"
+                                        max={maxPage}
+                                        value={pageNum}
+                                        onChange={handlePageNumChange}
+                                    />
+                                    <Button
+                                        className="px-4 ml-2 border border-gray-300 rounded-md"
+                                        onClick={handlePageGoClick}
+                                    >
+                                        Go
+                                    </Button>
+                                </div>
                             </div>
                         )}
                     </>
