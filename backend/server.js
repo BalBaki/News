@@ -46,6 +46,16 @@ app.use(
 );
 app.use(limiter);
 
+// app.use(function (req, res, next) {
+//     res.setHeader('Access-Control-Allow-Credentials', true);
+//     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, authorization');
+//     res.setHeader('Content-Type', 'application/json');
+//     res.setHeader('Access-Control-Allow-Origin', process.env.CORS_ORIGIN);
+//     res.setHeader('Access-Control-Allow-METHODS', 'GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, PATCH');
+
+//     next();
+// });
+
 app.listen(process.env.API_PORT, () => {
     console.log(`Server work at port ${process.env.API_PORT}`);
 });
@@ -57,7 +67,7 @@ app.post('/register', async (request, response) => {
         const payload = decodePayload(request.body.payload);
         const payloadEmail = payload.email?.toLowerCase();
 
-        if (!payloadEmail || !validateEmail(payloadEmail)) throw new Error('Not valid Email');
+        if (!payloadEmail || !validateEmail(payloadEmail)) throw new Error('Not Valid Email');
 
         const user = await User.findOne({ email: payloadEmail });
 
@@ -91,7 +101,7 @@ app.post('/login', async (request, response) => {
         const payload = decodePayload(request.body.payload);
         const payloadEmail = payload.email?.toLowerCase();
 
-        if (!payloadEmail || !validateEmail(payloadEmail)) throw new Error('Not valid Email');
+        if (!payloadEmail || !validateEmail(payloadEmail)) throw new Error('Not Valid Email');
 
         const user = await User.findOne({ email: payloadEmail });
 

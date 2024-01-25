@@ -1,9 +1,3 @@
-@media screen and (max-width: 355px) {
-    .pagination li > button {
-        width: 2.2rem;
-    }
-}
-
 /* Chrome, Safari, Edge, Opera */
 .page-num::-webkit-outer-spin-button,
 .page-num::-webkit-inner-spin-button {

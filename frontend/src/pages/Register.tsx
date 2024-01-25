@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
@@ -10,20 +10,15 @@ import { useNotification } from '../hooks/use-notification';
 import Button from '../components/Button';
 import FormikPassword from '../components/FormikPassword';
 import NavigateHomeIcon from '../components/NavigateHomeIcon';
-
-interface PrevRegisterForm {
-    name: string;
-    surname: string;
-    email: string;
-}
+import ResetFormikFields from '../components/ResetFormikFields';
 
 const Register: React.FC = () => {
-    const prevFormData = useRef<PrevRegisterForm>();
     const initialValues: RegisterForm = {
-        name: prevFormData?.current?.name || '',
-        surname: prevFormData?.current?.surname || '',
-        email: prevFormData?.current?.email || '',
+        name: '',
+        surname: '',
+        email: '',
         password: '',
+        confirmPassword: '',
     };
     const user = useSelector((state: RootState) => state.user);
     const [register, { data, isLoading, error }] = useRegisterMutation();
@@ -45,6 +40,9 @@ const Register: React.FC = () => {
         password: Yup.string()
             .required('Password Required')
             .min(8, ({ min }) => `Minimum ${min} character`),
+        confirmPassword: Yup.string()
+            .required('Confirm Password Required')
+            .oneOf([Yup.ref('password')], 'Passwords must match'),
     });
 
     if (error) return <div>Error At Register</div>;
@@ -56,7 +54,7 @@ const Register: React.FC = () => {
                 className="flex justify-center items-center w-full h-screen p-3 bg-news-bg"
                 aria-label="register form"
             >
-                <div className="relative w-full h-full max-w-lg max-h-[37rem] overflow-hidden rounded-md p-[.35rem] z-50">
+                <div className="relative w-full h-full max-w-lg max-h-[43rem] overflow-hidden rounded-md p-[.35rem] z-50">
                     <div className="w-full h-full bg-white rounded-md overflow-auto border-2 z-50 p-3">
                         <div>
                             <h1 className="text-2xl font-semibold max-[300px]:text-xl">Sign up for NewsFeed</h1>
@@ -72,92 +70,104 @@ const Register: React.FC = () => {
                                 initialValues={initialValues}
                                 validationSchema={formSchema}
                                 onSubmit={(values): void => {
-                                    const { password, ...others } = values;
-
-                                    prevFormData.current = others;
                                     register(values);
                                 }}
                             >
                                 {({ values, isValid, dirty, errors, touched }) => (
-                                    <Form>
-                                        <div className="mt-2 h-24">
-                                            <div className="font-medium">Name</div>
-                                            <Field
-                                                type="text"
-                                                name="name"
-                                                className={`w-full  border-2 mt-2 h-12 p-2 rounded-md outline-none ${
-                                                    touched.name || values.name
-                                                        ? errors.name
-                                                            ? 'border-red-500'
-                                                            : 'border-green-500'
-                                                        : ''
-                                                }`}
-                                            />
-                                            <ErrorMessage
-                                                name="name"
-                                                component="div"
-                                                className="text-sm text-red-500 h-6"
-                                            />
-                                        </div>
-                                        <div className="mt-2 h-24">
-                                            <div className="font-medium">Surname</div>
-                                            <Field
-                                                type="text"
-                                                name="surname"
-                                                className={`w-full border-2 mt-2 h-12 p-2 rounded-md outline-none ${
-                                                    touched.surname || values.surname
-                                                        ? errors.surname
-                                                            ? 'border-red-500'
-                                                            : 'border-green-500'
-                                                        : ''
-                                                }`}
-                                            />
-                                            <ErrorMessage
-                                                name="surname"
-                                                component="div"
-                                                className="text-sm text-red-500 h-6"
-                                            />
-                                        </div>
-                                        <div className="mt-2 h-24">
-                                            <div className="font-medium">Email</div>
-                                            <Field
-                                                type="text"
-                                                name="email"
-                                                className={`w-full  border-2 mt-2 h-12 p-2 rounded-md outline-none ${
-                                                    touched.email
-                                                        ? errors.email
-                                                            ? 'border-red-500'
-                                                            : 'border-green-500'
-                                                        : ''
-                                                }`}
-                                            />
-                                            <ErrorMessage
-                                                name="email"
-                                                component="div"
-                                                className="text-sm  text-red-500 h-6"
-                                            />
-                                        </div>
-                                        <div className="mt-2 relative h-24">
-                                            <div className="font-medium">Password</div>
-                                            <FormikPassword
-                                                name="password"
-                                                touched={touched.password}
-                                                error={errors.password}
-                                            />
-                                        </div>
-                                        <div className="mt-2 mb-3 flex items-center justify-center">
-                                            <Button
-                                                type="submit"
-                                                disabled={isLoading || !(isValid && dirty)}
-                                                className={`w-28 h-12 text-white py-1 rounded-3xl font-semibold ${
-                                                    isValid && dirty ? 'bg-green-400' : 'bg-red-500'
-                                                }`}
-                                                loading={isLoading}
-                                            >
-                                                Register
-                                            </Button>
-                                        </div>
-                                    </Form>
+                                    <>
+                                        <Form>
+                                            <div className="mt-2 h-24">
+                                                <div className="font-medium">Name</div>
+                                                <Field
+                                                    type="text"
+                                                    name="name"
+                                                    className={`w-full border-2 mt-2 h-12 p-2 rounded-md outline-none ${
+                                                        touched.name || values.name
+                                                            ? errors.name
+                                                                ? 'border-red-500'
+                                                                : 'border-green-500'
+                                                            : 'border-[#6B7280]'
+                                                    }`}
+                                                />
+                                                <ErrorMessage
+                                                    name="name"
+                                                    component="div"
+                                                    className="text-sm text-red-500 h-6"
+                                                />
+                                            </div>
+                                            <div className="mt-2 h-24">
+                                                <div className="font-medium">Surname</div>
+                                                <Field
+                                                    type="text"
+                                                    name="surname"
+                                                    className={`w-full border-2 mt-2 h-12 p-2 rounded-md outline-none ${
+                                                        touched.surname || values.surname
+                                                            ? errors.surname
+                                                                ? 'border-red-500'
+                                                                : 'border-green-500'
+                                                            : 'border-[#6B7280]'
+                                                    }`}
+                                                />
+                                                <ErrorMessage
+                                                    name="surname"
+                                                    component="div"
+                                                    className="text-sm text-red-500 h-6"
+                                                />
+                                            </div>
+                                            <div className="mt-2 h-24">
+                                                <div className="font-medium">Email</div>
+                                                <Field
+                                                    type="text"
+                                                    name="email"
+                                                    className={`w-full border-2 mt-2 h-12 p-2 rounded-md outline-none ${
+                                                        touched.email || values.email
+                                                            ? errors.email
+                                                                ? 'border-red-500'
+                                                                : 'border-green-500'
+                                                            : 'border-[#6B7280]'
+                                                    }`}
+                                                />
+                                                <ErrorMessage
+                                                    name="email"
+                                                    component="div"
+                                                    className="text-sm  text-red-500 h-6"
+                                                />
+                                            </div>
+                                            <div className="mt-2 relative h-24">
+                                                <div className="font-medium">Password</div>
+                                                <FormikPassword
+                                                    name="password"
+                                                    touched={touched.password}
+                                                    error={errors.password}
+                                                />
+                                            </div>
+                                            <div className="mt-2 relative h-24">
+                                                <div className="font-medium">Confirm Password</div>
+                                                <FormikPassword
+                                                    name="confirmPassword"
+                                                    touched={touched.confirmPassword}
+                                                    error={errors.confirmPassword}
+                                                />
+                                            </div>
+                                            <div className="mt-2 mb-3 flex items-center justify-center">
+                                                <Button
+                                                    type="submit"
+                                                    disabled={isLoading || !(isValid && dirty)}
+                                                    className={`w-28 h-12 text-white py-1 rounded-3xl font-semibold ${
+                                                        isValid && dirty ? 'bg-green-400' : 'bg-red-500'
+                                                    }`}
+                                                    loading={isLoading}
+                                                >
+                                                    Register
+                                                </Button>
+                                            </div>
+                                        </Form>
+                                        <ResetFormikFields
+                                            fields={['password', 'confirmPassword']}
+                                            condition={data?.register}
+                                            isLoading={isLoading}
+                                        />
+                                    </>
                                 )}
                             </Formik>
                         </div>

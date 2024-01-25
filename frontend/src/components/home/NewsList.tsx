@@ -1,14 +1,42 @@
 import { useEffect, useState } from 'react';
-import { Pagination } from 'flowbite-react';
+import './NewsList.css';
+import { Pagination, type CustomFlowbiteTheme } from 'flowbite-react';
 import { useFormikContext } from 'formik';
 import { useLocation } from 'react-router-dom';
-import './NewsList.css';
 import { useSearchMutation, useFetchApisQuery } from '../../store';
-import NewsItem from './NewsItem';
 import { type FilterSettings } from '../../types';
+import NewsItem from './NewsItem';
 import Loading from '../Loading';
 import Button from '../Button';
-import { SEARCH_MUTATION_CACHE_KEY, ITEMS_PER_API } from '../../utils/constants';
+import { SEARCH_MUTATION_CACHE_KEY } from '../../utils/constants';
+
+const ITEMS_PER_API = 10;
+const customPaginationTheme: CustomFlowbiteTheme['pagination'] = {
+    base: '',
+    layout: {
+        table: {
+            base: 'text-sm text-gray-700 dark:text-gray-400',
+            span: 'font-semibold text-gray-900 dark:text-white',
+        },
+    },
+    pages: {
+        base: 'xs:mt-0 mt-2 inline-flex items-center -space-x-px',
+        showIcon: 'inline-flex',
+        previous: {
+            base: 'ml-0 rounded-l-lg border-2 border-[#6B7280] bg-white py-2 px-3 leading-tight text-gray-500 enabled:hover:bg-gray-200 enabled:hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 enabled:dark:hover:bg-gray-700 enabled:dark:hover:text-white max-[360px]:w-9',
+            icon: 'h-5 w-5',
+        },
+        next: {
+            base: 'rounded-r-lg border-2 border-[#6B7280] bg-white py-2 px-3 leading-tight text-gray-500 enabled:hover:bg-gray-200 enabled:hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 enabled:dark:hover:bg-gray-700 enabled:dark:hover:text-white max-[360px]:w-9',
+            icon: 'h-5 w-5',
+        },
+        selector: {
+            base: 'w-12 border-2 border-[#6B7280] bg-white py-2 leading-tight text-gray-500 enabled:hover:bg-gray-200 enabled:hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 enabled:dark:hover:bg-gray-700 enabled:dark:hover:text-white max-[360px]:w-9',
+            active: 'bg-cyan-50 text-cyan-600 hover:bg-cyan-100 hover:text-cyan-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white',
+            disabled: 'opacity-50 cursor-normal',
+        },
+    },
+};
 
 const NewsList: React.FC = () => {
     const [pageNum, setPageNum] = useState<number>(1);
@@ -86,6 +114,7 @@ const NewsList: React.FC = () => {
                             <div className="text-center mb-[5rem] sm:mb-4 mt-2">
                                 <div className="pagination">
                                     <Pagination
+                                        theme={customPaginationTheme}
                                         currentPage={data.page}
                                         totalPages={maxPage}
                                         onPageChange={onPageChange}
@@ -97,14 +126,14 @@ const NewsList: React.FC = () => {
                                 <div>
                                     <input
                                         type="number"
-                                        className="page-num border border-gray-300 w-16 p-0 mt-2 text-center rounded-md"
+                                        className="page-num border-2 border-[#6B7280] w-16 p-0 mt-2 text-center rounded-md outline-none"
                                         min="1"
                                         max={maxPage}
                                         value={pageNum}
                                         onChange={handlePageNumChange}
                                     />
                                     <Button
-                                        className="px-4 ml-2 border border-gray-300 rounded-md"
+                                        className="px-4 ml-2 border-2 border-[#6B7280] rounded-md"
                                         onClick={handlePageGoClick}
                                     >
                                         Go

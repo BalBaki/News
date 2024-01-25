@@ -28,11 +28,13 @@ const userApi = createApi({
         return {
             register: builder.mutation<RegisterResponse, RegisterForm>({
                 query: (payload) => {
+                    const { confirmPassword, ...rest } = payload;
+
                     return {
                         method: 'POST',
                         url: '/register',
                         body: {
-                            payload: encodeURIComponent(JSON.stringify(payload)),
+                            payload: encodeURIComponent(JSON.stringify(rest)),
                         },
                     };
                 },
