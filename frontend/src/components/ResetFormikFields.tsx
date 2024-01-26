@@ -8,10 +8,10 @@ type ResetFormikFieldsProps = {
 };
 
 const ResetFormikFields: React.FC<ResetFormikFieldsProps> = ({ fields, condition, isLoading }) => {
-    const { values, setValues, initialValues, setTouched } = useFormikContext<any>();
+    const { values, setValues, initialValues, setTouched, dirty } = useFormikContext<any>();
 
     useEffect(() => {
-        if (!isLoading) {
+        if (!isLoading && dirty) {
             const fieldsAsArray = typeof fields === 'string' ? [fields] : fields;
 
             fieldsAsArray.forEach((field) => {
