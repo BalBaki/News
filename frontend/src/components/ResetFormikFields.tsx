@@ -1,13 +1,13 @@
 import { useFormikContext } from 'formik';
 import { useEffect } from 'react';
 
-type ResetFormikFieldsType = {
+type ResetFormikFieldsProps = {
     fields: string | string[];
     condition: any;
     isLoading?: boolean;
 };
 
-const ResetFormikFields: React.FC<ResetFormikFieldsType> = ({ fields, condition, isLoading }) => {
+const ResetFormikFields: React.FC<ResetFormikFieldsProps> = ({ fields, condition, isLoading }) => {
     const { values, setValues, initialValues, setTouched } = useFormikContext<any>();
 
     useEffect(() => {
