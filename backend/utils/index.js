@@ -8,8 +8,6 @@ const validateEmail = (email) =>
         /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
     ).test(email.toLowerCase());
 
-//[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?
-
 const createRefreshToken = (value) =>
     jwt.sign(value, process.env.JWT_REFRESH_TOKEN_SECRET_KEY, {
         expiresIn: '3d',

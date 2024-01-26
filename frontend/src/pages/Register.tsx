@@ -8,9 +8,9 @@ import { type RegisterForm } from '../types';
 import { useRegisterMutation } from '../store';
 import { useNotification } from '../hooks/use-notification';
 import Button from '../components/Button';
-import FormikPassword from '../components/FormikPassword';
+import FormikPassword from '../components/formik/FormikPassword';
 import NavigateHomeIcon from '../components/NavigateHomeIcon';
-import ResetFormikFields from '../components/ResetFormikFields';
+import ResetFormikFields from '../components/formik/ResetFormikFields';
 
 const Register: React.FC = () => {
     const initialValues: RegisterForm = {

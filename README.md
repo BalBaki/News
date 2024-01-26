@@ -6,11 +6,19 @@
     -   GUARDIANS_API_KEY
     -   NY_TIMES_API_KEY
 
+## For Backend
+
 ```bash
-  npm install
   cd backend
+  npm install
   node server.js
+```
+
+## For Backend
+
+```bash
   cd frontend
+  npm install
   npm run start
 ```
 

@@ -14,7 +14,7 @@ const defaultFormValues: FilterSettings = {
     page: 1,
 };
 
-const ResetForm: React.FC = () => {
+const ResetFilters: React.FC = () => {
     const { setValues } = useFormikContext<FilterSettings>();
     const [, { data }] = useLogoutMutation({
         fixedCacheKey: LOGOUT_MUTATION_CACHE_KEY,
@@ -29,4 +29,4 @@ const ResetForm: React.FC = () => {
     return <></>;
 };
 
-export default ResetForm;
+export default ResetFilters;

@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux';
 import { useLoginMutation, type RootState } from '../store';
 import { useNotification } from '../hooks/use-notification';
 import Button from '../components/Button';
-import FormikPassword from '../components/FormikPassword';
+import FormikPassword from '../components/formik/FormikPassword';
 import NavigateHomeIcon from '../components/NavigateHomeIcon';
-import ResetFormikFields from '../components/ResetFormikFields';
+import ResetFormikFields from '../components/formik/ResetFormikFields';
 import { type LoginForm } from '../types';
 
 const Login: React.FC = () => {

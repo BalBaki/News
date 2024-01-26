@@ -3,13 +3,13 @@ import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { useSearchMutation, type RootState } from '../../store';
 import { type FilterSettings } from '../../types';
-import Apis from '../form/Apis';
-import SortOrder from '../form/SortOrder';
+import Apis from '../filters/Apis';
+import SortOrder from '../filters/SortOrder';
 import Button from '../Button';
-import ExtraFilters from '../form/extraFilters';
+import ExtraFilters from '../filters/extraFilters';
 import NewsList from './NewsList';
 import SaveSettings from './SaveSettings';
-import ResetForm from './ResetForm';
+import ResetFilters from '../filters/ResetFilters';
 import { SEARCH_MUTATION_CACHE_KEY } from '../../utils/constants';
 
 const Search: React.FC = () => {
@@ -118,7 +118,7 @@ const Search: React.FC = () => {
                             </Form>
                         </section>
                         <NewsList />
-                        <ResetForm />
+                        <ResetFilters />
                     </>
                 )}
             </Formik>
