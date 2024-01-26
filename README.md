@@ -14,7 +14,7 @@
   node server.js
 ```
 
-## For Backend
+## For Frontend
 
 ```bash
   cd frontend
