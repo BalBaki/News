@@ -54,7 +54,7 @@ const clearTokenCookies = (response) =>
 
 const transformArticles = (articles) => {
     Object.keys(articles).forEach((key) => {
-        articles[key] = articles[key].map((article) => {
+        articles[key].result = articles[key].result.map((article) => {
             return {
                 id: randomUUID(),
                 title: article.title || article.webTitle || article.snippet || '',

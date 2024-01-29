@@ -43,10 +43,7 @@ const Search: React.FC = () => {
                 initialValues={initialValues}
                 validationSchema={formSchema}
                 onSubmit={(values) => {
-                    search({
-                        ...values,
-                        term: values.term.toLocaleLowerCase(),
-                    });
+                    search(values);
                 }}
             >
                 {({ values, isValid, dirty }) => (

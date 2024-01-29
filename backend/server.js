@@ -254,6 +254,7 @@ app.get('/filters', async (request, response) => {
 app.post('/search', async (request, response) => {
     try {
         const payload = decodePayload(request.body.payload);
+
         const { apiNames, term, fromDate, toDate, page, sortOrder, extraFilters } = payload;
         const responses = await Promise.all(
             apiNames.map((apiName) =>
@@ -272,24 +273,40 @@ app.post('/search', async (request, response) => {
 
         values.forEach((result) => {
             //newsapi
-            if (result?.articles?.length > 0) articles['newsapi'] = result.articles;
+            if (result?.articles?.length > 0) {
+                articles['newsapi'] = {};
+
+                articles['newsapi'].result = result.articles;
+                articles['newsapi'].count = result.totalResults;
+            }
 
             //theguardians
-            if (result?.response?.results?.length > 0) articles['theguardians'] = result.response.results;
+            if (result?.response?.results?.length > 0) {
+                console.log(result);
+                articles['theguardians'] = {};
+
+                articles['theguardians'].result = result.response.results;
+                articles['theguardians'].count = result.response.total;
+            }
 
             //new york times
-            if (result?.response?.docs?.length > 0) articles['newyorktimes'] = result.response.docs;
+            if (result?.response?.docs?.length > 0) {
+                articles['newyorktimes'] = {};
+
+                articles['newyorktimes'].result = result.response.docs;
+                articles['newyorktimes'].count = result.response.meta.hits;
+            }
 
             if (result?.status === 'error' || result?.response?.status === 'error' || result?.message) {
                 errors.push(result?.message || result?.response?.message);
             }
 
-            if (result?.response?.total || result?.totalResults || result?.response?.meta?.hits) {
-                totalArticleCount +=
-                    result?.response?.total || result?.totalResults || result?.response?.meta?.hits || 0;
+            // if (result?.response?.total || result?.totalResults || result?.response?.meta?.hits) {
+            //     totalArticleCount +=
+            //         result?.response?.total || result?.totalResults || result?.response?.meta?.hits || 0;
 
-                articleCounts.push(result?.response?.total || result?.totalResults || result?.response?.meta?.hits);
-            }
+            //     articleCounts.push(result?.response?.total || result?.totalResults || result?.response?.meta?.hits);
+            // }
         });
 
         if (errors.length > 0) throw new Error('Error at Fetching Articles');
@@ -297,8 +314,8 @@ app.post('/search', async (request, response) => {
         response.json({
             search: true,
             page,
-            totalArticleCount,
-            maxNewsCount: articleCounts.sort((a, b) => b - a)[0],
+            // totalArticleCount,
+            // maxNewsCount: articleCounts.sort((a, b) => b - a)[0],
             articles: transformArticles(articles),
         });
     } catch (error) {

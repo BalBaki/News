@@ -19,19 +19,18 @@ export type SearchResponse =
     | {
           search: true;
           articles: {
-              [key: string]: News[];
+              [keys: string]: {
+                  count: number;
+                  result: News[];
+              };
           };
           page: number;
-          totalArticleCount: number;
-          maxNewsCount: number;
           error?: never;
       }
     | {
           search: false;
           error: string;
           articles?: never;
-          maxNewsCount?: never;
-          totalArticleCount?: never;
           page?: never;
       };
 

@@ -4,6 +4,8 @@ import { Pagination, type CustomFlowbiteTheme } from 'flowbite-react';
 import { useFormikContext } from 'formik';
 import { useLocation } from 'react-router-dom';
 import { useSearchMutation, useFetchApisQuery } from '../../store';
+import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from 'react-icons/md';
+
 import { type FilterSettings } from '../../types';
 import NewsItem from './NewsItem';
 import Loading from '../Loading';
@@ -14,8 +16,9 @@ import {
     THE_NEW_YORK_TIMES,
 } from '../../utils/constants';
 import GoPageWithNum from './GoPageWithNum';
+import NewsListPart from './NewsListPart';
 
-const ITEMS_PER_API = 10;
+// const ITEMS_PER_API = 10;
 const customPaginationTheme: CustomFlowbiteTheme['pagination'] = {
     base: '',
     layout: {
@@ -42,32 +45,32 @@ const customPaginationTheme: CustomFlowbiteTheme['pagination'] = {
         },
     },
 };
-const articleColors = {
-    [NEWS_API_NAME]: {
-        imageFilterBg: 'bg-[rgba(255,111,97,0.4)]',
-    },
-    [THE_GUARDIANS_API_NAME]: {
-        imageFilterBg: 'bg-[rgba(102,103,171,0.4)]',
-    },
-    [THE_NEW_YORK_TIMES]: {
-        imageFilterBg: 'bg-[rgba(69,181,170,0.4)]',
-    },
-};
+// const articleColors = {
+//     [NEWS_API_NAME]: {
+//         imageFilterBg: 'bg-[rgba(255,111,97,0.4)]',
+//     },
+//     [THE_GUARDIANS_API_NAME]: {
+//         imageFilterBg: 'bg-[rgba(102,103,171,0.4)]',
+//     },
+//     [THE_NEW_YORK_TIMES]: {
+//         imageFilterBg: 'bg-[rgba(69,181,170,0.4)]',
+//     },
+// };
 
 const NewsList: React.FC = () => {
     const [search, { data, error, isLoading, reset }] = useSearchMutation({
         fixedCacheKey: SEARCH_MUTATION_CACHE_KEY,
     });
-    const { data: apiData } = useFetchApisQuery();
-    const { values, isValid } = useFormikContext<FilterSettings>();
+    // const { data: apiData } = useFetchApisQuery();
+    // const { values, isValid } = useFormikContext<FilterSettings>();
     const location = useLocation();
-    const maxPage = Math.ceil((data?.maxNewsCount || 0) / ITEMS_PER_API);
+    // const maxPage = Math.ceil((data?.maxNewsCount || 0) / ITEMS_PER_API);
 
-    const onPageChange = (page: number): void => {
-        if (!isValid || page === data?.page) return;
+    // const onPageChange = (page: number): void => {
+    //     if (!isValid || page === data?.page) return;
 
-        search({ ...values, term: values.term.toLocaleLowerCase(), page });
-    };
+    //     search({ ...values, page });
+    // };
 
     // useEffect(() => {
     //     reset();
@@ -85,20 +88,27 @@ const NewsList: React.FC = () => {
 
     if (data?.articles) {
         renderedNews = Object.keys(data.articles).map((apiName) => {
-            const renderedArticles = data.articles[apiName].map((article) => {
-                return <NewsItem key={article.id} news={article} colors={articleColors[apiName]} />;
-            });
+            return <NewsListPart apiName={apiName} key={apiName} />;
+            // const renderedArticles = data.articles[apiName].map((article) => {
+            //     return <NewsItem key={article.id} news={article} colors={articleColors[apiName]} />;
+            // });
 
-            return (
-                <div key={apiName}>
-                    <div
-                        className={`capitalize text-2xl italic pb-1 mt-8 ${articleColors[apiName].imageFilterBg} rounded-2xl pl-3`}
-                    >
-                        {apiData?.apis?.find((api) => api.value === apiName)?.name || apiName}
-                    </div>
-                    <div className="flex flex-wrap justify-between gap-3 mt-4">{renderedArticles}</div>
-                </div>
-            );
+            // return (
+            //     <div key={apiName}>
+            //         <div
+            //             className={`flex justify-between capitalize text-2xl italic mt-8 ${articleColors[apiName].imageFilterBg} rounded-2xl px-3 py-1`}
+            //         >
+            //             {apiData?.apis?.find((api) => api.value === apiName)?.name || apiName}
+            //             <div className="flex items-center">
+            //                 <MdOutlineKeyboardArrowLeft className="cursor-pointer" />
+            //                 <MdOutlineKeyboardArrowRight className="cursor-pointer" />
+            //             </div>
+            //         </div>
+            //         <div className="flex flex-wrap justify-center sm:justify-evenly gap-3 mt-4">
+            //             {renderedArticles}
+            //         </div>
+            //     </div>
+            // );
         });
     }
 
@@ -108,7 +118,7 @@ const NewsList: React.FC = () => {
                 Object.keys(data.articles).length > 0 ? (
                     <>
                         {renderedNews}
-                        {data.maxNewsCount > ITEMS_PER_API && (
+                        {/* {data.maxNewsCount > ITEMS_PER_API && (
                             <div className="text-center mb-[5rem] sm:mb-4 mt-2">
                                 <Pagination
                                     theme={customPaginationTheme}
@@ -121,7 +131,7 @@ const NewsList: React.FC = () => {
                                 />
                                 <GoPageWithNum maxPage={maxPage} />
                             </div>
-                        )}
+                        )} */}
                     </>
                 ) : (
                     <div className="ml-3">No News Found</div>

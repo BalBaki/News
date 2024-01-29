@@ -11,13 +11,13 @@ const NewsItem: React.FC<NewsProps> = ({ news, colors }) => {
     const { url, imageUrl, title, description } = news;
     const randomNumber = useMemo(() => Math.random(), []);
     const renderedParts = [
-        <div className="flex flex-row-reverse relative rounded-xl">
+        <div className="flex flex-row-reverse relative rounded-xl" key="firstPart">
             <div className="w-[60%] h-36 m-2 rounded-full border-2 overflow-hidden relative">
                 <img src={imageUrl} alt={title} className="w-full h-full" loading="lazy" />
                 <div className={`absolute inset-0 ${colors?.imageFilterBg}`}></div>
             </div>
         </div>,
-        <div className="border-b-3 text-md px-4 mt-2">
+        <div className="border-b-3 text-md px-4 mt-2" key="secondPart">
             <div className="line-clamp-4 top-5 font-bold text-xl uppercase w-full h-28" title={title}>
                 {title}
             </div>
@@ -35,7 +35,7 @@ const NewsItem: React.FC<NewsProps> = ({ news, colors }) => {
                 <div className="h-full w-full p-2">{renderedParts}</div>
             </a>
             <BookMark
-                className={`absolute w-9 h-9 bg-red-400 rounded-full p-2 z-[9999] ${
+                className={`absolute w-9 h-9 bg-red-400 rounded-full p-2 z-10 ${
                     randomNumber > 0.5 ? 'left-[35%] bottom-5' : 'top-4 right-4'
                 } opacity-0 group-hover:opacity-100 transition-opacity`}
             />
