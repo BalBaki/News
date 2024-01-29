@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useFormikContext } from 'formik';
 import { useSearchMutation, useFetchApisQuery } from '../../store';
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from 'react-icons/md';
@@ -12,6 +12,7 @@ import {
     THE_NEW_YORK_TIMES,
 } from '../../utils/constants';
 import Button from '../Button';
+import classNames from 'classnames';
 
 type NewsListPartProps = {
     apiName: string;
@@ -32,6 +33,7 @@ const ITEMS_PER_API = 10;
 
 const NewsListPart: React.FC<NewsListPartProps> = ({ apiName }) => {
     const [page, setPage] = useState<number>(1);
+    const previousPageNum = useRef<number>(1);
     const { values, isValid } = useFormikContext<FilterSettings>();
     const { data: apiData } = useFetchApisQuery();
     const [, { data: generalSearchResult }] = useSearchMutation({
@@ -44,6 +46,12 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ apiName }) => {
 
         search({ ...values, page, apiNames: [apiName], extraFilters: { [apiName]: values.extraFilters[apiName] } });
     }, [page]);
+    const handleNavigationArrows = (direction: 'next' | 'previous') => {
+        previousPageNum.current = page;
+
+        if (direction === 'next') setPage((c) => c + 1);
+        else if (direction === 'previous') setPage((c) => c - 1);
+    };
 
     let content;
 
@@ -60,7 +68,12 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ apiName }) => {
             return <NewsItem key={article.id} news={article} colors={articleColors[apiName]} />;
         });
 
-        content = <div className="flex flex-wrap justify-center sm:justify-evenly gap-3 mt-4">{renderedNews}</div>;
+        const classes = classNames('flex flex-wrap justify-center sm:justify-evenly gap-3 mt-4', {
+            'animate-sliding-from-right-to-left': previousPageNum.current <= page,
+            'animate-sliding-from-left-to-right': previousPageNum.current > page,
+        });
+
+        content = <div className={classes}>{renderedNews}</div>;
     }
 
     return (
@@ -70,18 +83,18 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ apiName }) => {
             >
                 {apiData?.apis?.find((api) => api.value === apiName)?.name || apiName}
                 <div className="flex items-center">
-                    <Button onClick={() => setPage((c) => c - 1)} disabled={page <= 1}>
+                    <Button onClick={() => handleNavigationArrows('previous')} disabled={page <= 1 || isLoading}>
                         <MdOutlineKeyboardArrowLeft className="cursor-pointer" />
                     </Button>
                     <Button
-                        onClick={() => setPage((c) => c + 1)}
+                        onClick={() => handleNavigationArrows('next')}
                         disabled={
                             page >=
-                            Math.ceil(
-                                (data?.articles?.[apiName]?.count ||
-                                    generalSearchResult?.articles?.[apiName]?.count ||
-                                    0) / ITEMS_PER_API
-                            )
+                                Math.ceil(
+                                    (data?.articles?.[apiName]?.count ||
+                                        generalSearchResult?.articles?.[apiName]?.count ||
+                                        0) / ITEMS_PER_API
+                                ) || isLoading
                         }
                     >
                         <MdOutlineKeyboardArrowRight className="cursor-pointer" />

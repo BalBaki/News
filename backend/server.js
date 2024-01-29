@@ -266,10 +266,8 @@ app.post('/search', async (request, response) => {
         if (filteredResponses.length < 1) throw new Error('Error at Fetching Articles');
 
         const values = await Promise.all(filteredResponses.map((searchResponse) => searchResponse.json()));
-        const articleCounts = [];
         const articles = {};
         const errors = [];
-        let totalArticleCount = 0;
 
         values.forEach((result) => {
             //newsapi
@@ -282,7 +280,6 @@ app.post('/search', async (request, response) => {
 
             //theguardians
             if (result?.response?.results?.length > 0) {
-                console.log(result);
                 articles['theguardians'] = {};
 
                 articles['theguardians'].result = result.response.results;
@@ -300,13 +297,6 @@ app.post('/search', async (request, response) => {
             if (result?.status === 'error' || result?.response?.status === 'error' || result?.message) {
                 errors.push(result?.message || result?.response?.message);
             }
-
-            // if (result?.response?.total || result?.totalResults || result?.response?.meta?.hits) {
-            //     totalArticleCount +=
-            //         result?.response?.total || result?.totalResults || result?.response?.meta?.hits || 0;
-
-            //     articleCounts.push(result?.response?.total || result?.totalResults || result?.response?.meta?.hits);
-            // }
         });
 
         if (errors.length > 0) throw new Error('Error at Fetching Articles');

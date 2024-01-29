@@ -25,6 +25,18 @@ module.exports = {
                         opacity: '0',
                     },
                 },
+                slidingFromRightToLeft: {
+                    '0%': {
+                        opacity: '0',
+                        transform: 'translateX(100%)',
+                    },
+                },
+                slidingFromLeftToRight: {
+                    '0%': {
+                        opacity: '0',
+                        transform: 'translateX(-100%)',
+                    },
+                },
             },
             animation: {
                 'spin-slow': 'spin 2s linear infinite',
@@ -33,6 +45,8 @@ module.exports = {
                 'little-bounce': 'littleBounce 1s infinite',
                 'fade-in': 'fadeIn .5s linear',
                 'fade-out': 'fadeOut .5s linear',
+                'sliding-from-right-to-left': 'slidingFromRightToLeft .7s ease-in-out',
+                'sliding-from-left-to-right': 'slidingFromLeftToRight .7s ease-in-out',
             },
             backgroundImage: {
                 'news-bg': "url('/src/assets/images/news-bg.jpg')",
