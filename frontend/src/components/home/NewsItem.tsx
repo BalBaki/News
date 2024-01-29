@@ -37,7 +37,7 @@ const NewsItem: React.FC<NewsProps> = ({ news, colors }) => {
             <BookMark
                 className={`absolute w-9 h-9 bg-red-400 rounded-full p-2 z-[9999] ${
                     randomNumber > 0.5 ? 'left-[35%] bottom-5' : 'top-4 right-4'
-                } opacity-1 group-hover:opacity-100 transition-opacity`}
+                } opacity-0 group-hover:opacity-100 transition-opacity`}
             />
         </article>
     );
