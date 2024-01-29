@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
-import BookMark from './Bookmark';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import { useChangeFavoriteMutation, type RootState } from '../../store';
 import { type News } from '../../types';
 
 type NewsProps = {
@@ -8,8 +10,17 @@ type NewsProps = {
 };
 
 const NewsItem: React.FC<NewsProps> = ({ news, colors }) => {
+    const { favorites } = useSelector((state: RootState) => state.user);
     const { url, imageUrl, title, description } = news;
+    const [addFavorite] = useChangeFavoriteMutation();
     const randomNumber = useMemo(() => Math.random(), []);
+    const isFavorite = useMemo(() => favorites.find((favoriteNews) => favoriteNews.url === news.url), [favorites]);
+    const BookMark = isFavorite ? FaBookmark : FaRegBookmark;
+
+    const handleChangeFavoritesClick = () => {
+        addFavorite({ type: isFavorite ? 'remove' : 'add', news });
+    };
+
     const renderedParts = [
         <div className="flex flex-row-reverse relative rounded-xl" key="firstPart">
             <div className="w-[60%] h-36 m-2 rounded-full border-2 overflow-hidden relative">
@@ -34,11 +45,13 @@ const NewsItem: React.FC<NewsProps> = ({ news, colors }) => {
             <a href={url} target="_blank" rel="noreferrer">
                 <div className="h-full w-full p-2">{renderedParts}</div>
             </a>
-            <BookMark
+            <div
                 className={`absolute w-9 h-9 bg-red-400 rounded-full p-2 z-10 ${
                     randomNumber > 0.5 ? 'left-[35%] bottom-5' : 'top-4 right-4'
                 } opacity-0 group-hover:opacity-100 transition-opacity`}
-            />
+            >
+                <BookMark className="w-full h-full cursor-pointer text-black" onClick={handleChangeFavoritesClick} />
+            </div>
         </article>
     );
 };

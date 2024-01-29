@@ -36,12 +36,15 @@ const Navbar: React.FC = () => {
         content = (
             <>
                 <Button
-                    className="bg-red-400 w-24 h-7 rounded-xl text-white text-center disabled:cursor-not-allowed"
+                    className="bg-red-400 w-24 h-7 rounded-xl text-white text-center disabled:cursor-not-allowed ml-2"
                     loading={isLoading}
                     disabled={isLoading}
                     onClick={handleLogoutClick}
                 >
                     LogOut
+                </Button>
+                <Button className="bg-green-400 w-24 h-7 rounded-xl text-white text-center">
+                    <Link to="/favorites">Favorites</Link>
                 </Button>
             </>
         );

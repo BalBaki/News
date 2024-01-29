@@ -20,6 +20,7 @@ module.exports = new mongoose.Schema(
             required: true,
         },
         filterSettings: Object,
+        favorites: Array,
     },
     {
         versionKey: false,

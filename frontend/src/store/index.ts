@@ -33,8 +33,9 @@ export {
     useRegisterMutation,
     useLoginMutation,
     useLogoutMutation,
-    useVerifyMutation,
+    useLazyVerifyQuery,
     useSaveSettingsMutation,
+    useChangeFavoriteMutation,
 } from './apis/userApi';
 export { addNotification, removeNotification, updateNotifications } from './slices/notifications';
 export { useSearchMutation, useFetchApisQuery, useFetchFiltersQuery } from './apis/searchApi';

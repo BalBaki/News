@@ -1,4 +1,5 @@
 import { type FilterSettings } from './filterSettings.interface';
+import { type News } from './news.interface';
 
 export interface User {
     id: string;
@@ -6,4 +7,5 @@ export interface User {
     name: string;
     surname: string;
     filterSettings: FilterSettings;
+    favorites: News[];
 }

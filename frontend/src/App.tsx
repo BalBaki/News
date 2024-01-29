@@ -2,9 +2,11 @@ import { Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
+import Favorites from './pages/Favorites';
 import Notifications from './components/Notifications';
 import { useVerify } from './hooks/use-verify';
 import Loading from './components/Loading';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const App: React.FC = () => {
     const { isLoading } = useVerify();
@@ -22,6 +24,14 @@ const App: React.FC = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route
+                    path="/favorites"
+                    element={
+                        <ProtectedRoute>
+                            <Favorites />
+                        </ProtectedRoute>
+                    }
+                />
             </Routes>
             <Notifications />
         </>

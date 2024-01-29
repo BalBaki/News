@@ -7,6 +7,8 @@ import {
     type LogoutResponse,
     type SaveSettingsResponse,
     type VerifyResponse,
+    type ChangeFavoritesResponse,
+    type News,
 } from '../../types';
 
 interface SearchSettings {
@@ -18,12 +20,18 @@ interface SearchSettings {
     };
 }
 
+interface ChangeFavorite {
+    type: 'add' | 'remove';
+    news: News;
+}
+
 const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
         baseUrl: process.env.REACT_APP_API_URL,
         credentials: 'include',
     }),
+    tagTypes: ['Favorite'],
     endpoints(builder) {
         return {
             register: builder.mutation<RegisterResponse, RegisterForm>({
@@ -58,7 +66,8 @@ const userApi = createApi({
                     };
                 },
             }),
-            verify: builder.mutation<VerifyResponse, void>({
+            verify: builder.query<VerifyResponse, void>({
+                providesTags: [{ type: 'Favorite' }],
                 query: () => {
                     return {
                         method: 'POST',
@@ -77,10 +86,28 @@ const userApi = createApi({
                     };
                 },
             }),
+            changeFavorite: builder.mutation<ChangeFavoritesResponse, ChangeFavorite>({
+                invalidatesTags: (result) => (result?.success ? [{ type: 'Favorite' }] : []),
+                query: (payload) => {
+                    return {
+                        method: 'POST',
+                        url: '/favorite',
+                        body: {
+                            payload: encodeURIComponent(JSON.stringify(payload)),
+                        },
+                    };
+                },
+            }),
         };
     },
 });
 
 export { userApi };
-export const { useRegisterMutation, useLoginMutation, useLogoutMutation, useVerifyMutation, useSaveSettingsMutation } =
-    userApi;
+export const {
+    useRegisterMutation,
+    useLoginMutation,
+    useLogoutMutation,
+    useLazyVerifyQuery,
+    useSaveSettingsMutation,
+    useChangeFavoriteMutation,
+} = userApi;

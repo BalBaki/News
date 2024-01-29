@@ -77,15 +77,20 @@ app.post('/register', async (request, response) => {
                 salt: randomBytes(64),
             });
             const newUser = await User.create(
-                Object.assign(payload, { email: payloadEmail, password: hashedPassword, filterSettings: {} })
+                Object.assign(payload, {
+                    email: payloadEmail,
+                    password: hashedPassword,
+                    filterSettings: {},
+                    favorites: [],
+                })
             );
 
-            const { id, name, surname, email, filterSettings } = newUser;
+            const { id, name, surname, email, filterSettings, favorites } = newUser;
 
             createAccessTokenCookies(response, { id, email });
             createRefreshTokenCookie(response, { id, email });
 
-            return response.json({ register: true, user: { id, name, surname, email, filterSettings } });
+            return response.json({ register: true, user: { id, name, surname, email, filterSettings, favorites } });
         }
 
         throw new Error('Exists Email');
@@ -109,14 +114,14 @@ app.post('/login', async (request, response) => {
             const isPasswordCompare = await argon2.verify(user.password, payload.password);
 
             if (isPasswordCompare) {
-                const { id, name, surname, email, filterSettings } = user;
+                const { id, name, surname, email, filterSettings, favorites } = user;
 
                 createAccessTokenCookies(response, { id, email });
                 createRefreshTokenCookie(response, { id, email });
 
                 return response.json({
                     login: true,
-                    user: { id, name, surname, email, filterSettings },
+                    user: { id, name, surname, email, filterSettings, favorites },
                 });
             }
         }
@@ -142,9 +147,9 @@ app.post('/verify', authMiddleware, async (request, response) => {
         const user = await User.findOne({ email: payloadUser.email, _id: payloadUser.id }).select({ password: 0 });
 
         if (user) {
-            const { id, name, surname, email, filterSettings } = user;
+            const { id, name, surname, email, filterSettings, favorites } = user;
 
-            return response.json({ verify: true, user: { id, name, surname, email, filterSettings } });
+            return response.json({ verify: true, user: { id, name, surname, email, filterSettings, favorites } });
         }
 
         throw new Error('Not Exists User');
@@ -310,5 +315,43 @@ app.post('/search', async (request, response) => {
         });
     } catch (error) {
         response.json({ search: false, error: error.message });
+    }
+});
+
+// payload => {type: 'add' | 'remove', news: News}
+app.post('/favorite', authMiddleware, async (request, response) => {
+    try {
+        const payload = decodePayload(request.body.payload);
+        const { user: payloadUser } = request;
+        const { type, news } = payload;
+        const user = await User.findOne({ email: payloadUser.email, _id: payloadUser.id }).select({ password: 0 });
+
+        if (user) {
+            let { favorites } = user;
+
+            if (type === 'add') {
+                favorites.push(news);
+
+                const isAddedtoFavorites = await User.findOneAndUpdate(
+                    { _id: payloadUser.id, email: payloadUser.email },
+                    { $set: { favorites } }
+                );
+
+                if (!isAddedtoFavorites) throw new Error('Not Saved');
+            } else if (type === 'remove') {
+                favorites = favorites.filter((favoriteNew) => favoriteNew.url !== news.url);
+
+                const isRemovedFromFavorites = await User.findOneAndUpdate(
+                    { _id: payloadUser.id, email: payloadUser.email },
+                    { $set: { favorites } }
+                );
+
+                if (!isRemovedFromFavorites) throw new Error('Not Deleted');
+            }
+        }
+
+        response.json({ success: true });
+    } catch (error) {
+        response.json({ success: false, error: error.message });
     }
 });

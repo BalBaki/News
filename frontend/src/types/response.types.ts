@@ -113,3 +113,13 @@ export type SaveSettingsResponse =
           save: false;
           error: string;
       };
+
+export type ChangeFavoritesResponse =
+    | {
+          success: true;
+          error?: never;
+      }
+    | {
+          success: false;
+          error: string;
+      };
