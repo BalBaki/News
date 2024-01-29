@@ -10,6 +10,7 @@ import ExtraFilters from '../filters/extraFilters';
 import NewsList from './NewsList';
 import SaveSettings from './SaveSettings';
 import ResetFilters from '../filters/ResetFilters';
+import Dates from '../filters/Dates';
 import { SEARCH_MUTATION_CACHE_KEY } from '../../utils/constants';
 
 const Search: React.FC = () => {
@@ -17,12 +18,12 @@ const Search: React.FC = () => {
     const [search, { isLoading }] = useSearchMutation({ fixedCacheKey: SEARCH_MUTATION_CACHE_KEY });
     const initialValues: FilterSettings = {
         term: '',
-        fromDate: user.filterSettings.fromDate || '',
-        toDate: user.filterSettings.toDate || new Date().toISOString().split('T')[0],
-        apiNames: user.filterSettings.apiNames?.length > 0 ? user.filterSettings.apiNames : [],
-        extraFilters: { ...user.filterSettings.extraFilters } || {},
+        fromDate: user?.filterSettings?.fromDate || '',
+        toDate: user?.filterSettings?.toDate || new Date(),
+        apiNames: user?.filterSettings?.apiNames?.length > 0 ? user?.filterSettings?.apiNames : [],
+        extraFilters: { ...user?.filterSettings?.extraFilters } || {},
         page: 1,
-        sortOrder: user.filterSettings.sortOrder || 'relevance',
+        sortOrder: user?.filterSettings?.sortOrder || 'relevance',
     };
 
     const formSchema = Yup.object().shape({
@@ -52,7 +53,7 @@ const Search: React.FC = () => {
                     <>
                         <section aria-label="filters">
                             <Form>
-                                <div className="sm:w-5/6 sm:mx-auto mx-3">
+                                <div className="sm:w-11/12 sm:mx-auto mx-3">
                                     <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3 justify-items-center mt-2">
                                         <div className="w-full">
                                             <Field
@@ -60,7 +61,7 @@ const Search: React.FC = () => {
                                                 name="term"
                                                 id="term"
                                                 placeholder="Search Term"
-                                                className="w-full border-2 border-[#6B7280] rounded-md py-0 px-1"
+                                                className="w-full border-2 border-[#6B7280] rounded-md py-0 px-1 !bg-black !text-white"
                                                 onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
                                                     e.key === 'Enter' && e.preventDefault();
                                                 }}
@@ -71,7 +72,7 @@ const Search: React.FC = () => {
                                                 className="text-sm  text-red-500 h-6"
                                             />
                                         </div>
-                                        <div className="flex justify-around xl:justify-evenly w-full max-[350px]:block ">
+                                        {/* <div className="flex justify-around xl:justify-evenly w-full max-[350px]:block ">
                                             <div className="flex items-start">
                                                 <div className="max-[350px]:w-12 max-[350px]:mr-0 mr-3">
                                                     <label htmlFor="fromDate">From: </label>
@@ -96,7 +97,8 @@ const Search: React.FC = () => {
                                                     max={new Date().toISOString().split('T')[0]}
                                                 />
                                             </div>
-                                        </div>
+                                        </div> */}
+                                        <Dates />
                                         <Apis />
                                         <SortOrder />
                                         <ExtraFilters />

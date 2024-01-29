@@ -88,10 +88,13 @@ const apis = {
         get filters() {
             return [];
         },
+        transformDate(date) {
+            if (new Date(date).toString() === 'Invalid Date') return;
+
+            return new Date(date).toISOString().split('T')[0].replaceAll('-', '');
+        },
         search(payload) {
             const { term, fromDate, toDate, page, sortOrder } = payload;
-
-            if (page > 100) return;
 
             return fetch(
                 this.baseUrl +
@@ -99,8 +102,8 @@ const apis = {
                     new URLSearchParams({
                         'api-key': process.env.NY_TIMES_API_KEY,
                         q: term,
-                        ...(fromDate && { begin_date: fromDate }),
-                        end_date: toDate,
+                        ...(fromDate && { begin_date: this.transformDate(fromDate) }),
+                        end_date: this.transformDate(toDate),
                         page,
                         sort: sortOrder,
                     })

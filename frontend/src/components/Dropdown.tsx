@@ -32,7 +32,7 @@ const Dropdown: React.FC<PropsWithChildren<DropdownProps>> = ({ children, placeh
     return (
         <div
             ref={divEl}
-            className="relative border-2 border-[#6B7280] capitalize break-word rounded-md cursor-default"
+            className="relative border-2 border-[#6B7280] capitalize break-word rounded-md cursor-default bg-black text-white"
         >
             <div className="px-1 flex justify-between items-center" onClick={handleShowClick}>
                 <div>{placeholder}</div>
@@ -40,8 +40,8 @@ const Dropdown: React.FC<PropsWithChildren<DropdownProps>> = ({ children, placeh
             </div>
             {isOpened && (
                 <div
-                    className="absolute w-full h-48 bg-white z-50 border-2 border-[#6B7280] max-h-48 overflow-y-auto 
-                        overflow-x-hidden left-[-2px] box-content origin-top animate-dropdown rounded-md"
+                    className="absolute w-full h-48 bg-black z-50 border-2 border-[#6B7280] max-h-48 overflow-y-auto 
+                        overflow-x-hidden left-[-2px] box-content origin-top animate-dropdown rounded-m"
                 >
                     {children}
                 </div>

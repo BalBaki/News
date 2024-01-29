@@ -54,10 +54,10 @@ const Register: React.FC = () => {
                 className="flex justify-center items-center w-full h-screen p-3 bg-news-bg"
                 aria-label="register form"
             >
-                <div className="relative w-full h-full max-w-lg max-h-[43rem] overflow-hidden rounded-md p-[.35rem] z-50">
-                    <div className="w-full h-full bg-white rounded-md overflow-auto border-2 z-50 p-3">
-                        <div>
-                            <h1 className="text-2xl font-semibold max-[300px]:text-xl">Sign up for NewsFeed</h1>
+                <div className="relative w-full h-full max-w-lg max-h-[43rem] overflow-hidden rounded-2xl p-[.35rem] z-50">
+                    <div className="w-full h-full bg-black rounded-2xl overflow-auto border-2 z-50 p-3">
+                        <div className="text-white">
+                            <h1 className="text-2xl font-semibold max-[300px]:text-xl ">Sign up for NewsFeed</h1>
                             <div className="font-medium text-sm mt-1 max-[300px]:text-xs">
                                 Create a free account or
                                 <Link to="/login" className="text-[#7CACAB] ml-1">
@@ -77,7 +77,7 @@ const Register: React.FC = () => {
                                     <>
                                         <Form>
                                             <div className="mt-2 h-24">
-                                                <div className="font-medium">Name</div>
+                                                <div className="font-medium text-white">Name</div>
                                                 <Field
                                                     type="text"
                                                     name="name"
@@ -96,7 +96,7 @@ const Register: React.FC = () => {
                                                 />
                                             </div>
                                             <div className="mt-2 h-24">
-                                                <div className="font-medium">Surname</div>
+                                                <div className="font-medium text-white">Surname</div>
                                                 <Field
                                                     type="text"
                                                     name="surname"
@@ -115,7 +115,7 @@ const Register: React.FC = () => {
                                                 />
                                             </div>
                                             <div className="mt-2 h-24">
-                                                <div className="font-medium">Email</div>
+                                                <div className="font-medium text-white">Email</div>
                                                 <Field
                                                     type="text"
                                                     name="email"
@@ -134,7 +134,7 @@ const Register: React.FC = () => {
                                                 />
                                             </div>
                                             <div className="mt-2 relative h-24">
-                                                <div className="font-medium">Password</div>
+                                                <div className="font-medium text-white">Password</div>
                                                 <FormikPassword
                                                     name="password"
                                                     touched={touched.password}
@@ -142,7 +142,7 @@ const Register: React.FC = () => {
                                                 />
                                             </div>
                                             <div className="mt-2 relative h-24">
-                                                <div className="font-medium">Confirm Password</div>
+                                                <div className="font-medium text-white">Confirm Password</div>
                                                 <FormikPassword
                                                     name="confirmPassword"
                                                     touched={touched.confirmPassword}

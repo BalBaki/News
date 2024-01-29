@@ -2,21 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { type User } from '../../types';
 import { userApi } from '../apis/userApi';
 
-const initialState: User = {
-    id: '',
-    name: '',
-    surname: '',
-    email: '',
-    filterSettings: {
-        term: '',
-        apiNames: [],
-        fromDate: '',
-        toDate: '',
-        page: 1,
-        sortOrder: '',
-        extraFilters: {},
-    },
-};
+const initialState: User = {} as User;
 
 const userSlice = createSlice({
     name: 'user',

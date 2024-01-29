@@ -7,7 +7,12 @@ import { useSearchMutation, useFetchApisQuery } from '../../store';
 import { type FilterSettings } from '../../types';
 import NewsItem from './NewsItem';
 import Loading from '../Loading';
-import { SEARCH_MUTATION_CACHE_KEY } from '../../utils/constants';
+import {
+    SEARCH_MUTATION_CACHE_KEY,
+    NEWS_API_NAME,
+    THE_GUARDIANS_API_NAME,
+    THE_NEW_YORK_TIMES,
+} from '../../utils/constants';
 import GoPageWithNum from './GoPageWithNum';
 
 const ITEMS_PER_API = 10;
@@ -37,6 +42,17 @@ const customPaginationTheme: CustomFlowbiteTheme['pagination'] = {
         },
     },
 };
+const articleColors = {
+    [NEWS_API_NAME]: {
+        imageFilterBg: 'bg-[rgba(255,111,97,0.4)]',
+    },
+    [THE_GUARDIANS_API_NAME]: {
+        imageFilterBg: 'bg-[rgba(102,103,171,0.4)]',
+    },
+    [THE_NEW_YORK_TIMES]: {
+        imageFilterBg: 'bg-[rgba(69,181,170,0.4)]',
+    },
+};
 
 const NewsList: React.FC = () => {
     const [search, { data, error, isLoading, reset }] = useSearchMutation({
@@ -53,9 +69,9 @@ const NewsList: React.FC = () => {
         search({ ...values, term: values.term.toLocaleLowerCase(), page });
     };
 
-    useEffect(() => {
-        reset();
-    }, [location]);
+    // useEffect(() => {
+    //     reset();
+    // }, [location]);
 
     if (isLoading)
         return (
@@ -70,20 +86,17 @@ const NewsList: React.FC = () => {
     if (data?.articles) {
         renderedNews = Object.keys(data.articles).map((apiName) => {
             const renderedArticles = data.articles[apiName].map((article) => {
-                return <NewsItem key={article.id} news={article} />;
+                return <NewsItem key={article.id} news={article} colors={articleColors[apiName]} />;
             });
 
             return (
                 <div key={apiName}>
-                    <div className="capitalize text-2xl border-b-4 border-black italic pb-1 mt-3">
+                    <div
+                        className={`capitalize text-2xl italic pb-1 mt-8 ${articleColors[apiName].imageFilterBg} rounded-2xl pl-3`}
+                    >
                         {apiData?.apis?.find((api) => api.value === apiName)?.name || apiName}
                     </div>
-                    <div
-                        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 
-                            gap-3 mt-1"
-                    >
-                        {renderedArticles}
-                    </div>
+                    <div className="flex flex-wrap justify-between gap-3 mt-4">{renderedArticles}</div>
                 </div>
             );
         });

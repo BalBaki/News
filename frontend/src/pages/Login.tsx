@@ -39,10 +39,10 @@ const Login: React.FC = () => {
     return (
         <>
             <main className="w-full h-screen flex justify-center items-center p-3 bg-news-bg" aria-label="login form">
-                <div className="relative w-full h-full max-w-lg max-h-[24.5rem] overflow-hidden rounded-md p-[.35rem] z-50">
-                    <div className="w-full h-full bg-white rounded-md overflow-auto border-2 z-50 p-3">
+                <div className="relative w-full h-full max-w-lg max-h-[24.5rem] overflow-hidden rounded-md p-[.35rem] z-50 ">
+                    <div className="w-full h-full rounded-2xl overflow-auto border-2 z-50 p-3 bg-black">
                         <div>
-                            <h1 className="text-2xl font-semibold">Login</h1>
+                            <h1 className="text-2xl font-semibold text-white">Login</h1>
                         </div>
                         <div>
                             <Formik
@@ -56,7 +56,7 @@ const Login: React.FC = () => {
                                     <>
                                         <Form>
                                             <div className="mt-2 h-24">
-                                                <div className="font-medium">Email</div>
+                                                <div className="font-medium text-white">Email</div>
                                                 <Field
                                                     type="text"
                                                     name="email"
@@ -75,7 +75,7 @@ const Login: React.FC = () => {
                                                 />
                                             </div>
                                             <div className="mt-2 relative h-24">
-                                                <div className="font-medium">Password</div>
+                                                <div className="font-medium text-white">Password</div>
                                                 <FormikPassword
                                                     name="password"
                                                     touched={touched.password}
@@ -104,7 +104,7 @@ const Login: React.FC = () => {
                                 )}
                             </Formik>
                         </div>
-                        <div className="mt-2 text-center">
+                        <div className="mt-2 text-center text-white">
                             Dont Have Account ?
                             <Link to="/register" className="underline text-[#7CACAB] ml-1">
                                 Register

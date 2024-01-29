@@ -7,7 +7,7 @@ import { LOGOUT_MUTATION_CACHE_KEY } from '../../utils/constants';
 const defaultFormValues: FilterSettings = {
     term: '',
     fromDate: '',
-    toDate: new Date().toISOString().split('T')[0],
+    toDate: new Date(),
     apiNames: [],
     extraFilters: {},
     sortOrder: 'relevance',
