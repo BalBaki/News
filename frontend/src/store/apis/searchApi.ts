@@ -15,17 +15,19 @@ const searchApi = createApi({
         return {
             search: builder.mutation<SearchResponse, FilterSettings>({
                 query: (payload) => {
-                    payload.term = payload.term.toLocaleLowerCase();
-                    payload.toDate = new Date(new Date(payload.toDate).setUTCHours(23, 59, 59, 999));
+                    const transformedPayload = { ...payload };
 
-                    if (payload.fromDate) {
-                        payload.fromDate = new Date(new Date(payload.fromDate).setUTCHours(0, 0, 0, 0));
+                    transformedPayload.term = payload.term.toLocaleLowerCase();
+                    transformedPayload.toDate = new Date(new Date(payload.toDate).setUTCHours(23, 59, 59, 999));
+
+                    if (transformedPayload.fromDate) {
+                        transformedPayload.fromDate = new Date(new Date(payload.fromDate).setUTCHours(0, 0, 0, 0));
                     }
 
                     return {
                         method: 'POST',
                         url: '/search',
-                        body: { payload: encodeURIComponent(JSON.stringify(payload)) },
+                        body: { payload: encodeURIComponent(JSON.stringify(transformedPayload)) },
                     };
                 },
             }),
