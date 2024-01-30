@@ -18,11 +18,6 @@ const searchApi = createApi({
                     const transformedPayload = { ...payload };
 
                     transformedPayload.term = payload.term.toLocaleLowerCase();
-                    transformedPayload.toDate = new Date(new Date(payload.toDate).setUTCHours(23, 59, 59, 999));
-
-                    if (transformedPayload.fromDate) {
-                        transformedPayload.fromDate = new Date(new Date(payload.fromDate).setUTCHours(0, 0, 0, 0));
-                    }
 
                     return {
                         method: 'POST',
