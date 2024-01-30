@@ -259,7 +259,6 @@ app.get('/filters', async (request, response) => {
 app.post('/search', async (request, response) => {
     try {
         const payload = decodePayload(request.body.payload);
-
         const { apiNames, term, fromDate, toDate, page, sortOrder, extraFilters } = payload;
         const responses = await Promise.all(
             apiNames.map((apiName) =>

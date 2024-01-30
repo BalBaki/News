@@ -16,8 +16,11 @@ const searchApi = createApi({
             search: builder.mutation<SearchResponse, FilterSettings>({
                 query: (payload) => {
                     payload.term = payload.term.toLocaleLowerCase();
-                    payload.fromDate = new Date(new Date(payload.fromDate).setUTCHours(0, 0, 0, 0));
                     payload.toDate = new Date(new Date(payload.toDate).setUTCHours(23, 59, 59, 999));
+
+                    if (payload.fromDate) {
+                        payload.fromDate = new Date(new Date(payload.fromDate).setUTCHours(0, 0, 0, 0));
+                    }
 
                     return {
                         method: 'POST',
