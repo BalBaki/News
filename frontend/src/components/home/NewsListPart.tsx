@@ -82,6 +82,7 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ apiName }) => {
 
         content = <div className={classes}>{renderedNews}</div>;
     }
+    const newsCount = data?.articles?.[apiName]?.count || generalSearchResult?.articles?.[apiName]?.count || 0;
 
     return (
         <div className="mb-7">
@@ -89,24 +90,27 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ apiName }) => {
                 className={`flex justify-between capitalize text-2xl italic mt-8 ${articleColors[apiName].imageFilterBg} rounded-2xl px-3 py-1`}
             >
                 {apiData?.apis?.find((api) => api.value === apiName)?.name || apiName}
-                <div className="flex items-center">
-                    <Button onClick={() => handleNavigationArrows('previous')} disabled={page <= 1 || isLoading}>
-                        <MdOutlineKeyboardArrowLeft className="cursor-pointer" />
-                    </Button>
-                    <Button
-                        onClick={() => handleNavigationArrows('next')}
-                        disabled={
-                            page >=
-                                Math.ceil(
-                                    (data?.articles?.[apiName]?.count ||
-                                        generalSearchResult?.articles?.[apiName]?.count ||
-                                        0) / ITEMS_PER_API
-                                ) || isLoading
-                        }
-                    >
-                        <MdOutlineKeyboardArrowRight className="cursor-pointer" />
-                    </Button>
-                </div>
+
+                {newsCount > ITEMS_PER_API && (
+                    <div className="flex items-center">
+                        <Button onClick={() => handleNavigationArrows('previous')} disabled={page <= 1 || isLoading}>
+                            <MdOutlineKeyboardArrowLeft className="cursor-pointer" />
+                        </Button>
+                        <Button
+                            onClick={() => handleNavigationArrows('next')}
+                            disabled={
+                                page >=
+                                    Math.ceil(
+                                        (data?.articles?.[apiName]?.count ||
+                                            generalSearchResult?.articles?.[apiName]?.count ||
+                                            0) / ITEMS_PER_API
+                                    ) || isLoading
+                            }
+                        >
+                            <MdOutlineKeyboardArrowRight className="cursor-pointer" />
+                        </Button>
+                    </div>
+                )}
             </div>
             {content}
         </div>
