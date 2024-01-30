@@ -60,6 +60,11 @@ const apis = {
                 },
             ];
         },
+        transformDate(date) {
+            if (new Date(date).toString() === 'Invalid Date') return;
+
+            return new Date(date).toISOString().split('T')[0];
+        },
         search(payload) {
             const { term, fromDate, toDate, section, page, sortOrder } = payload;
 
@@ -69,8 +74,8 @@ const apis = {
                     new URLSearchParams({
                         'api-key': process.env.GUARDIANS_API_KEY,
                         q: term,
-                        ...(fromDate && { 'from-date': fromDate }),
-                        'to-date': toDate,
+                        ...(fromDate && { 'from-date': this.transformDate(fromDate) }),
+                        'to-date': this.transformDate(toDate),
                         ...(section && { section }),
                         'page-size': 10,
                         'show-fields': 'thumbnail,bodyText',

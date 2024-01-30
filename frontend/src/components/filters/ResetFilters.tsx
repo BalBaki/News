@@ -21,9 +21,7 @@ const ResetFilters: React.FC = () => {
     });
 
     useEffect(() => {
-        if (data?.logout) {
-            setValues(defaultFormValues);
-        }
+        data?.logout && setValues(defaultFormValues);
     }, [data]);
 
     return <></>;
