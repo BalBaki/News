@@ -69,32 +69,6 @@ const Search: React.FC = () => {
                                                 className="text-sm  text-red-500 h-6"
                                             />
                                         </div>
-                                        {/* <div className="flex justify-around xl:justify-evenly w-full max-[350px]:block ">
-                                            <div className="flex items-start">
-                                                <div className="max-[350px]:w-12 max-[350px]:mr-0 mr-3">
-                                                    <label htmlFor="fromDate">From: </label>
-                                                </div>
-                                                <Field
-                                                    type="date"
-                                                    name="fromDate"
-                                                    id="fromDate"
-                                                    className="border-2 border-[#6B7280] rounded-md py-0 px-1"
-                                                    max={values.toDate}
-                                                />
-                                            </div>
-                                            <div className="flex items-start min-[351px]:ml-2 max-[350px]:mt-2">
-                                                <div className="max-[350px]:w-12 mr-3 max-[350px]:mr-0">
-                                                    <label htmlFor="toDate">To: </label>
-                                                </div>
-                                                <Field
-                                                    type="date"
-                                                    name="toDate"
-                                                    id="toDate"
-                                                    className="border-2 border-[#6B7280] rounded-md py-0 px-1"
-                                                    max={new Date().toISOString().split('T')[0]}
-                                                />
-                                            </div>
-                                        </div> */}
                                         <Dates />
                                         <Apis />
                                         <SortOrder />

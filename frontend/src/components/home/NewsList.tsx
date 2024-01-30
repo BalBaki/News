@@ -33,7 +33,7 @@ const NewsList: React.FC = () => {
     }
 
     return (
-        <section className="mt-6 mx-3" aria-label="news">
+        <section className="mt-6 mx-1 min-[281px]:mx-3" aria-label="news">
             {data?.search ? (
                 Object.keys(data.articles).length > 0 ? (
                     <>{renderedNews}</>

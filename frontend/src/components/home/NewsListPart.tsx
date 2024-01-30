@@ -21,12 +21,15 @@ type NewsListPartProps = {
 const articleColors = {
     [NEWS_API_NAME]: {
         imageFilterBg: 'bg-[rgba(255,111,97,0.4)]',
+        bookMarkIconBg: 'bg-[rgba(255,111,97,1)]',
     },
     [THE_GUARDIANS_API_NAME]: {
         imageFilterBg: 'bg-[rgba(102,103,171,0.4)]',
+        bookMarkIconBg: 'bg-[rgba(102,103,171,1)]',
     },
     [THE_NEW_YORK_TIMES]: {
         imageFilterBg: 'bg-[rgba(69,181,170,0.4)]',
+        bookMarkIconBg: 'bg-[rgba(69,181,170,1)]',
     },
 };
 const ITEMS_PER_API = 10;
@@ -46,6 +49,7 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ apiName }) => {
 
         search({ ...values, page, apiNames: [apiName], extraFilters: { [apiName]: values.extraFilters[apiName] } });
     }, [page]);
+
     const handleNavigationArrows = (direction: 'next' | 'previous') => {
         previousPageNum.current = page;
 
@@ -68,10 +72,13 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ apiName }) => {
             return <NewsItem key={article.id} news={article} colors={articleColors[apiName]} />;
         });
 
-        const classes = classNames('flex flex-wrap justify-center sm:justify-evenly gap-3 mt-4', {
-            'animate-sliding-from-right-to-left': previousPageNum.current <= page,
-            'animate-sliding-from-left-to-right': previousPageNum.current > page,
-        });
+        const classes = classNames(
+            'grid min-[630px]:grid-cols-2 min-[920px]:grid-cols-3 min-[1200px]:grid-cols-4 min-[1475px]:grid-cols-5 min-[330px]:mx-5 gap-3 mt-4 justify-items-center',
+            {
+                'animate-sliding-from-right-to-left': previousPageNum.current <= page,
+                'animate-sliding-from-left-to-right': previousPageNum.current > page,
+            }
+        );
 
         content = <div className={classes}>{renderedNews}</div>;
     }
