@@ -43,7 +43,7 @@ const Notifications: React.FC = () => {
             : typeof notification.message === 'object'
             ? [...Object.values(notification.message)]
             : typeof notification.message === 'string' && notification.message
-            ? [...[], notification.message]
+            ? [notification.message]
             : [];
 
         const renderedMessages = formattedMessages.map((message: string) => {

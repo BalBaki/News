@@ -91,7 +91,6 @@ const Search: React.FC = () => {
                             </Form>
                         </section>
                         <NewsList />
-                        <ResetFilters />
                     </>
                 )}
             </Formik>
