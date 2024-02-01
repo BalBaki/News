@@ -9,6 +9,7 @@ import {
     type VerifyResponse,
     type ChangeFavoritesResponse,
     type News,
+    type FetchFavoritesResponse,
 } from '../../types';
 
 interface SearchSettings {
@@ -67,7 +68,6 @@ const userApi = createApi({
                 },
             }),
             verify: builder.query<VerifyResponse, void>({
-                providesTags: [{ type: 'Favorite' }],
                 query: () => {
                     return {
                         method: 'POST',
@@ -83,6 +83,15 @@ const userApi = createApi({
                         body: {
                             payload: encodeURIComponent(JSON.stringify(payload)),
                         },
+                    };
+                },
+            }),
+            fetchFavorites: builder.query<FetchFavoritesResponse, void>({
+                providesTags: [{ type: 'Favorite' }],
+                query: () => {
+                    return {
+                        method: 'GET',
+                        url: 'favorites',
                     };
                 },
             }),
@@ -110,4 +119,5 @@ export const {
     useLazyVerifyQuery,
     useSaveSettingsMutation,
     useChangeFavoriteMutation,
+    useFetchFavoritesQuery,
 } = userApi;

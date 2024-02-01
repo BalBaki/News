@@ -123,3 +123,15 @@ export type ChangeFavoritesResponse =
           success: false;
           error: string;
       };
+
+export type FetchFavoritesResponse =
+    | {
+          success: true;
+          favorites: News[];
+          error?: never;
+      }
+    | {
+          success: false;
+          favorites?: never;
+          error: string;
+      };

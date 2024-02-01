@@ -354,3 +354,19 @@ app.post('/favorite', authMiddleware, async (request, response) => {
         response.json({ success: false, error: error.message });
     }
 });
+
+app.get('/favorites', authMiddleware, async (request, response) => {
+    try {
+        const { user } = request;
+
+        if (user) {
+            const { favorites } = await User.findOne({ email: user.email, _id: user.id }).select('favorites');
+
+            return response.json({ success: true, favorites });
+        }
+
+        throw new Error('Not exists User');
+    } catch (error) {
+        response.json({ success: false, error: error.message });
+    }
+});

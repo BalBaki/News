@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useChangeFavoriteMutation, type RootState } from '../../store';
@@ -10,15 +10,21 @@ type NewsProps = {
 };
 
 const NewsItem: React.FC<NewsProps> = ({ news, colors }) => {
-    const { id, favorites } = useSelector((state: RootState) => state.user);
     const { url, imageUrl, title, description } = news;
-    const [addFavorite] = useChangeFavoriteMutation();
+    const { id, favorites } = useSelector((state: RootState) => state.user);
+    const [isFavorite, setIsFavorite] = useState(
+        favorites?.find((favoriteNews) => favoriteNews.url === news.url) ? true : false
+    );
+    const [changeFavorite, { data }] = useChangeFavoriteMutation();
     const randomNumber = useMemo(() => Math.random(), []);
-    const isFavorite = useMemo(() => favorites?.find((favoriteNews) => favoriteNews.url === news.url), [favorites]);
     const BookMark = isFavorite ? FaBookmark : FaRegBookmark;
 
+    useEffect(() => {
+        if (data?.success) setIsFavorite((c) => !c);
+    }, [data]);
+
     const handleChangeFavoritesClick = () => {
-        addFavorite({ type: isFavorite ? 'remove' : 'add', news });
+        changeFavorite({ type: isFavorite ? 'remove' : 'add', news });
     };
 
     const renderedParts = [

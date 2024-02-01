@@ -27,6 +27,15 @@ const userSlice = createSlice({
         builder.addMatcher(userApi.endpoints.logout.matchFulfilled, (state, action) => {
             return initialState;
         });
+        builder.addMatcher(userApi.endpoints.fetchFavorites.matchFulfilled, (state, action) => {
+            const { success, favorites } = action.payload;
+
+            if (success) {
+                state.favorites = favorites;
+            }
+
+            return state;
+        });
     },
 });
 
