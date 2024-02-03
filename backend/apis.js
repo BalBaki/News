@@ -44,7 +44,7 @@ const apis = [
                         page,
                         sortBy: sortOrder,
                     })
-            ).finally(() => console.log('worked'));
+            );
         },
     },
     {
