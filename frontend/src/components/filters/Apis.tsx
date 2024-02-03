@@ -16,7 +16,7 @@ const Apis: React.FC = () => {
         content = data?.apis?.map((api) => {
             return (
                 <div key={api.name}>
-                    <Field type="checkbox" name="apiNames" id={api._id} value={api.value} className="ml-1" />
+                    <Field type="checkbox" name="apiList" id={api._id} value={api.value} className="ml-1" />
                     <label className="capitilize pl-2" htmlFor={api._id}>
                         {api.name}
                     </label>
@@ -28,7 +28,7 @@ const Apis: React.FC = () => {
     return (
         <div className="w-full max-[340px]:mx-auto">
             <Dropdown placeholder="Select Api">{content}</Dropdown>
-            <ErrorMessage name="apiNames" component="div" className="text-sm text-red-500" />
+            <ErrorMessage name="apiList" component="div" className="text-sm text-red-500" />
         </div>
     );
 };

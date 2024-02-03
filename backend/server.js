@@ -190,19 +190,21 @@ app.get('/apis', async (request, response) => {
 });
 
 //Get filter data
-//query => apiNames(array)
+//query => apilist(array)
 app.get('/filtersV2', async (request, response) => {
     try {
-        const apiNames = decodePayload(request.query.apiNames);
+        const apiList = decodePayload(request.query.apiList);
         const filters = {};
 
         await Promise.all(
-            apiNames.map((apiName) => {
-                filters[apiName] = {};
+            apiList.map((api) => {
+                const currentApiData = apis.find((apiDate) => apiDate.value === api);
 
-                if (!apis[apiName]) throw new Error('Not Valid Api');
+                filters[api] = {};
 
-                const filterPromises = apis[apiName].filters.map(async (option) => {
+                if (!currentApiData) throw new Error('Not Valid Api');
+
+                const filterPromises = currentApiData.filters.map(async (option) => {
                     const filterResponse = await option.filterFn();
 
                     if (!filterResponse.ok) {
@@ -211,7 +213,7 @@ app.get('/filtersV2', async (request, response) => {
 
                     const filterOptions = await filterResponse.json();
 
-                    filters[apiName][option.name] = filterOptions;
+                    filters[api][option.name] = filterOptions;
                 });
 
                 return Promise.all(filterPromises);
@@ -254,15 +256,18 @@ app.get('/filters', async (request, response) => {
 });
 
 //search news
-//payload => apiNames, fromDate, term, toDate,page,sortOrder, extraFilters = {guardian: {section: [...]},
+//payload => apiList, fromDate, term, toDate,page,sortOrder, extraFilters = {guardian: {section: [...]},
 //newsapi: {sources: '...'}}
 app.post('/search', async (request, response) => {
     try {
         const payload = decodePayload(request.body.payload);
-        const { apiNames, term, fromDate, toDate, page, sortOrder, extraFilters } = payload;
+        const { apiList, term, fromDate, toDate, page, sortOrder, extraFilters } = payload;
+
         const responses = await Promise.all(
-            apiNames.map((apiName) =>
-                apis[apiName].search({ term, fromDate, toDate, page, sortOrder, ...extraFilters[apiName] })
+            apiList.map((apiValue) =>
+                apis
+                    .find((api) => api.value === apiValue)
+                    .search({ term, fromDate, toDate, page, sortOrder, ...extraFilters[apiValue] })
             )
         );
         const filteredResponses = responses.filter((searchResponse) => searchResponse && searchResponse.ok);
@@ -308,8 +313,6 @@ app.post('/search', async (request, response) => {
         response.json({
             search: true,
             page,
-            // totalArticleCount,
-            // maxNewsCount: articleCounts.sort((a, b) => b - a)[0],
             articles: transformArticles(articles),
         });
     } catch (error) {

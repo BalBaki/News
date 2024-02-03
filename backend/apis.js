@@ -1,12 +1,16 @@
-const apis = {
-    newsapi: {
+const { Api } = require('./db');
+
+const apis = [
+    {
         value: 'newsapi',
+        name: 'News Api',
         baseUrl: 'https://newsapi.org/v2/',
         searchUrlPart: 'everything?',
         get filters() {
             return [
                 {
                     name: 'sources',
+                    defaultValue: [],
                     filterFn: () =>
                         fetch(
                             this.baseUrl +
@@ -43,14 +47,16 @@ const apis = {
             );
         },
     },
-    theguardians: {
+    {
         value: 'theguardians',
+        name: 'The Guardians',
         baseUrl: 'https://content.guardianapis.com/',
         searchUrlPart: 'search?',
         get filters() {
             return [
                 {
                     name: 'sections',
+                    defaultValue: '',
                     filterFn: () =>
                         fetch(
                             this.baseUrl +
@@ -86,8 +92,9 @@ const apis = {
             );
         },
     },
-    newyorktimes: {
+    {
         value: 'newyorktimes',
+        name: 'New York Times',
         baseUrl: 'https://api.nytimes.com/',
         searchUrlPart: 'svc/search/v2/articlesearch.json?',
         get filters() {
@@ -115,6 +122,33 @@ const apis = {
             );
         },
     },
-};
+];
+
+const formattedApis = apis.map((api) => {
+    return {
+        value: api.value,
+        name: api.name,
+        baseUrl: api.baseUrl,
+        searchUrlPart: api.searchUrlPart,
+        filters: api.filters.map((filter) => {
+            return {
+                name: filter.name,
+                defaultValue: filter.defaultValue,
+            };
+        }),
+    };
+});
+
+Api.bulkWrite(
+    formattedApis.map((api) => ({
+        updateOne: {
+            filter: { value: api.value },
+            update: { $set: api },
+            upsert: true,
+        },
+    }))
+)
+    .then(() => console.log('Apis added to db.'))
+    .catch((error) => console.log(error));
 
 module.exports = apis;

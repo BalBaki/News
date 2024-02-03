@@ -20,7 +20,7 @@ const Search: React.FC = () => {
         term: '',
         fromDate: user?.filterSettings?.fromDate || '',
         toDate: user?.filterSettings?.toDate || new Date(),
-        apiNames: user?.filterSettings?.apiNames?.length > 0 ? user?.filterSettings?.apiNames : [],
+        apiList: user?.filterSettings?.apiList?.length > 0 ? user?.filterSettings?.apiList : [],
         extraFilters: { ...user?.filterSettings?.extraFilters } || {},
         page: 1,
         sortOrder: user?.filterSettings?.sortOrder || 'relevance',
@@ -30,7 +30,7 @@ const Search: React.FC = () => {
         term: Yup.string()
             .required('Term required')
             .max(100, ({ max }) => `Maximum ${max} character`),
-        apiNames: Yup.mixed<string[]>().test(
+        apiList: Yup.mixed<string[]>().test(
             'api-required',
             'Select Minimum 1 Api',
             (value) => value && value.length > 0
@@ -46,7 +46,7 @@ const Search: React.FC = () => {
                     search(values);
                 }}
             >
-                {({ values, isValid, dirty }) => (
+                {({ isValid, dirty }) => (
                     <>
                         <section aria-label="filters">
                             <Form>

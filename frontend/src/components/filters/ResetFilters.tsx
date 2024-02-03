@@ -8,7 +8,7 @@ const defaultFormValues: FilterSettings = {
     term: '',
     fromDate: '',
     toDate: new Date(),
-    apiNames: [],
+    apiList: [],
     extraFilters: {},
     sortOrder: 'relevance',
     page: 1,

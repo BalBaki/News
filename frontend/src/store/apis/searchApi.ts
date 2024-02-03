@@ -34,12 +34,12 @@ const searchApi = createApi({
                     };
                 },
             }),
-            fetchFilters: builder.query<FetchFiltersResponse, { apiNames: string[] }>({
+            fetchFilters: builder.query<FetchFiltersResponse, { apiList: string[] }>({
                 query: (payload) => {
                     return {
                         method: 'GET',
                         url: '/filtersV2',
-                        params: { apiNames: encodeURIComponent(JSON.stringify(payload.apiNames)) },
+                        params: { apiList: encodeURIComponent(JSON.stringify(payload.apiList)) },
                     };
                 },
             }),

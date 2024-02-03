@@ -27,8 +27,8 @@ const NewsList: React.FC = () => {
     let renderedNews;
 
     if (data?.search) {
-        renderedNews = Object.keys(data.articles).map((apiName) => {
-            return <NewsListPart apiName={apiName} key={apiName} />;
+        renderedNews = Object.keys(data.articles).map((api) => {
+            return <NewsListPart api={api} key={api} />;
         });
     }
 

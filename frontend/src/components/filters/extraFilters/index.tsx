@@ -4,15 +4,15 @@ import { useFetchApisQuery } from '../../../store';
 import { type FilterSettings } from '../../../types';
 import NewsApiFilters from './newsapi';
 import TheGuardiansFilters from './theguardians';
-import { NEWS_API_NAME, THE_GUARDIANS_API_NAME } from '../../../utils/constants';
+import { NEWS_API_VALUE, THE_GUARDIANS_API_VALUE } from '../../../utils/constants';
 
-interface FiltersWithElements {
+interface FiltersWithComponents {
     [key: string]: JSX.Element;
 }
 
-const filters: FiltersWithElements = {
-    [NEWS_API_NAME]: <NewsApiFilters />,
-    [THE_GUARDIANS_API_NAME]: <TheGuardiansFilters />,
+const filters: FiltersWithComponents = {
+    [NEWS_API_VALUE]: <NewsApiFilters />,
+    [THE_GUARDIANS_API_VALUE]: <TheGuardiansFilters />,
 };
 
 const ExtraFilters: React.FC = () => {
@@ -20,7 +20,7 @@ const ExtraFilters: React.FC = () => {
     const { data } = useFetchApisQuery();
 
     useEffect(() => {
-        values.apiNames.forEach((api) => {
+        values.apiList.forEach((api) => {
             if (!values.extraFilters[api]) {
                 values.extraFilters[api] = {};
 
@@ -35,14 +35,14 @@ const ExtraFilters: React.FC = () => {
         });
 
         Object.keys(values.extraFilters).forEach((key) => {
-            if (!values.apiNames.includes(key)) delete values.extraFilters[key];
+            if (!values.apiList.includes(key)) delete values.extraFilters[key];
         });
 
         setValues(values);
-    }, [values.apiNames]);
+    }, [values.apiList]);
 
-    const renderedFilters = values.apiNames.map((apiName) => {
-        return <Fragment key={apiName}>{filters[apiName]}</Fragment>;
+    const renderedFilters = values.apiList.map((api) => {
+        return <Fragment key={api}>{filters[api]}</Fragment>;
     });
 
     return <>{renderedFilters}</>;

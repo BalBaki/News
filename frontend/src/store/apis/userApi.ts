@@ -13,7 +13,7 @@ import {
 } from '../../types';
 
 interface SearchSettings {
-    apiNames: string[];
+    apiList: string[];
     fromDate: string | Date;
     toDate: string | Date;
     extraFilters: {
