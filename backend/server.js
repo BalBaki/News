@@ -264,11 +264,16 @@ app.post('/search', async (request, response) => {
         const { apiList, term, fromDate, toDate, page, sortOrder, extraFilters } = payload;
 
         const responses = await Promise.all(
-            apiList.map((apiValue) =>
-                apis
-                    .find((api) => api.value === apiValue)
-                    .search({ term, fromDate, toDate, page, sortOrder, ...extraFilters[apiValue] })
-            )
+            apiList.reduce((promises, apiValue) => {
+                const currentApi = apis.find((api) => api.value === apiValue);
+
+                if (currentApi)
+                    promises.push(
+                        currentApi.search({ term, fromDate, toDate, page, sortOrder, ...extraFilters[apiValue] })
+                    );
+
+                return promises;
+            }, [])
         );
         const filteredResponses = responses.filter((searchResponse) => searchResponse && searchResponse.ok);
 
