@@ -41,7 +41,7 @@ const Dropdown: React.FC<PropsWithChildren<DropdownProps>> = ({ children, placeh
             {isOpened && (
                 <div
                     className="absolute w-full h-48 bg-black z-50 border-2 border-[#6B7280] max-h-48 overflow-y-auto 
-                        overflow-x-hidden left-[-2px] box-content origin-top animate-dropdown rounded-m"
+                        overflow-x-hidden left-[-2px] box-content origin-top animate-dropdown rounded-md"
                 >
                     {children}
                 </div>

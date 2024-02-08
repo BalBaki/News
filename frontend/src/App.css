@@ -1,0 +1,21 @@
+* {
+    font-family: Helvetica, sans-serif;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 0.7rem;
+}
+
+::-webkit-scrollbar-track {
+    background-color: black;
+    border-radius: 0.375rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(198, 198, 198, 1);
+    border-radius: 0.375rem;
+}
