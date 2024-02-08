@@ -92,7 +92,7 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ api }) => {
                 {apiData?.apis?.find((apiData) => apiData.value === api)?.name || api}
 
                 {newsCount > ITEMS_PER_API && (
-                    <div className="flex items-center">
+                    <nav className="flex items-center">
                         <Button onClick={() => handleNavigationArrows('previous')} disabled={page <= 1 || isLoading}>
                             <MdOutlineKeyboardArrowLeft className="cursor-pointer" />
                         </Button>
@@ -109,7 +109,7 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ api }) => {
                         >
                             <MdOutlineKeyboardArrowRight className="cursor-pointer" />
                         </Button>
-                    </div>
+                    </nav>
                 )}
             </div>
             {content}

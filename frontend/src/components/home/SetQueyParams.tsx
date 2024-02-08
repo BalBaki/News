@@ -1,7 +1,7 @@
-import { useFormikContext } from 'formik';
-import { type FilterSettings } from '../../types';
-import { useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useFormikContext } from 'formik';
+import { useSearchParams } from 'react-router-dom';
+import { type FilterSettings } from '../../types';
 
 const SetQueryParams: React.FC = () => {
     const { values } = useFormikContext<FilterSettings>();
