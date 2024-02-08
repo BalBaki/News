@@ -1,11 +1,6 @@
-export interface FilterSettings {
+import { type SavedFilterSettings } from './savedFilterSettings.interface';
+
+export interface FilterSettings extends SavedFilterSettings {
     term: string;
-    apiList: string[];
-    fromDate: string | Date;
-    toDate: string | Date;
     page: number;
-    sortOrder: string;
-    extraFilters: {
-        [key: string]: any;
-    };
 }

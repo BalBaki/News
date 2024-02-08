@@ -1,20 +1,13 @@
-import { useEffect } from 'react';
 import './NewsList.css';
-import { useLocation } from 'react-router-dom';
 import { useSearchMutation } from '../../store';
 import Loading from '../Loading';
 import NewsListPart from './NewsListPart';
 import { SEARCH_MUTATION_CACHE_KEY } from '../../utils/constants';
 
 const NewsList: React.FC = () => {
-    const [, { data, error, isLoading, reset }] = useSearchMutation({
+    const [, { data, error, isLoading }] = useSearchMutation({
         fixedCacheKey: SEARCH_MUTATION_CACHE_KEY,
     });
-    const location = useLocation();
-
-    useEffect(() => {
-        reset();
-    }, [location]);
 
     if (isLoading)
         return (

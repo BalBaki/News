@@ -10,16 +10,8 @@ import {
     type ChangeFavoritesResponse,
     type News,
     type FetchFavoritesResponse,
+    type SavedFilterSettings,
 } from '../../types';
-
-interface SearchSettings {
-    apiList: string[];
-    fromDate: string | Date;
-    toDate: string | Date;
-    extraFilters: {
-        [key: string]: any;
-    };
-}
 
 interface ChangeFavorite {
     type: 'add' | 'remove';
@@ -75,7 +67,7 @@ const userApi = createApi({
                     };
                 },
             }),
-            saveSettings: builder.mutation<SaveSettingsResponse, SearchSettings>({
+            saveSettings: builder.mutation<SaveSettingsResponse, SavedFilterSettings>({
                 query: (payload) => {
                     return {
                         method: 'POST',

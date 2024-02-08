@@ -1,4 +1,4 @@
-import { type FilterSettings } from './filterSettings.interface';
+import { type SavedFilterSettings } from './savedFilterSettings.interface';
 import { type News } from './news.interface';
 
 export interface User {
@@ -6,6 +6,6 @@ export interface User {
     email: string;
     name: string;
     surname: string;
-    filterSettings: FilterSettings;
+    filterSettings: SavedFilterSettings;
     favorites: News[];
 }

@@ -1,30 +1,42 @@
+import { useEffect, useMemo } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import { useSearchMutation, type RootState } from '../../store';
-import { type FilterSettings } from '../../types';
 import Apis from '../filters/Apis';
 import SortOrder from '../filters/SortOrder';
 import Button from '../Button';
 import ExtraFilters from '../filters/extraFilters';
 import NewsList from './NewsList';
 import SaveSettings from './SaveSettings';
-import ResetFilters from '../filters/ResetFilters';
 import Dates from '../filters/Dates';
+import SetQueryParams from './SetQueyParams';
+import ResetFilters from '../filters/ResetFilters';
 import { SEARCH_MUTATION_CACHE_KEY } from '../../utils/constants';
+import { UrlParser } from '../../utils/urlparser';
 
 const Search: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
-    const [search, { isLoading }] = useSearchMutation({ fixedCacheKey: SEARCH_MUTATION_CACHE_KEY });
-    const initialValues: FilterSettings = {
-        term: '',
-        fromDate: user?.filterSettings?.fromDate || '',
-        toDate: user?.filterSettings?.toDate || new Date(),
-        apiList: user?.filterSettings?.apiList?.length > 0 ? user?.filterSettings?.apiList : [],
-        extraFilters: { ...user?.filterSettings?.extraFilters } || {},
-        page: 1,
-        sortOrder: user?.filterSettings?.sortOrder || 'relevance',
-    };
+    const [search, { isLoading, reset }] = useSearchMutation({ fixedCacheKey: SEARCH_MUTATION_CACHE_KEY });
+    const [searchParams] = useSearchParams();
+    const initialValues = useMemo(() => {
+        const parsedQueryString = UrlParser(searchParams.get('filter'));
+
+        return parsedQueryString
+            ? parsedQueryString
+            : user.id && Object.keys(user?.filterSettings).length > 0
+            ? { term: '', ...user.filterSettings, page: 1 }
+            : {
+                  term: '',
+                  fromDate: '',
+                  toDate: new Date(),
+                  apiList: [],
+                  extraFilters: {},
+                  page: 1,
+                  sortOrder: 'relevance',
+              };
+    }, []);
 
     const formSchema = Yup.object().shape({
         term: Yup.string()
@@ -36,6 +48,10 @@ const Search: React.FC = () => {
             (value) => value && value.length > 0
         ),
     });
+
+    useEffect(() => {
+        return () => reset();
+    }, []);
 
     return (
         <main className="mt-4">
@@ -50,8 +66,8 @@ const Search: React.FC = () => {
                     <>
                         <section aria-label="filters">
                             <Form>
-                                <div className="sm:w-11/12 sm:mx-auto mx-3">
-                                    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-3 justify-items-center mt-2">
+                                <div className="mx-3 sm:w-11/12 sm:mx-auto">
+                                    <div className="grid gap-3 mt-2 md:grid-cols-2 xl:grid-cols-3 justify-items-center">
                                         <div className="w-full">
                                             <Field
                                                 type="text"
@@ -66,7 +82,7 @@ const Search: React.FC = () => {
                                             <ErrorMessage
                                                 name="term"
                                                 component="div"
-                                                className="text-sm  text-red-500 h-6"
+                                                className="h-6 text-sm text-red-500"
                                             />
                                         </div>
                                         <Dates />
@@ -79,9 +95,9 @@ const Search: React.FC = () => {
                                     <Button
                                         type="submit"
                                         className={`w-32 h-7 rounded-md text-white  ${
-                                            isValid && dirty ? 'bg-green-400' : 'bg-red-500'
+                                            isValid ? 'bg-green-400' : 'bg-red-500'
                                         }`}
-                                        disabled={isLoading || !(isValid && dirty)}
+                                        disabled={isLoading || !isValid}
                                         loading={isLoading}
                                     >
                                         Search
@@ -91,6 +107,8 @@ const Search: React.FC = () => {
                             </Form>
                         </section>
                         <NewsList />
+                        <SetQueryParams />
+                        <ResetFilters />
                     </>
                 )}
             </Formik>

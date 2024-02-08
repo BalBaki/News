@@ -5,3 +5,4 @@ export * from './filterSettings.interface';
 export * from './notification.interface';
 export * from './news.interface';
 export * from './response.types';
+export * from './savedFilterSettings.interface';
