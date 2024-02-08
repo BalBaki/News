@@ -6,7 +6,7 @@ type DropdownProps = {
 };
 
 const Dropdown: React.FC<PropsWithChildren<DropdownProps>> = ({ children, placeholder }) => {
-    const [isOpened, setIsOpened] = useState<boolean>(false);
+    const [isOpened, setIsOpened] = useState(false);
     const divEl = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {

@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Favorites from './pages/Favorites';
+import NoPage from './pages/NoPage';
 import Notifications from './components/Notifications';
 import { useVerify } from './hooks/use-verify';
 import Loading from './components/Loading';
@@ -32,6 +33,7 @@ const App: React.FC = () => {
                         </ProtectedRoute>
                     }
                 />
+                <Route path="*" element={<NoPage />} />
             </Routes>
             <Notifications />
         </>

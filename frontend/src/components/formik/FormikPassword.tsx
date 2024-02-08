@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Field, ErrorMessage, FieldAttributes } from 'formik';
+import { Field, ErrorMessage, type FieldAttributes } from 'formik';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import classNames from 'classnames';
 
