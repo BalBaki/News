@@ -50,6 +50,7 @@ module.exports = {
             },
             backgroundImage: {
                 'news-bg': "url('/src/assets/images/news-bg.jpg')",
+                'error-bg': "url('/src/assets/images/error-bg.jpg')",
             },
         },
     },

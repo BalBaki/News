@@ -2,6 +2,7 @@ import { Field, ErrorMessage } from 'formik';
 import { useFetchApisQuery } from '../../store';
 import Dropdown from '../Dropdown';
 import Loading from '../Loading';
+import Error from '../Error';
 
 const Apis: React.FC = () => {
     const { data, isLoading, error } = useFetchApisQuery();
@@ -11,7 +12,7 @@ const Apis: React.FC = () => {
     if (isLoading) {
         content = <Loading />;
     } else if (error || data?.error) {
-        content = <div>Error at Fetching Apis</div>;
+        content = <Error size="xs">Error at Fetching Apis</Error>;
     } else {
         content = data?.apis?.map((api) => {
             return (

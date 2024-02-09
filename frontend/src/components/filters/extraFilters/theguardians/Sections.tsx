@@ -3,6 +3,7 @@ import { useFetchFiltersQuery } from '../../../../store';
 import Loading from '../../../Loading';
 import { type FilterSettings } from '../../../../types';
 import Dropdown from '../../../Dropdown';
+import Error from '../../../Error';
 import { THE_GUARDIANS_API_VALUE } from '../../../../utils/constants';
 
 interface Section {
@@ -29,7 +30,7 @@ const Sections: React.FC = () => {
     let selectedSection = extraFilters?.[THE_GUARDIANS_API_VALUE]?.section;
 
     if (isLoading) content = <Loading />;
-    else if (error || data?.error) content = <div>Error At Fetching sources</div>;
+    else if (error || data?.error) content = <Error size="xs">Error at Fetching Sections</Error>;
     else {
         const sections: Section[] = data?.filters?.[THE_GUARDIANS_API_VALUE]?.sections?.response?.results;
 

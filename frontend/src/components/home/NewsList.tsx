@@ -2,6 +2,7 @@ import './NewsList.css';
 import { useSearchMutation } from '../../store';
 import Loading from '../Loading';
 import NewsListPart from './NewsListPart';
+import Error from '../Error';
 import { SEARCH_MUTATION_CACHE_KEY } from '../../utils/constants';
 
 const NewsList: React.FC = () => {
@@ -15,7 +16,7 @@ const NewsList: React.FC = () => {
                 <Loading />
             </div>
         );
-    if (error || data?.error) return <div className="ml-3">Error At Fetching News</div>;
+    if (error || data?.error) return <Error className="mt-9">Error At Fetching News</Error>;
 
     let renderedNews;
 

@@ -11,6 +11,7 @@ import Button from '../components/Button';
 import FormikPassword from '../components/formik/FormikPassword';
 import NavigateHomeIcon from '../components/NavigateHomeIcon';
 import ResetFormikFields from '../components/formik/ResetFormikFields';
+import Error from '../components/Error';
 
 const Register: React.FC = () => {
     const initialValues: RegisterForm = {
@@ -45,13 +46,13 @@ const Register: React.FC = () => {
             .oneOf([Yup.ref('password')], 'Passwords must match'),
     });
 
-    if (error) return <div>Error At Register</div>;
+    if (error) return <Error previousButton>Error At Register</Error>;
     if (user.id || data?.register) return <Navigate to="/" replace />;
 
     return (
         <>
             <main className="flex justify-center items-center h-screen p-3 bg-news-bg" aria-label="register form">
-                <div className="relative w-full h-full max-w-lg max-h-[43rem] overflow-hidden p-[.35rem] z-50">
+                <div className="relative w-full h-full max-w-lg max-h-[43.5rem] overflow-hidden p-[.35rem] z-50">
                     <div className="h-full bg-black border-2 p-3 overflow-auto rounded-md">
                         <div className="text-white">
                             <h1 className="text-2xl font-semibold max-[300px]:text-xl ">Sign up for NewsFeed</h1>

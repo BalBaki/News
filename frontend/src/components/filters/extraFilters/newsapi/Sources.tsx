@@ -3,6 +3,7 @@ import { useFetchFiltersQuery } from '../../../../store';
 import Loading from '../../../Loading';
 import { type FilterSettings } from '../../../../types';
 import Dropdown from '../../../Dropdown';
+import Error from '../../../Error';
 import { NEWS_API_VALUE } from '../../../../utils/constants';
 
 interface Source {
@@ -26,7 +27,7 @@ const Sources: React.FC = () => {
     let content;
 
     if (isLoading) content = <Loading />;
-    else if (error || data?.error) content = <div>Error At Fetching sources</div>;
+    else if (error || data?.error) content = <Error size="xs">Error at Fetching Sources</Error>;
     else {
         const selectedSources: string[] = extraFilters?.[NEWS_API_VALUE]?.sources || [];
         const sources: Source[] = data?.filters?.[NEWS_API_VALUE]?.sources?.sources;

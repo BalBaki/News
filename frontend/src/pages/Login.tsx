@@ -9,6 +9,7 @@ import Button from '../components/Button';
 import FormikPassword from '../components/formik/FormikPassword';
 import NavigateHomeIcon from '../components/NavigateHomeIcon';
 import ResetFormikFields from '../components/formik/ResetFormikFields';
+import Error from '../components/Error';
 import { type LoginForm } from '../types';
 
 const Login: React.FC = () => {
@@ -33,7 +34,7 @@ const Login: React.FC = () => {
             .min(8, ({ min }) => `Minimum ${min} character`),
     });
 
-    if (error) return <div>Error At Login</div>;
+    if (error) return <Error previousButton>Error at Login</Error>;
     if (user.id || data?.login) return <Navigate to="/" replace />;
 
     return (
