@@ -1,9 +1,9 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { useSearchMutation, type RootState } from '../../store';
+import { useLazySearchQuery, type RootState } from '../../store';
 import Apis from '../filters/Apis';
 import SortOrder from '../filters/SortOrder';
 import Button from '../Button';
@@ -13,12 +13,11 @@ import SaveSettings from './SaveSettings';
 import Dates from '../filters/Dates';
 import SetQueryParams from './SetQueyParams';
 import ResetFilters from '../filters/ResetFilters';
-import { SEARCH_MUTATION_CACHE_KEY } from '../../utils/constants';
 import { UrlParser } from '../../utils/urlparser';
 
 const Search: React.FC = () => {
     const user = useSelector((state: RootState) => state.user);
-    const [search, { isLoading, reset }] = useSearchMutation({ fixedCacheKey: SEARCH_MUTATION_CACHE_KEY });
+    const [search, result] = useLazySearchQuery();
     const [searchParams] = useSearchParams();
     const initialValues = useMemo(() => {
         const parsedQueryString = UrlParser(searchParams.get('filter'));
@@ -48,10 +47,6 @@ const Search: React.FC = () => {
             (value) => value && value.length > 0
         ),
     });
-
-    useEffect(() => {
-        return () => reset();
-    }, []);
 
     return (
         <main className="mt-4">
@@ -97,8 +92,8 @@ const Search: React.FC = () => {
                                         className={`w-32 h-7 rounded-md text-white  ${
                                             isValid ? 'bg-green-400' : 'bg-red-500'
                                         }`}
-                                        disabled={isLoading || !isValid}
-                                        loading={isLoading}
+                                        disabled={result.isFetching || !isValid}
+                                        loading={result.isFetching}
                                     >
                                         Search
                                     </Button>
@@ -106,7 +101,13 @@ const Search: React.FC = () => {
                                 </div>
                             </Form>
                         </section>
-                        <NewsList />
+                        <NewsList
+                            searchResult={{
+                                data: result.data,
+                                isFetching: result.isFetching,
+                                error: result.error,
+                            }}
+                        />
                         <SetQueryParams />
                         <ResetFilters />
                     </>

@@ -1,16 +1,23 @@
 import './NewsList.css';
-import { useSearchMutation } from '../../store';
 import Loading from '../Loading';
 import NewsListPart from './NewsListPart';
 import Error from '../Error';
-import { SEARCH_MUTATION_CACHE_KEY } from '../../utils/constants';
+import { type FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { type SerializedError } from '@reduxjs/toolkit';
+import { type SearchResponse } from '../../types';
 
-const NewsList: React.FC = () => {
-    const [, { data, error, isLoading }] = useSearchMutation({
-        fixedCacheKey: SEARCH_MUTATION_CACHE_KEY,
-    });
+type NewsListTypes = {
+    searchResult: {
+        data: SearchResponse | undefined;
+        isFetching: boolean;
+        error: FetchBaseQueryError | SerializedError | undefined;
+    };
+};
 
-    if (isLoading)
+const NewsList: React.FC<NewsListTypes> = ({ searchResult }) => {
+    const { data, error, isFetching } = searchResult;
+
+    if (isFetching)
         return (
             <div className="h-64">
                 <Loading />
@@ -22,7 +29,7 @@ const NewsList: React.FC = () => {
 
     if (data?.search) {
         renderedNews = Object.keys(data.articles).map((api) => {
-            return <NewsListPart api={api} key={api} />;
+            return <NewsListPart key={api} api={api} newsListData={data.articles[api]} />;
         });
     }
 

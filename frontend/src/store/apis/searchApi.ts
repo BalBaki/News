@@ -13,16 +13,18 @@ const searchApi = createApi({
     }),
     endpoints(builder) {
         return {
-            search: builder.mutation<SearchResponse, FilterSettings>({
+            search: builder.query<SearchResponse, FilterSettings>({
                 query: (payload) => {
                     const transformedPayload = { ...payload };
 
                     transformedPayload.term = payload.term.toLocaleLowerCase();
 
                     return {
-                        method: 'POST',
+                        method: 'GET',
                         url: '/search',
-                        body: { payload: encodeURIComponent(JSON.stringify(transformedPayload)) },
+                        params: {
+                            filter: encodeURIComponent(JSON.stringify(transformedPayload)),
+                        },
                     };
                 },
             }),
@@ -48,4 +50,4 @@ const searchApi = createApi({
 });
 
 export { searchApi };
-export const { useSearchMutation, useFetchApisQuery, useFetchFiltersQuery } = searchApi;
+export const { useLazySearchQuery, useFetchApisQuery, useFetchFiltersQuery } = searchApi;

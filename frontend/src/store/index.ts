@@ -14,7 +14,9 @@ const store = configureStore({
         notifications: notificationsSlice.reducer,
     },
     middleware(getDefaultMiddleware) {
-        return getDefaultMiddleware()
+        return getDefaultMiddleware({
+            serializableCheck: false,
+        })
             .concat(userApi.middleware)
             .concat(searchApi.middleware)
             .concat(apiLimitMiddleware);
@@ -39,4 +41,4 @@ export {
     useFetchFavoritesQuery,
 } from './apis/userApi';
 export { addNotification, removeNotification, updateNotifications } from './slices/notifications';
-export { useSearchMutation, useFetchApisQuery, useFetchFiltersQuery } from './apis/searchApi';
+export { useLazySearchQuery, useFetchApisQuery, useFetchFiltersQuery } from './apis/searchApi';

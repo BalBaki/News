@@ -258,9 +258,9 @@ app.get('/filters', async (request, response) => {
 //search news
 //payload => apiList, fromDate, term, toDate,page,sortOrder, extraFilters = {guardian: {section: [...]},
 //newsapi: {sources: '...'}}
-app.post('/search', async (request, response) => {
+app.get('/search', async (request, response) => {
     try {
-        const payload = decodePayload(request.body.payload);
+        const payload = decodePayload(request.query.filter);
         const { apiList, term, fromDate, toDate, page, sortOrder, extraFilters } = payload;
 
         const responses = await Promise.all(

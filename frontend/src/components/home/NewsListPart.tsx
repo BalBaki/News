@@ -1,21 +1,20 @@
 import { useEffect, useState, useRef } from 'react';
 import { useFormikContext } from 'formik';
-import { useSearchMutation, useFetchApisQuery } from '../../store';
+import { useLazySearchQuery, useFetchApisQuery } from '../../store';
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import Loading from '../Loading';
 import NewsItem from './NewsItem';
-import { type FilterSettings } from '../../types';
-import {
-    SEARCH_MUTATION_CACHE_KEY,
-    NEWS_API_VALUE,
-    THE_GUARDIANS_API_VALUE,
-    THE_NEW_YORK_TIMES_VALUE,
-} from '../../utils/constants';
+import { type News, type FilterSettings } from '../../types';
+import { NEWS_API_VALUE, THE_GUARDIANS_API_VALUE, THE_NEW_YORK_TIMES_VALUE } from '../../utils/constants';
 import Button from '../Button';
 import classNames from 'classnames';
 
 type NewsListPartProps = {
     api: string;
+    newsListData: {
+        count: number;
+        result: News[];
+    };
 };
 
 const articleColors = {
@@ -34,15 +33,12 @@ const articleColors = {
 };
 const ITEMS_PER_API = 10;
 
-const NewsListPart: React.FC<NewsListPartProps> = ({ api }) => {
+const NewsListPart: React.FC<NewsListPartProps> = ({ api, newsListData }) => {
     const [page, setPage] = useState<number>(1);
     const previousPageNum = useRef<number>(1);
     const { values, isValid } = useFormikContext<FilterSettings>();
     const { data: apiData } = useFetchApisQuery();
-    const [, { data: generalSearchResult }] = useSearchMutation({
-        fixedCacheKey: SEARCH_MUTATION_CACHE_KEY,
-    });
-    const [search, { data, isLoading, error, isUninitialized }] = useSearchMutation();
+    const [search, { data, isFetching, error, isUninitialized }] = useLazySearchQuery();
 
     useEffect(() => {
         if (!isValid || (page === 1 && isUninitialized)) return;
@@ -59,7 +55,7 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ api }) => {
 
     let content;
 
-    if (isLoading)
+    if (isFetching)
         content = (
             <div className="h-64">
                 <Loading />
@@ -67,7 +63,7 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ api }) => {
         );
     else if (error || data?.error) content = <div className="ml-3">Error At Fetching News</div>;
     else {
-        const articles = data?.articles?.[api]?.result || generalSearchResult?.articles?.[api]?.result;
+        const articles = data?.articles?.[api]?.result || newsListData.result;
         const renderedNews = articles?.map((article) => {
             return <NewsItem key={article.id} news={article} colors={articleColors[api]} />;
         });
@@ -82,7 +78,7 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ api }) => {
 
         content = <div className={classes}>{renderedNews}</div>;
     }
-    const newsCount = data?.articles?.[api]?.count || generalSearchResult?.articles?.[api]?.count || 0;
+    const newsCount = data?.articles?.[api]?.count || newsListData.count || 0;
 
     return (
         <div className="mb-7">
@@ -93,7 +89,7 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ api }) => {
 
                 {newsCount > ITEMS_PER_API && (
                     <nav className="flex items-center">
-                        <Button onClick={() => handleNavigationArrows('previous')} disabled={page <= 1 || isLoading}>
+                        <Button onClick={() => handleNavigationArrows('previous')} disabled={page <= 1 || isFetching}>
                             <MdOutlineKeyboardArrowLeft className="cursor-pointer" />
                         </Button>
                         <Button
@@ -101,10 +97,8 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ api }) => {
                             disabled={
                                 page >=
                                     Math.ceil(
-                                        (data?.articles?.[api]?.count ||
-                                            generalSearchResult?.articles?.[api]?.count ||
-                                            0) / ITEMS_PER_API
-                                    ) || isLoading
+                                        (data?.articles?.[api]?.count || newsListData.count || 0) / ITEMS_PER_API
+                                    ) || isFetching
                             }
                         >
                             <MdOutlineKeyboardArrowRight className="cursor-pointer" />
