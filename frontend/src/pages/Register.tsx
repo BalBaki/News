@@ -53,7 +53,10 @@ const Register: React.FC = () => {
 
     return (
         <>
-            <main className="flex justify-center items-center h-screen p-3 bg-news-bg" aria-label="register form">
+            <main
+                className="flex justify-center items-center h-screen p-3 bg-news-bg bg-cover"
+                aria-label="register form"
+            >
                 <div className="relative w-full h-full max-w-lg max-h-[43.5rem] overflow-hidden p-[.35rem] z-50">
                     <div className="h-full bg-black border-2 p-3 overflow-auto rounded-md">
                         <div className="text-white">

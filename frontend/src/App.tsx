@@ -16,7 +16,7 @@ const App: React.FC = () => {
     if (isLoading)
         return (
             <div className="h-screen">
-                <Loading />
+                <Loading className="opacity-50" />
             </div>
         );
 

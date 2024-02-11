@@ -41,7 +41,10 @@ const Login: React.FC = () => {
 
     return (
         <>
-            <main className="h-screen flex justify-center items-center p-3 bg-news-bg" aria-label="login form">
+            <main
+                className="h-screen flex justify-center items-center p-3 bg-news-bg bg-cover"
+                aria-label="login form"
+            >
                 <div className="relative w-full h-full max-w-lg max-h-[24.5rem] overflow-hidden p-[.35rem] z-50 ">
                     <div className="h-full rounded-md overflow-auto border-2 p-3 bg-black">
                         <div>

@@ -20,7 +20,7 @@ const NewsList: React.FC<NewsListTypes> = ({ searchResult }) => {
     if (isFetching)
         return (
             <div className="h-64">
-                <Loading />
+                <Loading className="opacity-50" />
             </div>
         );
     if (error || data?.error) return <Error className="mt-9">Error At Fetching News</Error>;

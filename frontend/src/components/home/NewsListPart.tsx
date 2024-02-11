@@ -60,7 +60,7 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ api, newsListData }) => {
     if (isFetching)
         content = (
             <div className="h-64">
-                <Loading />
+                <Loading className="opacity-50" />
             </div>
         );
     else if (error || data?.error) content = <div className="ml-3">Error At Fetching News</div>;
