@@ -23,6 +23,8 @@ const ResetFormikFields: React.FC<ResetFormikFieldsProps> = ({ fields, condition
             setValues(values);
             setTouched({});
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [condition, isLoading]);
 
     return <></>;

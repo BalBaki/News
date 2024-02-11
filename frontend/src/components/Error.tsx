@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import Button from './Button';
 
 type ErrorProps = {
-    previousButton?: boolean;
+    previousPageButton?: boolean;
     size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
     className?: string;
 };
 
-const Error: React.FC<PropsWithChildren<ErrorProps>> = ({ children, previousButton, className, size = 'md' }) => {
+const Error: React.FC<PropsWithChildren<ErrorProps>> = ({ children, previousPageButton, className, size = 'md' }) => {
     const navigate = useNavigate();
 
     const handleBackButtonClick = () => navigate(-1);
@@ -33,7 +33,7 @@ const Error: React.FC<PropsWithChildren<ErrorProps>> = ({ children, previousButt
                     <div className="text-md sm:text-2xl font-bold  max-w-[14rem] sm:max-w-md break-all mx-2">
                         {children}
                     </div>
-                    {previousButton && (
+                    {previousPageButton && (
                         <Button
                             className="text-md uppercase mt-2 font-normal bg-blue-700 py-2 px-4 sm:py-3 sm:px-6 
                             rounded-3xl text-white shadow-[0px_5px_2px_3px] shadow-blue-950"

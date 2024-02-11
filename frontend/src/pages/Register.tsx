@@ -3,15 +3,15 @@ import { Link, Navigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
-import { type RootState } from '../store';
-import { type RegisterForm } from '../types';
-import { useRegisterMutation } from '../store';
-import { useNotification } from '../hooks/use-notification';
 import Button from '../components/Button';
 import FormikPassword from '../components/formik/FormikPassword';
 import NavigateHomeIcon from '../components/NavigateHomeIcon';
 import ResetFormikFields from '../components/formik/ResetFormikFields';
 import Error from '../components/Error';
+import { useRegisterMutation } from '../store';
+import { useNotification } from '../hooks/use-notification';
+import { type RootState } from '../store';
+import { type RegisterForm } from '../types';
 
 const Register: React.FC = () => {
     const initialValues: RegisterForm = {
@@ -28,10 +28,12 @@ const Register: React.FC = () => {
     useEffect(() => {
         if (data) {
             notification({
-                type: data?.register ? 'success' : 'error',
-                message: data?.register ? 'Register Success' : data?.error,
+                type: data.register ? 'success' : 'error',
+                message: data.register ? 'Register Success' : data.error,
             });
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     const formSchema = Yup.object().shape({
@@ -46,7 +48,7 @@ const Register: React.FC = () => {
             .oneOf([Yup.ref('password')], 'Passwords must match'),
     });
 
-    if (error) return <Error previousButton>Error At Register</Error>;
+    if (error) return <Error previousPageButton>Error At Register</Error>;
     if (user.id || data?.register) return <Navigate to="/" replace />;
 
     return (

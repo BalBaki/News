@@ -1,13 +1,13 @@
 import { useEffect, useState, useRef } from 'react';
 import { useFormikContext } from 'formik';
-import { useLazySearchQuery, useFetchApisQuery } from '../../store';
+import classNames from 'classnames';
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from 'react-icons/md';
+import { useLazySearchQuery, useFetchApisQuery } from '../../store';
 import Loading from '../Loading';
 import NewsItem from './NewsItem';
+import Button from '../Button';
 import { type News, type FilterSettings } from '../../types';
 import { NEWS_API_VALUE, THE_GUARDIANS_API_VALUE, THE_NEW_YORK_TIMES_VALUE } from '../../utils/constants';
-import Button from '../Button';
-import classNames from 'classnames';
 
 type NewsListPartProps = {
     api: string;
@@ -34,7 +34,7 @@ const articleColors = {
 const ITEMS_PER_API = 10;
 
 const NewsListPart: React.FC<NewsListPartProps> = ({ api, newsListData }) => {
-    const [page, setPage] = useState<number>(1);
+    const [page, setPage] = useState(1);
     const previousPageNum = useRef<number>(1);
     const { values, isValid } = useFormikContext<FilterSettings>();
     const { data: apiData } = useFetchApisQuery();
@@ -44,6 +44,8 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ api, newsListData }) => {
         if (!isValid || (page === 1 && isUninitialized)) return;
 
         search({ ...values, page, apiList: [api], extraFilters: { [api]: values.extraFilters[api] } });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [page]);
 
     const handleNavigationArrows = (direction: 'next' | 'previous') => {

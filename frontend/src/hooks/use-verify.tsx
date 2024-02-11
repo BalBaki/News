@@ -9,6 +9,8 @@ const useVerify = () => {
 
     useEffect(() => {
         accessTokenExpireDate && verify();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return {

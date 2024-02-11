@@ -1,9 +1,9 @@
 import { Field, useFormikContext } from 'formik';
 import { useFetchFiltersQuery } from '../../../../store';
 import Loading from '../../../Loading';
-import { type FilterSettings } from '../../../../types';
 import Dropdown from '../../../Dropdown';
 import Error from '../../../Error';
+import { type FilterSettings } from '../../../../types';
 import { NEWS_API_VALUE } from '../../../../utils/constants';
 
 interface Source {

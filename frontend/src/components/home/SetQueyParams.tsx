@@ -14,6 +14,8 @@ const SetQueryParams: React.FC = () => {
                 replace: true,
             }
         );
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values]);
 
     return <></>;

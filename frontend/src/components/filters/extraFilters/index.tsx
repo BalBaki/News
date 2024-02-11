@@ -1,9 +1,9 @@
 import { useEffect, Fragment } from 'react';
 import { useFormikContext } from 'formik';
 import { useFetchApisQuery } from '../../../store';
-import { type FilterSettings } from '../../../types';
 import NewsApiFilters from './newsapi';
 import TheGuardiansFilters from './theguardians';
+import { type FilterSettings } from '../../../types';
 import { NEWS_API_VALUE, THE_GUARDIANS_API_VALUE } from '../../../utils/constants';
 
 interface FiltersWithComponents {
@@ -39,6 +39,8 @@ const ExtraFilters: React.FC = () => {
         });
 
         setValues(values);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values.apiList]);
 
     const renderedFilters = values.apiList.map((api) => {

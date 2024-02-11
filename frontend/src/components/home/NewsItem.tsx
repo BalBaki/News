@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
 import { useChangeFavoriteMutation, type RootState } from '../../store';
+import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import { type News } from '../../types';
 
 type NewsProps = {

@@ -3,13 +3,13 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { Link, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useLoginMutation, type RootState } from '../store';
-import { useNotification } from '../hooks/use-notification';
 import Button from '../components/Button';
 import FormikPassword from '../components/formik/FormikPassword';
 import NavigateHomeIcon from '../components/NavigateHomeIcon';
 import ResetFormikFields from '../components/formik/ResetFormikFields';
 import Error from '../components/Error';
+import { useLoginMutation, type RootState } from '../store';
+import { useNotification } from '../hooks/use-notification';
 import { type LoginForm } from '../types';
 
 const Login: React.FC = () => {
@@ -21,10 +21,12 @@ const Login: React.FC = () => {
     useEffect(() => {
         if (data) {
             notification({
-                type: data?.login ? 'success' : 'error',
-                message: data?.login ? 'Login Success' : data?.error,
+                type: data.login ? 'success' : 'error',
+                message: data.login ? 'Login Success' : data.error,
             });
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     const formSchema = Yup.object().shape({
@@ -34,7 +36,7 @@ const Login: React.FC = () => {
             .min(8, ({ min }) => `Minimum ${min} character`),
     });
 
-    if (error) return <Error previousButton>Error at Login</Error>;
+    if (error) return <Error previousPageButton>Error at Login</Error>;
     if (user.id || data?.login) return <Navigate to="/" replace />;
 
     return (

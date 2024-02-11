@@ -25,19 +25,15 @@ const NewsList: React.FC<NewsListTypes> = ({ searchResult }) => {
         );
     if (error || data?.error) return <Error className="mt-9">Error At Fetching News</Error>;
 
-    let renderedNews;
-
-    if (data?.search) {
-        renderedNews = Object.keys(data.articles).map((api) => {
-            return <NewsListPart key={api} api={api} newsListData={data.articles[api]} />;
-        });
-    }
-
     return (
         <section className="mt-6 mx-1 min-[281px]:mx-3" aria-label="news">
             {data?.search ? (
                 Object.keys(data.articles).length > 0 ? (
-                    <>{renderedNews}</>
+                    <>
+                        {Object.keys(data.articles).map((api) => {
+                            return <NewsListPart key={api} api={api} newsListData={data.articles[api]} />;
+                        })}
+                    </>
                 ) : (
                     <div className="ml-3">No News Found</div>
                 )

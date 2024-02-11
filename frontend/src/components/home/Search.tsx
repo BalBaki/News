@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
-import { useLazySearchQuery, type RootState } from '../../store';
 import Apis from '../filters/Apis';
 import SortOrder from '../filters/SortOrder';
 import Button from '../Button';
@@ -13,6 +12,7 @@ import SaveSettings from './SaveSettings';
 import Dates from '../filters/Dates';
 import SetQueryParams from './SetQueyParams';
 import ResetFilters from '../filters/ResetFilters';
+import { useLazySearchQuery, type RootState } from '../../store';
 import { UrlParser } from '../../utils/urlparser';
 
 const Search: React.FC = () => {
@@ -35,6 +35,8 @@ const Search: React.FC = () => {
                   page: 1,
                   sortOrder: 'relevance',
               };
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const formSchema = Yup.object().shape({
@@ -57,7 +59,7 @@ const Search: React.FC = () => {
                     search(values);
                 }}
             >
-                {({ isValid, dirty }) => (
+                {({ isValid }) => (
                     <>
                         <section aria-label="filters">
                             <Form>

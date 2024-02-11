@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useFormikContext } from 'formik';
-import { type FilterSettings } from '../../types';
 import { useSaveSettingsMutation } from '../../store';
 import Button from '../Button';
 import { useNotification } from '../../hooks/use-notification';
+import { type FilterSettings } from '../../types';
 
 const SaveSettings: React.FC = () => {
     const { values } = useFormikContext<FilterSettings>();
@@ -13,10 +13,12 @@ const SaveSettings: React.FC = () => {
     useEffect(() => {
         if (result) {
             notification({
-                type: result?.save ? 'success' : 'error',
-                message: result?.save ? 'Settings Saved' : result?.error,
+                type: result.save ? 'success' : 'error',
+                message: result.save ? 'Settings Saved' : result?.error,
             });
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [result]);
 
     const handleSaveClick = (): void => {

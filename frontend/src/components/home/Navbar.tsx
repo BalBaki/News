@@ -16,14 +16,16 @@ const Navbar: React.FC = () => {
     useEffect(() => {
         if (data) {
             notification({
-                type: data?.logout ? 'success' : 'error',
-                message: data?.logout ? 'Logout Success' : data?.error,
+                type: data.logout ? 'success' : 'error',
+                message: data.logout ? 'Logout Success' : data?.error,
             });
         }
 
         return () => {
             reset();
         };
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     const handleLogoutClick = (): void => {

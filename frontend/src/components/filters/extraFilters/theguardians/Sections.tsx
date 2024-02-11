@@ -26,8 +26,8 @@ const Sections: React.FC = () => {
         values: { extraFilters },
     } = useFormikContext<FilterSettings>();
 
+    const selectedSection = extraFilters?.[THE_GUARDIANS_API_VALUE]?.section;
     let content;
-    let selectedSection = extraFilters?.[THE_GUARDIANS_API_VALUE]?.section;
 
     if (isLoading) content = <Loading />;
     else if (error || data?.error) content = <Error size="xs">Error at Fetching Sections</Error>;

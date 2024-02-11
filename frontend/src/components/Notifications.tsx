@@ -1,8 +1,8 @@
+import './Notifications.css';
 import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import { GoAlert, GoCheck } from 'react-icons/go';
-import { useSelector, useDispatch } from 'react-redux';
-import './Notifications.css';
 import { type RootState, removeNotification, updateNotifications } from '../store';
 import { type Notification } from '../types';
 
