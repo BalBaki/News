@@ -60,7 +60,7 @@ app.listen(process.env.API_PORT, () => {
     console.log(`Server work at port ${process.env.API_PORT}`);
 });
 
-//Register+
+//Register
 //payload => email, password, name, surname
 app.post('/register', async (request, response) => {
     try {
@@ -99,7 +99,7 @@ app.post('/register', async (request, response) => {
     }
 });
 
-//Login+
+//Login
 //payload => email, password
 app.post('/login', async (request, response) => {
     try {
@@ -132,15 +132,15 @@ app.post('/login', async (request, response) => {
     }
 });
 
-//logout++
+//logout
 app.post('/logout', (request, response) => {
     clearTokenCookies(response);
 
     response.json({ logout: true });
 });
 
-//verify+
-app.post('/verify', authMiddleware, async (request, response) => {
+//verify
+app.get('/verify', authMiddleware, async (request, response) => {
     try {
         const { user: payloadUser } = request;
 
@@ -160,8 +160,8 @@ app.post('/verify', authMiddleware, async (request, response) => {
     }
 });
 
-//Save Settings+
-//payload => filterSettings
+//Save Settings
+//payload => apiList, fromDate, toDate, sortOrder, extraFilters = {....}
 app.post('/savesettings', authMiddleware, async (request, response) => {
     try {
         const filterSettings = decodePayload(request.body.payload);
@@ -178,7 +178,7 @@ app.post('/savesettings', authMiddleware, async (request, response) => {
     }
 });
 
-//Get Valid Apis
+//Get api list
 app.get('/apis', async (request, response) => {
     try {
         const listOfApis = await Api.find();
@@ -190,7 +190,7 @@ app.get('/apis', async (request, response) => {
 });
 
 //Get filter data
-//query => apilist(array)
+//query => apiList = string[]
 app.get('/filtersV2', async (request, response) => {
     try {
         const apiList = decodePayload(request.query.apiList);
@@ -226,8 +226,7 @@ app.get('/filtersV2', async (request, response) => {
     }
 });
 
-//Get filter data
-//query => apiName(string)
+//query => apiName=string
 app.get('/filters', async (request, response) => {
     try {
         const apiName = decodeURIComponent(request.query.apiName);
@@ -255,9 +254,7 @@ app.get('/filters', async (request, response) => {
     }
 });
 
-//search news
-//payload => apiList, fromDate, term, toDate,page,sortOrder, extraFilters = {guardian: {section: [...]},
-//newsapi: {sources: '...'}}
+//payload => term, apiList, fromDate, toDate, page, sortOrder, extraFilters = {...},
 app.get('/search', async (request, response) => {
     try {
         const payload = decodePayload(request.query.filter);
@@ -325,6 +322,7 @@ app.get('/search', async (request, response) => {
     }
 });
 
+//Add and delete favorite
 // payload => {type: 'add' | 'remove', news: News}
 app.post('/favorite', authMiddleware, async (request, response) => {
     try {
@@ -363,6 +361,7 @@ app.post('/favorite', authMiddleware, async (request, response) => {
     }
 });
 
+//Get favoristes
 app.get('/favorites', authMiddleware, async (request, response) => {
     try {
         const { user } = request;

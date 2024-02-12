@@ -62,7 +62,7 @@ const userApi = createApi({
             verify: builder.query<VerifyResponse, void>({
                 query: () => {
                     return {
-                        method: 'POST',
+                        method: 'GET',
                         url: '/verify',
                     };
                 },
