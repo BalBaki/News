@@ -1,6 +1,6 @@
 ## Project Setup Stages
 
--   You need to add the values of the following data names to the environment file(.env).
+-   You need to add the values of the following data names to the Backend environment file(.env).
     -   DB_CONNECTION_STRING
     -   NEWS_API_KEY
     -   GUARDIANS_API_KEY
