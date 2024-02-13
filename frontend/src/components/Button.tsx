@@ -4,7 +4,6 @@ import { TbCircleDotted } from 'react-icons/tb';
 
 type ButtonProps = {
     loading?: boolean;
-    className?: string;
 } & React.ComponentPropsWithoutRef<'button'>;
 
 const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
