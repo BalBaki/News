@@ -49,8 +49,8 @@ module.exports = {
                 'sliding-from-left-to-right': 'slidingFromLeftToRight .7s ease-in-out',
             },
             backgroundImage: {
-                'news-bg': "url('/src/assets/images/news-bg.jpg')",
-                'error-bg': "url('/src/assets/images/error-bg.jpg')",
+                'news-bg': "url('/public/assets/images/news-bg.jpg')",
+                'error-bg': "url('/public/assets/images/error-bg.jpg')",
             },
         },
     },
