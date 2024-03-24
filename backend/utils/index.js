@@ -81,7 +81,6 @@ const transformArticles = (articles) => {
                                     let authors = '';
 
                                     if (tag.firstName) authors += tag.firstName;
-
                                     if (tag.lastName) authors += (tag.firstName ? ' ' : '') + tag.lastName;
 
                                     return authors;
