@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
-import classNames from 'classnames';
 import Button from './Button';
+import { cn } from '../utils/tailwindClassNames';
 
 type ErrorProps = {
     previousPageButton?: boolean;
@@ -14,12 +14,16 @@ const Error: React.FC<PropsWithChildren<ErrorProps>> = ({ children, previousPage
 
     const handleBackButtonClick = () => navigate(-1);
 
-    const classes = classNames('h-full w-full text-center max-sm:scale-100', className, {
-        'scale-[0.6] sm:-mt-9': size === 'xs',
-        'scale-[0.8] sm:-mt-7': size === 'sm',
-        'scale-[1.2] sm:mt-4': size === 'lg',
-        'scale-[1.4] sm:mt-9': size === 'xl',
-    });
+    const classes = cn(
+        'h-full w-full text-center max-sm:scale-100',
+        {
+            'scale-[0.6] sm:-mt-9': size === 'xs',
+            'scale-[0.8] sm:-mt-7': size === 'sm',
+            'scale-[1.2] sm:mt-4': size === 'lg',
+            'scale-[1.4] sm:mt-9': size === 'xl',
+        },
+        className
+    );
 
     return (
         <div className={classes}>

@@ -26,7 +26,7 @@ const ResetFilters: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
-    return <></>;
+    return null;
 };
 
 export default ResetFilters;

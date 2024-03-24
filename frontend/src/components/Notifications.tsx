@@ -1,10 +1,10 @@
 import './Notifications.css';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import classNames from 'classnames';
 import { GoAlert, GoCheck } from 'react-icons/go';
 import { type RootState, removeNotification, updateNotifications } from '../store';
 import { type Notification } from '../types';
+import { cn } from '../utils/tailwindClassNames';
 
 const Notifications: React.FC = () => {
     const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const Notifications: React.FC = () => {
             );
         });
 
-        const classes = classNames(
+        const classes = cn(
             'relative flex items-center justify-center text-lg text-white rounded-2xl px-2 min-h-[5rem] w-60 mt-2',
             {
                 'bg-red-500': notification.type === 'error',

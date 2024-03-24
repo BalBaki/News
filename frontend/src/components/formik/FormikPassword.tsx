@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Field, ErrorMessage, type FieldAttributes } from 'formik';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import classNames from 'classnames';
+import { cn } from '../../utils/tailwindClassNames';
 
 type FormikPasswordProps = {
     touched?: boolean;
@@ -14,11 +14,15 @@ const FormikPassword: React.FC<FormikPasswordProps> = (props) => {
     const handleShowIconClick = (): void => {
         setShowPassword((current) => !current);
     };
-    const classes = classNames(className, 'w-full border-2 mt-2 h-12 pl-2 py-2 pr-6 rounded-md outline-none', {
-        'border-[#6B7280]': !touched,
-        'border-green-500': touched && !error,
-        'border-red-500': touched && error,
-    });
+    const classes = cn(
+        'w-full border-2 mt-2 h-12 pl-2 py-2 pr-6 rounded-md outline-none',
+        {
+            'border-[#6B7280]': !touched,
+            'border-green-500': touched && !error,
+            'border-red-500': touched && error,
+        },
+        className
+    );
 
     return (
         <>

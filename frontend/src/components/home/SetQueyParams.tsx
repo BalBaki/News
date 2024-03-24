@@ -18,7 +18,7 @@ const SetQueryParams: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values]);
 
-    return <></>;
+    return null;
 };
 
 export default SetQueryParams;

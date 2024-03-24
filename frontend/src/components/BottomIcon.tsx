@@ -1,5 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
+import { cn } from '../utils/tailwindClassNames';
 
 type BottomIconProps = {
     position: 'left' | 'right';
@@ -16,7 +16,7 @@ const BottomIcon: React.FC<BottomIconProps> = ({ position, trigger, icon, animat
                 return child;
             }
 
-            const iconClasses = classNames('w-full h-full', {
+            const iconClasses = cn('w-full h-full', {
                 'animate-little-bounce': animation === 'little-bounce',
                 'animate-pulse': animation === 'pulse',
                 'animate-ping': animation === 'ping',
@@ -28,13 +28,13 @@ const BottomIcon: React.FC<BottomIconProps> = ({ position, trigger, icon, animat
         });
     };
 
-    const classes = classNames(
-        className,
-        `fixed w-16 h-16 p-3 bg-black text-white rounded-full animate-fade-in z-[9999] cursor-pointer bottom-3 z-50`,
+    const classes = cn(
+        'fixed w-16 h-16 p-3 bg-black text-white rounded-full animate-fade-in z-[9999] cursor-pointer bottom-3 z-50',
         {
             'left-3': position === 'left',
             'right-3': position === 'right',
-        }
+        },
+        className
     );
 
     return (

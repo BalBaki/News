@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
 import { useFormikContext } from 'formik';
-import classNames from 'classnames';
 import { MdOutlineKeyboardArrowLeft, MdOutlineKeyboardArrowRight } from 'react-icons/md';
 import { useLazySearchQuery, useFetchApisQuery } from '../../store';
 import Loading from '../Loading';
@@ -8,6 +7,7 @@ import NewsItem from './NewsItem';
 import Button from '../Button';
 import { type News, type FilterSettings } from '../../types';
 import { NEWS_API_VALUE, THE_GUARDIANS_API_VALUE, THE_NEW_YORK_TIMES_VALUE } from '../../utils/constants';
+import { cn } from '../../utils/tailwindClassNames';
 
 type NewsListPartProps = {
     api: string;
@@ -70,7 +70,7 @@ const NewsListPart: React.FC<NewsListPartProps> = ({ api, newsListData }) => {
             return <NewsItem key={article.id} news={article} colors={articleColors[api]} />;
         });
 
-        const classes = classNames(
+        const classes = cn(
             'grid min-[630px]:grid-cols-2 min-[920px]:grid-cols-3 min-[1200px]:grid-cols-4 min-[1475px]:grid-cols-5 min-[330px]:mx-5 gap-3 mt-4 justify-items-center',
             {
                 'animate-sliding-from-right-to-left': previousPageNum.current <= page,

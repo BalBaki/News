@@ -1,6 +1,6 @@
 import { type PropsWithChildren } from 'react';
-import classNames from 'classnames';
 import { TbCircleDotted } from 'react-icons/tb';
+import { cn } from '../utils/tailwindClassNames';
 
 type ButtonProps = {
     loading?: boolean;
@@ -13,10 +13,13 @@ const Button: React.FC<PropsWithChildren<ButtonProps>> = ({
     disabled,
     ...rest
 }) => {
-    const classes = classNames(className, {
-        'cursor-progress': loading && disabled,
-        'cursor-not-allowed': !loading && disabled,
-    });
+    const classes = cn(
+        {
+            'cursor-progress': loading && disabled,
+            'cursor-not-allowed': !loading && disabled,
+        },
+        className
+    );
 
     return (
         <button {...rest} className={classes} disabled={disabled}>

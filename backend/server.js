@@ -206,12 +206,13 @@ app.get('/filtersV2', async (request, response) => {
 
                 const filterPromises = currentApiData.filters.map(async (option) => {
                     const filterResponse = await option.filterFn();
+                    const isResponseInstance = filterResponse instanceof Response;
 
-                    if (!filterResponse.ok) {
+                    if (isResponseInstance && !filterResponse.ok) {
                         throw new Error('Error at Fetching Filter Option');
                     }
 
-                    const filterOptions = await filterResponse.json();
+                    const filterOptions = isResponseInstance ? await filterResponse.json() : filterResponse;
 
                     filters[api][option.name] = filterOptions;
                 });
