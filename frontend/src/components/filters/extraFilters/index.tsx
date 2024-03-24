@@ -20,25 +20,27 @@ const ExtraFilters: React.FC = () => {
     const { data } = useFetchApisQuery();
 
     useEffect(() => {
+        const newExtraFilters = { ...values.extraFilters };
+
         values.apiList.forEach((api) => {
             if (!values.extraFilters[api]) {
-                values.extraFilters[api] = {};
+                newExtraFilters[api] = {};
 
                 const apiData = data?.apis?.find((resApi) => resApi.name === api);
 
                 if (apiData) {
                     apiData.filters.forEach((filter) => {
-                        values.extraFilters[api][filter.name] = filter.defaultValue;
+                        newExtraFilters[api][filter.name] = filter.defaultValue;
                     });
                 }
             }
         });
 
         Object.keys(values.extraFilters).forEach((key) => {
-            if (!values.apiList.includes(key)) delete values.extraFilters[key];
+            if (!values.apiList.includes(key)) delete newExtraFilters[key];
         });
 
-        setValues(values);
+        setValues({ ...values, extraFilters: newExtraFilters });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [values.apiList]);

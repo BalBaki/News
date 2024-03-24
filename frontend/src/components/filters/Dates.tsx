@@ -9,7 +9,7 @@ const Dates: React.FC = () => {
         <div className="flex justify-around xl:justify-evenly items-baseline w-full max-[350px]:block ">
             <div className="flex items-center">
                 <div className="max-[350px]:w-12 max-[350px]:mr-0 mr-3">
-                    <label htmlFor="fromDate">From: </label>
+                    <label>From: </label>
                 </div>
                 <ReactDatePicker
                     selected={
@@ -28,7 +28,7 @@ const Dates: React.FC = () => {
             </div>
             <div className="flex items-center min-[351px]:ml-2 max-[350px]:mt-2">
                 <div className="max-[350px]:w-12 mr-3 max-[350px]:mr-0">
-                    <label htmlFor="toDate">To: </label>
+                    <label>To: </label>
                 </div>
                 <ReactDatePicker
                     selected={new Date(values.toDate) || new Date()}
