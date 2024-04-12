@@ -14,10 +14,10 @@ const {
     decodePayload,
     createAccessTokenCookies,
     createRefreshTokenCookie,
-    validateEmail,
     clearTokenCookies,
     transformArticles,
 } = require('./utils');
+const schemas = require('./schemas');
 
 const app = express();
 const limiter = rateLimit({
@@ -64,21 +64,19 @@ app.listen(process.env.API_PORT, () => {
 //payload => email, password, name, surname
 app.post('/register', async (request, response) => {
     try {
-        const payload = decodePayload(request.body.payload);
-        const payloadEmail = payload.email?.toLowerCase();
+        const validateRegister = schemas.register.safeParse(decodePayload(request.body.payload));
 
-        if (!payloadEmail || !validateEmail(payloadEmail)) throw new Error('Not Valid Email');
+        if (!validateRegister.success) throw new Error('Invalid Data!');
 
-        const user = await User.findOne({ email: payloadEmail });
+        const user = await User.findOne({ email: validateRegister.data.email });
 
         if (!user) {
-            const hashedPassword = await argon2.hash(payload.password, {
+            const hashedPassword = await argon2.hash(validateRegister.data.password, {
                 type: 1,
                 salt: randomBytes(64),
             });
             const newUser = await User.create(
-                Object.assign(payload, {
-                    email: payloadEmail,
+                Object.assign(validateRegister.data, {
                     password: hashedPassword,
                     filterSettings: {},
                     favorites: [],
@@ -103,15 +101,14 @@ app.post('/register', async (request, response) => {
 //payload => email, password
 app.post('/login', async (request, response) => {
     try {
-        const payload = decodePayload(request.body.payload);
-        const payloadEmail = payload.email?.toLowerCase();
+        const validateLogin = schemas.login.safeParse(decodePayload(request.body.payload));
 
-        if (!payloadEmail || !validateEmail(payloadEmail)) throw new Error('Not Valid Email');
+        if (!validateLogin.success) throw new Error('Invalid Data!');
 
-        const user = await User.findOne({ email: payloadEmail });
+        const user = await User.findOne({ email: validateLogin.data.email });
 
         if (user) {
-            const isPasswordCompare = await argon2.verify(user.password, payload.password);
+            const isPasswordCompare = await argon2.verify(user.password, validateLogin.data.password);
 
             if (isPasswordCompare) {
                 const { id, name, surname, email, filterSettings, favorites } = user;
@@ -164,11 +161,17 @@ app.get('/verify', authMiddleware, async (request, response) => {
 //payload => apiList, fromDate, toDate, sortOrder, extraFilters = {....}
 app.post('/savesettings', authMiddleware, async (request, response) => {
     try {
-        const filterSettings = decodePayload(request.body.payload);
+        const validateFilterSettings = schemas.filterSettings.safeParse(decodePayload(request.body.payload));
+
+        if (!validateFilterSettings.success) throw new Error('Invalid Data!');
+
         const {
             user: { id, email },
         } = request;
-        const saveSettings = await User.findOneAndUpdate({ _id: id, email }, { $set: { filterSettings } });
+        const saveSettings = await User.findOneAndUpdate(
+            { _id: id, email },
+            { $set: { filterSettings: validateFilterSettings.data } }
+        );
 
         if (!saveSettings) throw new Error('Not Saved');
 
@@ -193,11 +196,13 @@ app.get('/apis', async (request, response) => {
 //query => apiList = string[]
 app.get('/filtersV2', async (request, response) => {
     try {
-        const apiList = decodePayload(request.query.apiList);
+        const validateApiList = schemas.apiList.safeParse({ apiList: decodePayload(request.query.apiList) });
         const filters = {};
 
+        if (!validateApiList.success) throw new Error('Invalid Data!');
+
         await Promise.all(
-            apiList.map((api) => {
+            validateApiList.data.apiList.map((api) => {
                 const currentApiData = apis.find((apiDate) => apiDate.value === api);
 
                 filters[api] = {};
@@ -227,39 +232,14 @@ app.get('/filtersV2', async (request, response) => {
     }
 });
 
-//query => apiName=string
-app.get('/filters', async (request, response) => {
-    try {
-        const apiName = decodeURIComponent(request.query.apiName);
-        const filters = {};
-
-        if (!apis[apiName]) throw new Error('Not Valid Api');
-
-        const filterPromises = apis[apiName].filters.map(async (option) => {
-            const filterRespone = await option.filterFn();
-
-            if (!filterRespone.ok) {
-                throw new Error('Error at Fetching Filter Option');
-            }
-
-            const filterOptions = await filterRespone.json();
-
-            filters[option.name] = filterOptions;
-        });
-
-        await Promise.all(filterPromises);
-
-        return response.json({ success: true, filters });
-    } catch (error) {
-        response.json({ success: false, error: error.message });
-    }
-});
-
 //payload => term, apiList, fromDate, toDate, page, sortOrder, extraFilters = {...},
 app.get('/search', async (request, response) => {
     try {
-        const payload = decodePayload(request.query.filter);
-        const { apiList, term, fromDate, toDate, page, sortOrder, extraFilters } = payload;
+        const validateSearch = schemas.search.safeParse(decodePayload(request.query.filter));
+
+        if (!validateSearch.success) throw new Error('Invalid Data!');
+
+        const { apiList, term, fromDate, toDate, page, sortOrder, extraFilters } = validateSearch.data;
 
         const responses = await Promise.all(
             apiList.reduce((promises, apiValue) => {
@@ -327,9 +307,12 @@ app.get('/search', async (request, response) => {
 // payload => {type: 'add' | 'remove', news: News}
 app.post('/favorite', authMiddleware, async (request, response) => {
     try {
-        const payload = decodePayload(request.body.payload);
+        const validateFavorite = schemas.favorite.safeParse(decodePayload(request.body.payload));
+
+        if (!validateFavorite.success) throw new Error('Invalid Data!');
+
         const { user: payloadUser } = request;
-        const { type, news } = payload;
+        const { type, news } = validateFavorite.data;
         const user = await User.findOne({ email: payloadUser.email, _id: payloadUser.id }).select({ password: 0 });
 
         if (user) {

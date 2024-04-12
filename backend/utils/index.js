@@ -3,11 +3,6 @@ const { randomUUID } = require('crypto');
 
 const decodePayload = (payload) => JSON.parse(decodeURIComponent(payload));
 
-const validateEmail = (email) =>
-    new RegExp(
-        /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
-    ).test(email.toLowerCase());
-
 const createRefreshToken = (value) =>
     jwt.sign(value, process.env.JWT_REFRESH_TOKEN_SECRET_KEY, {
         expiresIn: '3d',
@@ -124,7 +119,6 @@ module.exports = {
     createAccessToken,
     createRefreshTokenCookie,
     createAccessTokenCookies,
-    validateEmail,
     clearTokenCookies,
     transformArticles,
 };

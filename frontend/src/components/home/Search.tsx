@@ -111,7 +111,6 @@ const Search: React.FC = () => {
                             }}
                         />
                         <SetQueryParams />
-                        <ResetFilters />
                     </>
                 )}
             </Formik>
