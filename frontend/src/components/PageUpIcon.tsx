@@ -8,17 +8,16 @@ const PageUpIcon: React.FC = () => {
     const [showIcon, setShowIcon] = useState(false);
     const iconWrapper = useRef<HTMLDivElement | null>(null);
 
+    const handleTransitionEnd = (event: React.TransitionEvent<HTMLDivElement>) => {
+        event.propertyName === 'opacity' && setShowIcon(false);
+    };
+
     useEffect(() => {
         const handleScroll = () => {
             if (window.scrollY >= SCROLL_LIMIT && !showIcon) setShowIcon(true);
 
-            if (window.scrollY < SCROLL_LIMIT && showIcon) {
-                if (iconWrapper.current) iconWrapper.current.classList.add('animate-fade-out');
-
-                setTimeout(() => {
-                    setShowIcon(false);
-                }, 450);
-            }
+            if (window.scrollY < SCROLL_LIMIT && showIcon && iconWrapper.current)
+                iconWrapper.current.classList.add('opacity-0');
         };
 
         window.addEventListener('scroll', handleScroll);
@@ -37,7 +36,11 @@ const PageUpIcon: React.FC = () => {
     return (
         <>
             {showIcon && (
-                <div ref={iconWrapper}>
+                <div
+                    ref={iconWrapper}
+                    className="transition duration-300 ease-in-out"
+                    onTransitionEnd={handleTransitionEnd}
+                >
                     <BottomIcon
                         position="left"
                         icon={<FaArrowUp />}
