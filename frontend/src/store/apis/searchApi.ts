@@ -9,7 +9,7 @@ import {
 const searchApi = createApi({
     reducerPath: 'search',
     baseQuery: fetchBaseQuery({
-        baseUrl: process.env.REACT_APP_API_URL,
+        baseUrl: process.env.REACT_APP_API_URL + '/article',
     }),
     endpoints(builder) {
         return {
@@ -40,7 +40,7 @@ const searchApi = createApi({
                 query: (payload) => {
                     return {
                         method: 'GET',
-                        url: '/filtersV2',
+                        url: '/filters',
                         params: { apiList: encodeURIComponent(JSON.stringify(payload.apiList)) },
                     };
                 },
